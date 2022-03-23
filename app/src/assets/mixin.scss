@@ -1,0 +1,7 @@
+@mixin block($w: 100%, $h: 100%, $cl: transparent, $border: none, $radius: 0px) {
+    width: $w;
+    height: $h;
+    border: $border;
+    background-color: $cl;
+    border-radius: $radius;
+}

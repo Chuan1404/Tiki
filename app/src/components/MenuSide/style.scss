@@ -1,0 +1,31 @@
+@import "../../assets/style.scss";
+.menuSide {
+    &_item {
+        border-bottom: 1px solid rgb(247, 247, 247);
+        border-right: 1px solid rgb(247, 247, 247);
+        padding-bottom: 20px;
+        h3 {
+            font-size: 13px;
+            padding: 14px 0;
+            text-transform: uppercase;
+        }
+        p {
+            font-weight: 500;
+            text-decoration: underline;
+        }
+        a {
+            text-decoration: none;
+            font-weight: 500;
+            color: $boldColor;
+        }
+        .inputs {
+            padding: 5px 0;
+            cursor: pointer;
+            & ~ a {
+                display: block;
+                margin-top: 20px;
+            }
+        }
+        
+    }
+}

@@ -1,0 +1,21 @@
+@import "../../assets/style.scss";
+.buttons {
+    &.size {
+        &-middle {
+            padding: 10px 20px;
+            white-space: nowrap;
+        }
+    }
+    &.color {
+        &-none {
+            background-color: transparent;
+        }
+        &-bold {
+            background-color: $boldColor;
+        }
+    }
+    &.radius {
+    }
+    &.border {
+    }
+}

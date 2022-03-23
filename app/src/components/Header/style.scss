@@ -1,0 +1,47 @@
+@import "../../assets/style.scss";
+
+.header {
+    @include block(100vw, var(--headerHeight), $mainColor);
+    color: white;
+    &-container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .logo {
+            @include block(100px);
+            display: flex;
+            align-items: center;
+            img {
+                width: 100%;
+            }
+        }
+        .search {
+            @include block();
+            padding: 0px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            &_input {
+                display: flex;
+                box-shadow: rgba(98, 98, 98, 0.5) 0px 1px 2px 0px;
+                border-radius: 2px;
+                overflow: hidden;
+            }
+        }
+        .users {
+            display: flex;
+            &_item {
+                display: flex;
+                align-items: center;
+                padding: 0 5px;
+                cursor: pointer;
+                white-space: nowrap;
+                img {
+                    width: 30px;
+                    margin-right: 5px;
+                }
+            }
+        }
+    }
+}
