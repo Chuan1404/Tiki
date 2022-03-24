@@ -2,8 +2,48 @@
     .container {
         background-color: white;
         border-radius: 2px;
-        .homeSide{
+        display: flex;
+        .homeSide {
             width: 20%;
+        }
+        .homeSection {
+            width: 80%;
+            h1 {
+                padding: 14px 0;
+                font-size: 24px;
+                font-weight: 300;
+            }
+            .banner {
+                height: 400px;
+                .carousel {
+                    overflow: hidden;
+                    position: relative;
+                    height: 100%;
+                    outline: none;
+                    .flickity-slider {
+                        width: 100%;
+                        height: 100%;
+                    }
+                    .flickity-button {
+                        width: 30px;
+                        position: absolute;
+                        top: 50%;
+                        background-color: transparent;
+                        transform: translateY(-50%);
+                        &.next{
+                            right: 0;
+                        }
+                        &.left{
+                            left: 0;
+                        }
+                    }
+                    img {
+                        width: 100%;
+                        height: 400px;
+                        // object-fit: contain;
+                    }
+                }
+            }
         }
     }
 }
