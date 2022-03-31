@@ -1,19 +1,24 @@
 
-import { Header } from 'components'
+import { Header, LoginBox } from 'components'
 import { Home, NotFound } from 'pages'
 import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import store from 'store'
 export default function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route index element={<Home />} />
-          <Route path='*' element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <Provider store={store} >
+      <div className="App">
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route index element={<Home />} />
+            <Route path='*' element={<NotFound />} />
+          </Routes>
+          <LoginBox />
+        </BrowserRouter>
+      </div>
+    </Provider>
+
   )
 }

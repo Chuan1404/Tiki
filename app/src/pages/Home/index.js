@@ -1,15 +1,15 @@
-import { MenuSide } from 'components';
+import { MenuSide, ProductAccordion } from 'components';
+import "flickity/dist/flickity.css";
 import React from 'react';
 import Flickity from 'react-flickity-component';
 import './style.scss';
 
+
 export default function Home() {
     const flickityOptions = {
         initialIndex: 0,
-        prevNextButtons: true
-        // contain: true,
-        // setGallerySize: false
-        // accessibility: true
+        prevNextButtons: true,
+        contain: true,
     }
     return (
         <div id='home'>
@@ -18,7 +18,7 @@ export default function Home() {
                     <MenuSide />
                 </div>
                 <div className='homeSection'>
-                    <h1>Điện Tử - Điện Lạnh</h1>
+                    <h1>Điện Thoại - Máy Tính Bảng</h1>
                     <div className='banner'>
                         <Flickity
                             className={'carousel'} // default ''
@@ -28,11 +28,22 @@ export default function Home() {
                             reloadOnUpdate // default false
                             static // default false
                         >
-                            <img src="imgs/banner1.png" />
-                            <img src="imgs/banner2.jpg" />
-                            <img src="imgs/banner3.jpg" />
+                            <div className="banner_slide">
+                                <img src="imgs/banner3.png" />
+                            </div>
+                            <div className="banner_slide">
+                                <img src="imgs/banner2.jpg" />
+                            </div>
+                            <div className="banner_slide">
+                                <img src="imgs/banner3.jpg" />
+                            </div>
+
                         </Flickity>
                     </div>
+                    <div className='homeProduct'>
+                        <ProductAccordion />
+                    </div>
+                   
                 </div>
             </div>
         </div>

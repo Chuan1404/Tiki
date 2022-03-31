@@ -1,0 +1,53 @@
+@import "../../assets/style.scss";
+.loginBox {
+    @include block(100%, 100%, rgba(0, 0, 0, 0.4));
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    &_popup {
+        @include block(50%, 500px, white);
+        margin: 80px auto;
+        display: flex
+    }
+    &_left {
+        @include block(70%, 100%, white);
+        padding: 40px 45px 24px;
+        h3 {
+            font-size: 24px;
+            font-weight: 500px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 15px
+        }
+        .numberForm {
+            &_form {
+                margin-top: 20px;
+                
+            }
+        }
+    }
+    &_right {
+        @include block(30%, 100%);
+        display: flex;
+        align-items: center;
+        background-image: linear-gradient(136deg, rgb(240, 248, 255) -1%, rgb(219, 238, 255) 85%);
+        position: relative;
+        img {
+            width: 100%;
+            user-select: none;
+        }
+        .content {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            text-align: center;
+            color: $boldColor;
+            font-weight: 500;
+            & > p:nth-child(2) {font-weight: 400;}
+        }
+    }
+}

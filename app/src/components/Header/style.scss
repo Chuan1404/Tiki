@@ -1,7 +1,7 @@
 @import "../../assets/style.scss";
 
 .header {
-    @include block(100vw, var(--headerHeight), $mainColor);
+    @include block(100%, var(--headerHeight), $mainColor);
     color: white;
     &-container {
         height: 100%;

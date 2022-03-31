@@ -1,4 +1,5 @@
 @mixin block($w: 100%, $h: 100%, $cl: transparent, $border: none, $radius: 0px) {
+    display: block;
     width: $w;
     height: $h;
     border: $border;

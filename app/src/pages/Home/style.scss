@@ -15,28 +15,40 @@
             }
             .banner {
                 height: 400px;
+                // &_slide {
+                //     height: 400px;
+                //     overflow: hidden;
+                //     // position: relative;
+                //     img {
+                //         height: 400px;
+                //         // position: absolute;
+                //         // top: 50%;
+                //         // left: 50%;
+                //         // transform: translate(-50%, -50%);
+                //     }
+                // }
                 .carousel {
                     overflow: hidden;
                     position: relative;
                     height: 100%;
-                    outline: none;
+                    // outline: none;
                     .flickity-slider {
                         width: 100%;
                         height: 100%;
                     }
-                    .flickity-button {
-                        width: 30px;
-                        position: absolute;
-                        top: 50%;
-                        background-color: transparent;
-                        transform: translateY(-50%);
-                        &.next{
-                            right: 0;
-                        }
-                        &.left{
-                            left: 0;
-                        }
-                    }
+                    // .flickity-button {
+                    //     width: 30px;
+                    //     position: absolute;
+                    //     top: 50%;
+                    //     background-color: transparent;
+                    //     transform: translateY(-50%);
+                    //     &.next{
+                    //         right: 0;
+                    //     }
+                    //     &.left{
+                    //         left: 0;
+                    //     }
+                    // }
                     img {
                         width: 100%;
                         height: 400px;

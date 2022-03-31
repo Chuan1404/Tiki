@@ -1,0 +1,33 @@
+@import "../../assets/style.scss";
+.paginate {
+    display: flex;
+    &_list {
+        li {
+            display: inline-block;
+            &.active {
+                a {
+                    background-color: rgb(24, 158, 255);
+                    color: white;
+                }
+            }
+        }
+    }
+    a {
+        @include block(27px, 27px, transparent, none, 50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        text-decoration: none;
+        margin: 0px 5px;
+        color: rgb(51, 51, 51);
+        font-weight: 500;
+        svg {
+            width: 14px !important;
+        }
+        &:hover {
+            background-color: rgb(24, 158, 255);
+            color: white;
+        }
+    }
+}

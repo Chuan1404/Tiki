@@ -4,10 +4,12 @@
     display: flex;
     align-items: center;
     input {
-        &[type="text"] {
+        color: rgb(36, 36, 36);
+        &[type="text"], &[type="tel"] {
             width: 100%;
             height: 100%;
             padding: 12px 20px;
+            font-size: 13px;
         }
         &[type="checkbox"] {
             margin-right: 5px;
