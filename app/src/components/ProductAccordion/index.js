@@ -14,7 +14,6 @@ export default function ProductAccordion() {
             const data = await productService.getProduct(search);
             setFetching(false)
             setProduct(data)
-
         })()
     }, [product])
     if (fetching) return <h1>Loading prduct...</h1>
@@ -29,7 +28,7 @@ export default function ProductAccordion() {
             </ul>
             <ul className='product_list'>
                 {product.data?.map(item => (
-                    <li className='product_list-item'>
+                    <li key={item._id} className='product_list-item'>
                         <ProductCard
                             thumbnail_url={item.images[0].thumbnail_url}
                             name={item.name}

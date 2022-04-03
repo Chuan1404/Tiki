@@ -1,12 +1,12 @@
 import React from 'react'
 import { Inputs } from 'components';
 
-export default function NumberForm() {
+export default function NumberForm({setActive}) {
   const InputStyle = {
-    borderBottom: '1px solid rgb(224, 224, 224)',
     fontSize: 24,
-    paddingLeft: 0
   }
+  
+
   return (
     <div className='numberForm'>
       <div className="numberForm_content">
@@ -22,6 +22,11 @@ export default function NumberForm() {
           />
         </div>
       </div>
+      <div className="form_submit">
+        <button>Tiếp tục</button>
+        <a href="" onClick={setActive}>Đăng nhập bằng email</a>
+      </div>
+      
     </div>
   )
 }

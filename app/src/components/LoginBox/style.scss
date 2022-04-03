@@ -5,13 +5,16 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    display: none;
     &_popup {
-        @include block(50%, 500px, white);
+        @include block(50%, fit-content, white);
         margin: 80px auto;
-        display: flex
+        display: flex;
+        border-radius: 20px;
+        position: relative;
     }
     &_left {
-        @include block(70%, 100%, white);
+        @include block(60%, 100%, white, none, 20px);
         padding: 40px 45px 24px;
         h3 {
             font-size: 24px;
@@ -19,23 +22,57 @@
             margin-bottom: 10px;
         }
         p {
-            font-size: 15px
+            font-size: 15px;
+        }
+        input {
+            border-bottom: 1px solid rgb(224, 224, 224);
+            padding-left: 0 !important;
         }
         .numberForm {
+            height: 100%;
             &_form {
                 margin-top: 20px;
-                
+            }
+        }
+        .emailForm {
+            height: 100%;
+            &_back {
+                cursor: pointer;
+                display: inline-block;
+                svg {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+            &_content {
+                margin: 20px 0;
+            }
+            .form_submit {
+                display: flex;
+                flex-direction: column;
+                button {
+                    margin-bottom: 20px;
+                }
+                a {
+                    width: inherit;
+                    display: inline-block;
+                }
+                span {
+                    display: inline-block;
+                    margin: 10px 10px 10px 0px;
+                }
             }
         }
     }
     &_right {
-        @include block(30%, 100%);
+        @include block(40%, auto, transparent, none, 0 20px 20px 0);
         display: flex;
         align-items: center;
         background-image: linear-gradient(136deg, rgb(240, 248, 255) -1%, rgb(219, 238, 255) 85%);
         position: relative;
         img {
-            width: 100%;
+            width: 70%;
+            margin: auto;
             user-select: none;
         }
         .content {
@@ -47,7 +84,54 @@
             text-align: center;
             color: $boldColor;
             font-weight: 500;
-            & > p:nth-child(2) {font-weight: 400;}
+            & > p:nth-child(2) {
+                font-weight: 400;
+            }
+        }
+    }
+    &_close {
+        position: absolute;
+        right: -15px;
+        top: -15px;
+        @include block(40px, 40px, white, none, 50%);
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        svg {
+            width: 90%;
+            height: 90%;
+            path {
+                stroke: #848484;
+            }
+        }
+    }
+    &.active {
+        display: flex;
+    }
+    .form_submit {
+        button {
+            margin: 30px 0px 10px;
+            border-radius: 4px;
+            background: rgb(255, 66, 78);
+            padding: 13px 0px;
+            width: 100%;
+            color: rgb(255, 255, 255);
+            font-size: 20px;
+            cursor: pointer;
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+        a {
+            display: block;
+            width: 100%;
+            margin: 10px 0px 0px;
+            text-align: center;
+            color: $boldColor;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
         }
     }
 }
