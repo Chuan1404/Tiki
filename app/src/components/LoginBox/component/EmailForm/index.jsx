@@ -3,6 +3,7 @@ import { useForm } from 'hooks';
 import React from 'react'
 import { GrPrevious } from 'react-icons/gr'
 import { useDispatch } from 'react-redux'
+import { closeLoginPopup } from 'store/slices/pageSlice';
 
 export default function EmailForm({ setActive }) {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ export default function EmailForm({ setActive }) {
       type: 'LOGIN',
       payload: form
     })
+    dispatch(closeLoginPopup())
   }
   return (
     <div className='emailForm'>

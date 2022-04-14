@@ -1,6 +1,6 @@
 @import "../../assets/style.scss";
 .productAccordion {
-    padding: 30px 0;
+    padding-bottom: 30px;
     .product {
         &_tab {
             display: flex;
@@ -32,10 +32,6 @@
                 width: 25%;
                 padding: 16px;
             }
-        }
-        &_paginate {
-            display: flex;
-            justify-content: right;
         }
     }
 }

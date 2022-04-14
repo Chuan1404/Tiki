@@ -1,21 +1,39 @@
 @import "../../assets/style.scss";
 .buttons {
+    display: inline-block;
+    cursor: pointer;
+    user-select: none;
     &.size {
         &-middle {
             padding: 10px 20px;
             white-space: nowrap;
         }
     }
-    &.color {
+    &.bgcolor {
         &-none {
             background-color: transparent;
         }
         &-bold {
             background-color: $boldColor;
         }
+        &-main {
+            background-color: $mainColor;
+        }
+    }
+    &.color {
+        &-bold {
+            border-color: $boldColor;
+        }
+        &-main {
+            border-color: $boldColor;
+            color: $boldColor;
+        }
     }
     &.radius {
+        border-radius: 4px;
     }
     &.border {
+        border-width: 1px;
+        border-style: solid;
     }
 }

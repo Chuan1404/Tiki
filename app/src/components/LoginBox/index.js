@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { GrFormClose } from 'react-icons/gr';
 import { useDispatch, useSelector } from 'react-redux';
-import { close } from 'store/slices/loginPopupSlice';
+import { closeLoginPopup } from 'store/slices/pageSlice';
 import EmailForm from './component/EmailForm';
 import NumberForm from './component/NumberForm';
 import './style.scss';
@@ -10,18 +10,17 @@ import './style.scss';
 
 export default function LoginBox() {
     let [formStyle, setFormStyle] = useState(true);
-    const { isOpen } = useSelector(store => store.loginPopup)
+    const { loginPopup } = useSelector(store => store.page)
     const dispatch = useDispatch()
     const changeForm = (e) => {
         e.preventDefault();
         setFormStyle(!formStyle);
     }
-
     const closePopup = () => {
-        dispatch(close());
+        dispatch(closeLoginPopup());
     }
     return (
-        <div className={`loginBox ${isOpen && 'active'}`}>
+        <div className={`loginBox ${loginPopup && 'active'}`}>
             <div className="loginBox_popup">
                 <div className="loginBox_left">
                     {formStyle && <NumberForm

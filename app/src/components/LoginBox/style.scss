@@ -6,6 +6,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     display: none;
+    z-index: 100;
     &_popup {
         @include block(50%, fit-content, white);
         margin: 80px auto;

@@ -1,0 +1,15 @@
+@import "../../assets/style.scss";
+.categoryBar {
+    margin-bottom: 20px;
+    .container {
+        .categories_list {
+            a {
+                font-size: 14px;
+                text-decoration: none;
+                color: $textColor;
+                display: inline-block;
+                padding: 15px 10px;
+            }
+        }
+    }
+}
