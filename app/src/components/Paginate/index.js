@@ -1,9 +1,10 @@
 import React from 'react'
-import './style.scss'
 import { GrNext, GrPrevious } from 'react-icons/gr'
-import { queryObject, queryString } from 'utils'
 import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
+import { queryObject, queryString } from 'utils'
+import './style.scss'
+
 
 export default function Paginate({ totalPage }) {
     const { pathname } = useLocation();

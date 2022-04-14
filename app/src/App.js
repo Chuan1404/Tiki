@@ -1,6 +1,6 @@
 
 import { Header, LoginBox } from 'components'
-import { Home, NotFound } from 'pages'
+import { Home, NotFound, ProductDetail } from 'pages'
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Provider } from 'react-redux'
@@ -13,6 +13,7 @@ export default function App() {
           <Header />
           <Routes>
             <Route index element={<Home />} />
+            <Route path='/product/:id' element={<ProductDetail />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
           <LoginBox />

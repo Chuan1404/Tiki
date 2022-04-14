@@ -1,0 +1,66 @@
+.sliderProduct {
+    $padding: 15px;
+    padding: $padding;
+    overflow: hidden;
+    &_current {
+        width: 100%;
+        height: 500px;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: $padding;
+        img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            height: 100%;
+        }
+    }
+    &_list {
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        &-controls {
+            .btn {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 3;
+                cursor: pointer;
+                svg {
+                    font-size: 30px;
+                }
+            }
+            .next {
+                right: 0;
+            }
+        }
+    }
+    &_view {
+        display: flex;
+        .item {
+            width: 20%;
+            height: 82px;
+            overflow: hidden;
+            cursor: pointer;
+            margin-right: 10px;
+            position: relative;
+            border: 1px solid transparent;
+            &:last-child {
+                margin-right: 0;
+            }
+            &.active,&:hover {
+                border: 1px solid blue;
+            }
+            img {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                object-fit: contain;
+                width: 100%;
+            }
+        }
+    }
+}

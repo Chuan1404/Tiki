@@ -5,7 +5,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router';
 import { productService } from 'Services';
-import { queryString } from 'utils';
+import { queryObject, queryString } from 'utils';
 import './style.scss';
 
 
@@ -23,7 +23,8 @@ export default function Home() {
         { categories: 23810, title: 'Bếp' },
         { categories: 8594, title: 'Xe - Phụ Kiện' },
     ]
-    if(!search) {
+    const query = queryObject();
+    if (!search) {
         return <Navigate to={`/?${queryString(searchObj)}`} />
     }
     return (
@@ -35,10 +36,10 @@ export default function Home() {
                 </div>
                 <div className='homeSection'>
                     {!productFetching ?
-                        titleList.map(item => {
-                            return (products.data && products.data[0]?.categories == item.categories) &&
-                                <h1 className='title'>{item.title}</h1>
-                        }) :
+                        query.name ? <p className='title'>Kết quả tìm kiếm cho `{query.name}`</p>
+                            : titleList.map(item => {
+                                return products.data && products.data[0]?.categories == item.categories && <h1 className='title'>{item.title}</h1>
+                            }) :
                         <Skeleton className='title' width={200} height={30} />}
 
                     <div className='homeProduct'>

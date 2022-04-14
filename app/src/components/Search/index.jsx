@@ -4,18 +4,20 @@ import Inputs from 'components/Inputs';
 import { useQuery } from 'hooks';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { productService } from 'Services';
 import { closeSearchBox, openSearchBox } from 'store/slices/pageSlice';
-import { queryString } from 'utils';
+import { queryObject, queryString } from 'utils';
 import './style.scss';
 
 export default function Search() {
     const [keys, setKeys] = useState('')
     const [typing, setTyping] = useState(true)
     const dispatch = useDispatch()
-    const { search } = useLocation()
+    const { search, pathname } = useLocation()
     const isShow = useSelector(store => store.page.searchBox)
+    const query = queryObject();
+    const navigator = useNavigate()
 
     let id;
 
@@ -34,6 +36,11 @@ export default function Search() {
     }
     const inputBlur = (e) => {
         dispatch(closeSearchBox())
+    }
+    const handleClick = (e) => {
+        query.name = keys;
+        let url = `${pathname}?${queryString(query)}`
+        navigator(url)
     }
     return (
         <div className='search'>
@@ -61,12 +68,11 @@ export default function Search() {
                                 </a>
                             </li>
                         })
-
                     }
 
                 </div>}
             </div>
-            <Buttons bgcolor='bold'>Tìm Kiếm</Buttons>
+            <Buttons onClick={handleClick} bgcolor='bold'>Tìm Kiếm</Buttons>
         </div>
     )
 }

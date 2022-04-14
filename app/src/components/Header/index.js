@@ -1,6 +1,7 @@
 import { Search } from 'components';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router';
 import { openLoginPopup } from 'store/slices/pageSlice';
 import './style.scss';
 

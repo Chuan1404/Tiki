@@ -2,7 +2,7 @@ import Buttons from 'components/Buttons';
 import Inputs from 'components/Inputs';
 import Stars from 'components/Stars';
 import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate, useHistory } from 'react-router';
 import { queryObject, queryString } from 'utils';
 import './style.scss';
 
@@ -11,6 +11,7 @@ export default function MenuSide() {
     const navigater = useNavigate()
     const [minValue, setMinValue] = useState()
     const [maxValue, setMaxValue] = useState()
+    
 
     const style = {
         display: 'inline-block',

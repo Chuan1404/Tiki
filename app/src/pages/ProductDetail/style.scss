@@ -1,0 +1,18 @@
+@import "../../assets/style.scss";
+
+.productDetail {
+    .container {
+        .product {
+            width: 100%;
+            &_img {
+                @include block(40%, auto);
+                display: inline-block;
+                user-select: none
+            }
+            &_info {
+                @include block(60%, 400px, blue);
+                display: inline-block;
+            }
+        }
+    }
+}

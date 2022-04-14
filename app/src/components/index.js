@@ -9,6 +9,7 @@ import LoginBox from "./LoginBox";
 import MySkeketon from "./MySkeleton";
 import CategoryBar from "./CategoryBar";
 import Search from "./Search";
+import SliderProduct from "./SliderProduct";
 
 export {
     Buttons,
@@ -21,5 +22,6 @@ export {
     LoginBox,
     MySkeketon as Skeleton,
     CategoryBar,
-    Search
+    Search,
+    SliderProduct
 };
