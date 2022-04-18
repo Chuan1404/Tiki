@@ -1,18 +1,112 @@
 @import "../../assets/style.scss";
 
 .productDetail {
-    .container {
-        .product {
+    &_info {
+        & > .container {
+            display: flex;
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+    .product {
+        .container {
+            display: flex;
+        }
+        &_img {
+            @include block(40%, auto);
+            display: inline-block;
+            user-select: none;
+        }
+        &_info {
+            @include block(60%, auto);
+            border-left: 1px solid rgb(242, 242, 242);
+        }
+    }
+    .sliderSection {
+        .slider {
             width: 100%;
-            &_img {
-                @include block(40%, auto);
-                display: inline-block;
-                user-select: none
+            overflow: hidden;
+            position: relative;
+            &_view {
+                display: flex;
+                width: 300%;
+                .productCard {
+                    width: 20%;
+                    height: auto;
+                }
             }
-            &_info {
-                @include block(60%, 400px, blue);
-                display: inline-block;
+            &_control {
+                .btn {
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    cursor: pointer;
+                    svg {
+                        font-size: 30px;
+                    }
+                }
+                .next {
+                    right: 0;
+                }
             }
+        }
+    }
+    .textSection {
+        .description {
+            h5, p, img, span, div {
+                text-align: center;
+                max-width: 888px;
+                margin: 10px auto;
+            }
+            li, p {}
+            h5 {
+                margin-bottom: 20px;
+                font-size: 21px;
+            }
+        }
+    }
+    .topSection {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+
+    }
+    section {
+        margin-top: 20px;
+        .container {
+            background-color: white;
+            padding-bottom: 20px;
+        }
+    }
+    h3 {
+        color: rgb(51, 51, 51);
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 32px;
+        padding: 8px 16px;
+        text-transform: capitalize;
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        th {
+            width: 220px;
+            color: rgb(79, 79, 79);
+            font-size: 13px;
+            font-weight: 500;
+            background: rgb(239, 239, 239);
+            font-weight: 600;
+            text-align: left;
+            padding: 10px 15px;
+        }
+        tr:nth-child(even) {
+            td {
+                background-color: #fafafa;
+            }
+        }
+        td {
+            font-size: 13px;
+            padding: 10px 15px;
         }
     }
 }

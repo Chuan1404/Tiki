@@ -24,9 +24,7 @@ export default function Home() {
         { categories: 8594, title: 'Xe - Phụ Kiện' },
     ]
     const query = queryObject();
-    if (!search) {
-        return <Navigate to={`/?${queryString(searchObj)}`} />
-    }
+    if (!search) return <Navigate to={`/?${queryString(searchObj)}`} />
     return (
         <div id='home'>
             <CategoryBar list={titleList} />

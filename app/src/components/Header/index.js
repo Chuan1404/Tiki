@@ -1,7 +1,7 @@
 import { Search } from 'components';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router';
+import { Link } from 'react-router-dom';
 import { openLoginPopup } from 'store/slices/pageSlice';
 import './style.scss';
 
@@ -20,18 +20,18 @@ export default function Header() {
         <header className={`header ${isActive && 'active'}`}>
             <div className="container header-container">
                 <div className="logo">
-                    <a href=""><img src="imgs/logo.png" alt="" /></a>
+                    <Link to='/'><img src="/imgs/logo.png" alt="" /></Link>
                 </div>
                 <div className="header_search">
                     <Search />
                 </div>
                 <div className="users">
                     <div className="users_item" onClick={openPopup}>
-                        <img src="imgs/user.png" alt="" />
+                        <img src="/imgs/user.png" alt="" />
                         <span>{user.data?.name}</span>
                     </div>
                     <div className="users_item" onClick={openCart}>
-                        <img src="imgs/cart.png" alt="" />
+                        <img src="/imgs/cart.png" alt="" />
                         <span>Giỏ Hàng</span>
                     </div>
                 </div>

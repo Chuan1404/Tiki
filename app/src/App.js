@@ -13,7 +13,7 @@ export default function App() {
           <Header />
           <Routes>
             <Route index element={<Home />} />
-            <Route path='/product/:id' element={<ProductDetail />} />
+            <Route path='/product/:slug' element={<ProductDetail />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
           <LoginBox />

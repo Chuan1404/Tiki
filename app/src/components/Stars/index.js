@@ -12,14 +12,14 @@ export default function Stars({ number, ...rest }) {
   const stars = []
 
   for (let i = 1; i <= fill; i++)
-    fillStars.push(<BsStarFill color='rgb(253, 216, 54)'/>)
+    fillStars.push(<BsStarFill key={i} color='rgb(253, 216, 54)'/>)
   for (let i = 1; i <= half; i++)
-    halfStars.push(<BsStarHalf color='rgb(253, 216, 54)'/>)
+    halfStars.push(<BsStarHalf key={i} color='rgb(253, 216, 54)'/>)
   for (let i = 1; i <= (5 - fill - half); i++)
-    stars.push(<BsStar color='rgb(184, 184, 184)' />)
+    stars.push(<BsStar key={i} color='rgb(184, 184, 184)' />)
   return (
     <div className='stars' {...rest}>
-      {fillStars.map(item => item)}
+      {fillStars.map((item) => item)}
       {halfStars.map(item => item)}
       {stars.map(item => item)}
     </div>

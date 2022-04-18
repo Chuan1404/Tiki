@@ -1,0 +1,20 @@
+.countControl {
+    .box {
+        display: inline-block;
+        padding: 5px 15px;
+        border: 1px solid rgba(0, 0, 0, 0.09);
+        user-select: none;
+        &.minus,
+        &.plus {
+            cursor: pointer;
+        }
+        &.minus {
+            border-right: none;
+            border-radius: 4px 0px 0px 4px;
+        }
+        &.plus {
+            border-left: none;
+            border-radius: 0px 4px 4px 0px;
+        }
+    }
+}

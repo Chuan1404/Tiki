@@ -8,6 +8,15 @@
             padding: 10px 20px;
             white-space: nowrap;
         }
+        &-large {
+            padding: 15px 0;
+            white-space: nowrap;
+            font-size: 16px;
+            min-width: 190px;
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+        }
     }
     &.bgcolor {
         &-none {
@@ -18,6 +27,10 @@
         }
         &-main {
             background-color: $mainColor;
+        }
+        &-red {
+            background-color: $redColor;
+            color: white;
         }
     }
     &.color {

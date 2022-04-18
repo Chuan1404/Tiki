@@ -10,6 +10,8 @@ import MySkeketon from "./MySkeleton";
 import CategoryBar from "./CategoryBar";
 import Search from "./Search";
 import SliderProduct from "./SliderProduct";
+import ProductInfo from "./ProductInfo";
+import CountControl from "./CountControl";
 
 export {
     Buttons,
@@ -23,5 +25,7 @@ export {
     MySkeketon as Skeleton,
     CategoryBar,
     Search,
-    SliderProduct
+    SliderProduct,
+    ProductInfo,
+    CountControl
 };

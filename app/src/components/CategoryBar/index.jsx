@@ -13,8 +13,8 @@ export default function CategoryBar({ list = [] }) {
         <div className='categoryBar'>
             <div className="container">
                 <div className='categories_list'>
-                    {list.map(e =>
-                        <Link to={`${pathname}?${queryString({ ...defaultSearch, categories: e.categories })}`}>{e.title}</Link>)
+                    {list.map((e,i) =>
+                        <Link key={i} to={`${pathname}?${queryString({ ...defaultSearch, categories: e.categories })}`}>{e.title}</Link>)
                     }
                 </div>
             </div>

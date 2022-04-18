@@ -1,9 +1,11 @@
 import { Skeleton } from 'components';
 import Stars from 'components/Stars';
 import React from 'react'
+import { useNavigate } from 'react-router';
 import './style.scss';
 
-export default function ProductCard({ thumbnail_url, name, price, discount, stars, loading }) {
+export default function ProductCard({ thumbnail_url, name, price, discount, stars, loading, slug, ...res }) {
+  const navigator = useNavigate()
   if (loading) return (
     <div className='productCard'>
       <div className="img">
@@ -16,7 +18,10 @@ export default function ProductCard({ thumbnail_url, name, price, discount, star
     </div>
   )
   return (
-    <div className='productCard'>
+    <div
+      className='productCard'
+      onClick={() => navigator(`/product/${slug}`)}
+      {...res}>
       <div className="img">
         <img src={thumbnail_url} alt="" />
       </div>
@@ -30,7 +35,6 @@ export default function ProductCard({ thumbnail_url, name, price, discount, star
           {discount}
         </div>
       </div>
-
     </div>
   )
 }

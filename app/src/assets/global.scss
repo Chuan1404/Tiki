@@ -7,7 +7,7 @@
 }
 html,
 body {
-    font-family:Roboto,Helvetica,Arial,sans-serif;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
     background-color: $grayColor;
     max-width: 100%;
 }
@@ -20,14 +20,25 @@ body {
 input {
     border: none;
     outline: none;
-    
 }
-button{
+button {
     border: none;
     outline: none;
 }
-ul{
+ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
+}
+.discount_box {
+    display: inline-block;
+    border: 1px solid $redColor;
+    border-radius: 2px;
+    background-color: rgb(255, 240, 241);
+    padding: 0px 2px;
+    line-height: 14px;
+    font-size: 12px;
+    font-weight: 400;
+    margin-left: 8px;
+    color: $redColor;
 }

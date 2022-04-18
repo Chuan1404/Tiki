@@ -24,11 +24,11 @@ export default function Search() {
     const {
         data: result,
         fetching: fetchingResult }
-        = useQuery(() => productService.getProduct(`${search}&${queryString({ name: keys })}`), [typing])
+        = useQuery(() => productService.getProduct(`?${search}&${queryString({ name: keys })}`), [typing])
 
     const inputChange = (e) => {
-        clearTimeout(id)
-        id = setTimeout(() => { setTyping(!typing) }, 1000)
+        // clearTimeout(id)
+        // id = setTimeout(() => { setTyping(!typing) }, 1000)
         setKeys(e.target.value)
     }
     const inputFocus = (e) => {
@@ -38,6 +38,7 @@ export default function Search() {
         dispatch(closeSearchBox())
     }
     const handleClick = (e) => {
+        delete query.categories;
         query.name = keys;
         let url = `${pathname}?${queryString(query)}`
         navigator(url)
@@ -63,7 +64,7 @@ export default function Search() {
                         result.data?.map(product => {
                             return <li>
                                 <a href="">
-                                    <div className='img'><img src={product.thumbnail_url}></img></div>
+                                    <div className='img'><img src={product.thumbnail_url} /></div>
                                     <span className='name'>{product.name}</span>
                                 </a>
                             </li>
