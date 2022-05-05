@@ -32,6 +32,10 @@
             background-color: $redColor;
             color: white;
         }
+        &-yellow {
+            background-color: $yellowColor;
+            color: $textColor;
+        }
     }
     &.color {
         &-bold {

@@ -9,11 +9,16 @@
         height: 100%;
         padding: 12px 20px;
         font-size: 13px;
-        &[type="checkbox"] {
+        &[type="radio"] {
             margin-right: 5px;
             padding: 0;
             width: initial;
             height: initial;
+            cursor: pointer;
+        }
+        &[type='checkbox'] {
+            width: 15px;
+            margin-right: 5px;
         }
         &.border {
             border: 1px solid rgb(184, 184, 184);
@@ -22,5 +27,6 @@
     }
     label {
         cursor: pointer;
+        user-select: none;
     }
 }

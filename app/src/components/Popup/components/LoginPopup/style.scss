@@ -1,19 +1,10 @@
-@import "../../assets/style.scss";
-.loginBox {
-    @include block(100%, 100%, rgba(0, 0, 0, 0.4));
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: none;
-    z-index: 100;
-    &_popup {
-        @include block(50%, fit-content, white);
-        margin: 80px auto;
-        display: flex;
-        border-radius: 20px;
-        position: relative;
-    }
+@import "../../../../assets/style.scss";
+.loginPopup {
+    @include block(50%, fit-content, white);
+    margin: 80px auto;
+    display: flex;
+    border-radius: 20px;
+    position: relative;
     &_left {
         @include block(60%, 100%, white, none, 20px);
         padding: 40px 45px 24px;
@@ -89,26 +80,6 @@
                 font-weight: 400;
             }
         }
-    }
-    &_close {
-        position: absolute;
-        right: -15px;
-        top: -15px;
-        @include block(40px, 40px, white, none, 50%);
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        svg {
-            width: 90%;
-            height: 90%;
-            path {
-                stroke: #848484;
-            }
-        }
-    }
-    &.active {
-        display: flex;
     }
     .form_submit {
         button {

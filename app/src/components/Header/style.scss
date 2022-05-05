@@ -26,16 +26,37 @@
         }
         .users {
             display: flex;
+            a {
+                text-decoration: none;
+                color: white;
+            }
             &_item {
                 display: flex;
                 align-items: center;
                 padding: 0 5px;
                 cursor: pointer;
                 white-space: nowrap;
+                position: relative;
                 img {
                     width: 30px;
                     margin-right: 5px;
                 }
+                .quality {
+                    color: rgb(36, 36, 36);
+                    background: rgb(253, 216, 53);
+                    height: 20px;
+                    left: 20px;
+                    top: -2px;
+                    border-radius: 50%;
+                    display: inline-block;
+                    text-align: center;
+                    line-height: 20px;
+                    font-size: 13px;
+                    font-weight: 6sa00;
+                    position: absolute;
+                    padding: 0px 7px;
+                }
+                
             }
         }
     }

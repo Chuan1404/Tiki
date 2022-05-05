@@ -1,0 +1,174 @@
+@import "../../assets/style.scss";
+
+.checkout {
+    .container {
+        padding-top: 50px;
+    }
+    &_header {
+        margin-bottom: 30px;
+        h1 {
+            font-size: 20px;
+            color: rgb(0, 0, 0);
+            line-height: 28px;
+            text-transform: uppercase;
+        }
+    }
+    &_list {
+        @include block(100%, 100%);
+        .no-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 0;
+            background-color: white;
+            img {
+                width: 190px;
+                max-width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+        .buttons {
+            margin-top: 30px;
+        }
+        &-section {
+            display: flex;
+            justify-content: space-between;
+            height: 100%;
+            position: relative;
+            .list {
+                @include block(74%, 100%);
+                user-select: none;
+
+                img {
+                    cursor: pointer;
+                }
+                &_control {
+                    @include block(100%, 40px, white, none, 4px);
+                    padding: 10px 15px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    div {
+                        height: 100%;
+                        display: flex;
+                        align-items: center;
+                    }
+                    span,
+                    label {
+                        white-space: nowrap;
+                    }
+                }
+                &_items {
+                    padding: 0 15px;
+                    margin-top: 10px;
+                    background-color: white;
+                    .item {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 20px 0px;
+                        line-height: 20px;
+                        div {
+                            display: flex;
+                            align-items: center;
+                        }
+                        &_product {
+                            cursor: pointer;
+                            .img {
+                                margin: 0px 10px;
+                                img {
+                                    width: 80px;
+                                }
+                            }
+                        }
+                        &_price {
+                            display: inline-block;
+                            span:nth-child(1) {
+                                font-weight: 600;
+                                color: rgb(36, 36, 36);
+                                font-size: 13px;
+                                margin-right: 5px;
+                            }
+                            span:nth-child(2) {
+                                color: rgb(153, 153, 153);
+                                font-size: 11px;
+                                text-decoration: line-through;
+                            }
+                        }
+                        &_sum {
+                            color: rgb(255, 66, 78);
+                            font-size: 13px;
+                            font-weight: 600;
+                            line-height: 20px;
+                            display: block;
+                        }
+                    }
+                }
+            }
+            .bill {
+                @include block(25%, 100%);
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                span {
+                    color: rgb(128, 128, 137);
+                }
+                & > div {
+                    background-color: white;
+                    padding: 16px;
+                }
+                &_info {
+                    p {
+                        margin: 15px 0px 5px;
+                        font-weight: 600;
+                    }
+                }
+                &_sum {
+                    margin-top: 20px;
+                    display: flex;
+                    justify-content: space-between;
+                    position: sticky;
+                    top: 0px;
+                    .sum {
+                        color: rgb(254, 56, 52);
+                        font-size: 22px;
+                        font-weight: 600;
+                        text-align: right;
+                    }
+                }
+                &_btn {
+                    background-color: transparent !important;
+                    padding: 0 !important;
+                    .buttons {
+                        max-width: 100%;
+                    }
+                }
+            }
+        }
+    }
+    .inputs {
+        width: initial;
+        height: 15px;
+    }
+    [class*="col_"] {
+        width: 100%;
+        padding-right: 10px;
+    }
+    .col_1 {
+        max-width: 398px;
+    }
+    .col_2 {
+        max-width: 180px;
+    }
+    .col_3 {
+        max-width: 150px;
+    }
+    .col_4 {
+        max-width: 120px;
+    }
+    .col_5 {
+        max-width: 30px;
+        padding-right: 0;
+    }
+}

@@ -1,0 +1,15 @@
+@import "../../assets/style.scss";
+.popup {
+    @include block(100%, 100%, rgba(0, 0, 0, 0.4));
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    display: none;
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 10%;
+    &.show {
+        display: flex;
+    }
+}

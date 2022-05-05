@@ -1,3 +1,4 @@
+import { Loading } from 'components'
 import { useQuery } from 'hooks'
 import React from 'react'
 import { useParams } from 'react-router'
@@ -13,7 +14,7 @@ export default function ProductDetail() {
   const {
     data: product,
     fetching: productFetching } = useQuery(() => productService.getProduct(`?slug=${slug}`), [slug])
-  if (productFetching) return '...loading'
+  if (productFetching) return <Loading />
   return (
     <div className='productDetail'>
       <ProductSection
@@ -31,7 +32,7 @@ export default function ProductDetail() {
             {product.data?.[0].description && <TextSection content={product.data?.[0].description} />}
           </div>
           <div>
-              <TopSection />
+            <TopSection />
           </div>
         </div>
       </div>

@@ -12,7 +12,8 @@ const loginSlice = createSlice({
             state.isLogin = true;
         },
         setProfile: (state, action) => {
-            state.user = action.payload
+            state.user = action.payload;
+            state.isLogin = true;
         },
         logout: (state, action) => {
             localStorage.removeItem('token');

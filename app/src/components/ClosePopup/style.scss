@@ -1,0 +1,18 @@
+@import '../../assets/style.scss';
+.closePopup {
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    @include block(40px, 40px, white, none, 50%);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+        width: 90%;
+        height: 90%;
+        path {
+            stroke: #848484;
+        }
+    }
+}

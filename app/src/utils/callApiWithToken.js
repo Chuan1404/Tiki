@@ -2,7 +2,6 @@ import { authService } from "Services";
 
 const callApiWithToken = async (url, options = {}) => {
     const token = JSON.parse(localStorage.getItem('token'));
-
     options = {
         ...options,
         headers: {
@@ -11,7 +10,6 @@ const callApiWithToken = async (url, options = {}) => {
             'Authorization': `Bearer ${token.accessToken}`
         }
     }
-
     let res = await fetch(url, options)
 
     if (res.status == 403) {

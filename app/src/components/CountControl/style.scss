@@ -1,12 +1,16 @@
 .countControl {
+    display: flex;
+    align-items: initial !important;
     .box {
-        display: inline-block;
         padding: 5px 15px;
         border: 1px solid rgba(0, 0, 0, 0.09);
         user-select: none;
         &.minus,
         &.plus {
             cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         &.minus {
             border-right: none;
@@ -15,6 +19,11 @@
         &.plus {
             border-left: none;
             border-radius: 0px 4px 4px 0px;
+        }
+        &.opacity {
+            svg {
+                opacity: .4;
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
-import React from 'react'
-import './style.scss';
+import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import './style.scss';
 
 export default function Inputs({ placeholder = 'Input text', type = 'text', children, border, ...register }) {
   const id = uuidv4()
@@ -10,9 +10,9 @@ export default function Inputs({ placeholder = 'Input text', type = 'text', chil
         id={id}
         type={type}
         className={border && 'border'}
-        placeholder={placeholder} 
-        {...register}></input>
-      {children && <label for={id}>{children}</label>}
+        placeholder={placeholder}
+        {...register} />
+      {children && <label htmlFor={id}>{children}</label>}
     </div>
   )
 }

@@ -32,9 +32,9 @@ export default function ProductAccordion({ data = [], fetching = false }) {
                     list.map((item, i) =>
                         <li
                             key={i}
-                            className={(isActive == i) && 'active'}
+                            className={(isActive == i) ? 'active' : ''}
                             onClick={() => setIsActive(i)}>
-                            <Link to={`${pathname}?${queryString({ ...query, sort: item.sort })}`}>{item.title}</Link>
+                            <Link to={`${pathname}?${queryString({ ...query, sort: item.sort, page: 1 })}`}>{item.title}</Link>
                         </li>) :
                     [...Array(3)].map((e, i) =>
                         <li key={i} style={{ marginLeft: i == 0 ? 15 : 0 }}>

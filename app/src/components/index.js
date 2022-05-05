@@ -5,13 +5,15 @@ import MenuSide from "./MenuSide";
 import ProductAccordion from "./ProductAccordion";
 import Stars from "./Stars";
 import Paginate from "./Paginate";
-import LoginBox from "./LoginBox";
 import MySkeketon from "./MySkeleton";
 import CategoryBar from "./CategoryBar";
 import Search from "./Search";
 import SliderProduct from "./SliderProduct";
 import ProductInfo from "./ProductInfo";
 import CountControl from "./CountControl";
+import ClosePopUp from "./ClosePopup";
+import Popup from "./Popup";
+import Loading from "./Loading";
 
 export {
     Buttons,
@@ -21,11 +23,13 @@ export {
     ProductAccordion,
     Stars,
     Paginate,
-    LoginBox,
     MySkeketon as Skeleton,
     CategoryBar,
     Search,
     SliderProduct,
     ProductInfo,
-    CountControl
+    CountControl,
+    ClosePopUp,
+    Popup,
+    Loading
 };

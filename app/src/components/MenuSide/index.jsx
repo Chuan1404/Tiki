@@ -2,16 +2,24 @@ import Buttons from 'components/Buttons';
 import Inputs from 'components/Inputs';
 import Stars from 'components/Stars';
 import React, { useState } from 'react';
-import { useLocation, useNavigate, useHistory } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router';
+import { openAddress } from 'store/slices/pageSlice';
 import { queryObject, queryString } from 'utils';
 import './style.scss';
 
 export default function MenuSide() {
     const { pathname } = useLocation()
     const navigater = useNavigate()
+    const dispatch = useDispatch()
     const [minValue, setMinValue] = useState()
     const [maxValue, setMaxValue] = useState()
-    
+    const address = useSelector(store => store.address);
+    const handleClick = (e) => {
+        e.preventDefault();
+        dispatch(openAddress());
+    }
+
 
     const style = {
         display: 'inline-block',
@@ -35,8 +43,12 @@ export default function MenuSide() {
         <div className='menuSide'>
             <div className="menuSide_item">
                 <h3>Địa chỉ nhận hàng</h3>
-                <p>Q.1,P.Bến Nghé,Hồ Chí Minh</p>
-                <a style={{ textTransform: 'uppercase' }} href=''>Đổi địa chỉ</a>
+                <p>{`${address.ward},${address.district},${address.city}`}</p>
+                <a href=''
+                    style={{ textTransform: 'uppercase' }}
+                    onClick={handleClick}>
+                    Đổi địa chỉ
+                </a>
             </div>
             <div className="menuSide_item">
                 <h3>Đánh giá</h3>

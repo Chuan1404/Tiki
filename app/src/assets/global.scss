@@ -10,6 +10,7 @@ body {
     font-family: Roboto, Helvetica, Arial, sans-serif;
     background-color: $grayColor;
     max-width: 100%;
+    scroll-behavior: smooth;
 }
 .container {
     max-width: var(--container-width);
@@ -42,3 +43,4 @@ ul {
     margin-left: 8px;
     color: $redColor;
 }
+

@@ -53,23 +53,46 @@
     }
     .textSection {
         .description {
-            h5, p, img, span, div {
+            font-size: 15px;
+            color: $textColor;
+            line-height: 21px;
+            text-align: justify;
+            img {
+                margin: auto;
                 text-align: center;
-                max-width: 888px;
-                margin: 10px auto;
             }
-            li, p {}
-            h5 {
-                margin-bottom: 20px;
-                font-size: 21px;
+            p {
+                display: flex;
+                flex-direction: column;
             }
+            p,
+            span {
+                margin-top: 5px;
+                margin-bottom: 12px;
+            }
+            h5,
+            strong {
+                font-size: 18px;
+                margin: 20px 0;
+                display: block;
+            }
+        }
+    }
+    .tableSection {
+        font-size: 15px;
+        color: $textColor;
+        line-height: 21px;
+        text-align: justify;
+        strong {
+            display: block;
+            margin-top: 30px;
+            font-size: 18px;
         }
     }
     .topSection {
         width: 100%;
         max-width: 300px;
         height: auto;
-
     }
     section {
         margin-top: 20px;

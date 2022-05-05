@@ -1,9 +1,9 @@
 
-import { Header, LoginBox } from 'components'
-import { Home, NotFound, ProductDetail } from 'pages'
+import { Header, Popup } from 'components'
+import { Checkout, Home, NotFound, ProductDetail } from 'pages'
 import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Provider } from 'react-redux'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import store from 'store'
 export default function App() {
   return (
@@ -14,9 +14,10 @@ export default function App() {
           <Routes>
             <Route index element={<Home />} />
             <Route path='/product/:slug' element={<ProductDetail />} />
+            <Route path='/checkout' element={<Checkout />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
-          <LoginBox />
+          <Popup />
         </BrowserRouter>
       </div>
     </Provider>

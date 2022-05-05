@@ -3,29 +3,36 @@ import { createSlice } from '@reduxjs/toolkit';
 const pageSlice = createSlice({
     name: 'page',
     initialState: {
-        loginPopup: false,
-        searchBox: false
+        popup: {
+            login: false,
+            address: false
+        }
     },
     reducers: {
-        openLoginPopup: (state) => {
-            const token = JSON.parse(localStorage.getItem('token'))
-            if (!!token) return;
-            state.loginPopup = true;
+        openLogin: (state) => {
+            state.popup.login = true;
         },
-        closeLoginPopup: (state) => {
-            state.loginPopup = false;
+        closeLogin: (state) => {
+            state.popup.login = false;
         },
-        openSearchBox: (state) => {
-            state.searchBox = true
+        openSearch: (state) => {
+            state.popup.search = true
         },
-        closeSearchBox: (state) => {
-            state.searchBox = false
-        }
+        closeSearch: (state) => {
+            state.popup.search = false
+        },
+        openAddress: (state) => {
+            state.popup.address = true
+        },
+        closeAddress: (state) => {
+            state.popup.address = false
+        },
     }
 })
 
-export const { openLoginPopup,
-    closeLoginPopup,
-    openSearchBox,
-    closeSearchBox } = pageSlice.actions;
+export const {
+    openLogin,
+    closeLogin,
+    openAddress,
+    closeAddress } = pageSlice.actions;
 export default pageSlice;
