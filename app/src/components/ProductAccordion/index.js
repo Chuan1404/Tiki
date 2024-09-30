@@ -53,10 +53,11 @@ export default function ProductAccordion({ data = [], fetching = false }) {
                             className='product_list-item'>
                             <ProductCard
                                 slug={item.slug}
-                                thumbnail_url={item.images[0].thumbnail_url}
+                                thumbnail_url={item.thumbnailUrl}
                                 name={item.name}
-                                price={new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.real_price)}
-                                discount={'-' + item.discount_rate + '%'}
+                                // price={new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.real_price)}
+                                price={new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}
+                                // discount={'-' + item.discount_rate + '%'}
                                 stars={item.rating_average} />
                         </li>
                     ))

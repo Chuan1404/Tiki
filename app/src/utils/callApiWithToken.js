@@ -1,4 +1,4 @@
-import { authService } from "Services";
+import { authService } from "services";
 
 const callApiWithToken = async (url, options = {}) => {
     const token = JSON.parse(localStorage.getItem('token'));

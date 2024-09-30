@@ -2,7 +2,7 @@ import { API } from "constants";
 
 const authService = {
     login(form) {
-        return fetch(`${API}/login`, {
+        return fetch(`${API}/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -13,7 +13,7 @@ const authService = {
 
     refreshToken() {
         const token = JSON.parse(localStorage.getItem('token'))
-        return fetch(`${API}/refresh-token`, {
+        return fetch(`${API}/auth/refresh-token`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

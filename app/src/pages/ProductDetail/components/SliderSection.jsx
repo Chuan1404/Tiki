@@ -2,7 +2,7 @@ import ProductCard from 'components/ProductCard'
 import { useQuery } from 'hooks'
 import React, { useState } from 'react'
 import { GrFormNext, GrFormPrevious } from 'react-icons/gr'
-import { productService } from 'Services'
+import { productService } from 'services'
 
 export default function SliderSection({ title, categories }) {
     const [translate, setTranslate] = useState(0);

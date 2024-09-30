@@ -1,5 +1,5 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import { authService, cartService, orderService, userService } from 'Services';
+import { authService, cartService, orderService, userService } from 'services';
 import { update } from 'store/slices/addressSlice';
 import { login, setProfile } from 'store/slices/authSlice';
 import { setCart } from 'store/slices/cartSlice';
@@ -8,13 +8,18 @@ import { closeAddress } from 'store/slices/pageSlice';
 
 function* fetchLogin(action) {
     try {
-        const data = yield call(authService.login, action.payload)
-        yield put(login(data));
-        yield put({
-            type: 'GET_PROFILE'
-        })
+        const res = yield call(authService.login, action.payload)
+        if(!res.error) {
+            yield put(login(res));
+            yield put({
+                type: 'GET_PROFILE'
+            })
+        }
+        else {
+            alert(res.error)
+        }
     } catch (err) {
-        alert(err)
+        console.log(err)
     }
 }
 function* getCart() {
@@ -22,7 +27,7 @@ function* getCart() {
         const carts = yield call(cartService.getCart);
         yield put(setCart(carts.data))
     } catch (err) {
-        alert(err)
+        console.log(err)
     }
 }
 function* getProfile() {
@@ -34,7 +39,7 @@ function* getProfile() {
             yield put({ type: 'GET_CART' })
         }
     } catch (err) {
-        alert(err)
+        console.log(err)
     }
 }
 function* getOrder() {
@@ -44,7 +49,7 @@ function* getOrder() {
             yield put(setOrder(res))
         }
     } catch (err) {
-        alert(err)
+        console.log(err)
     }
 }
 
@@ -53,7 +58,7 @@ function* updateArress(action) {
         yield put(update(action.payload))
         yield put(closeAddress())
     } catch (err) {
-        alert(err)
+        console.log(err)
     }
 }
 function* updateCart(action) {
@@ -76,10 +81,10 @@ function* postOrder(action) {
         if (res.data) {
             yield put({ type: 'GET_ORDER' })
         } else if(res.err) {
-            alert(res.err)
+            console.log(res.err)
         }
     } catch (err) {
-        alert(err)
+        console.log(err)
     }
 }
 
@@ -92,7 +97,7 @@ function* removeCart(action) {
             })
         }
     } catch (err) {
-        alert(err)
+        console.log(err)
     }
 }
 function* removeCarts(action) {
@@ -106,7 +111,7 @@ function* removeCarts(action) {
             })
         }
     } catch (err) {
-        alert(err)
+        console.log(err)
     }
 }
 

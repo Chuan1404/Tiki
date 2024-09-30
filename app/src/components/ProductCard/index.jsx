@@ -31,9 +31,9 @@ export default function ProductCard({ thumbnail_url, name, price, discount, star
       </div>
       <div className='price'>
         <p>{price}</p>
-        <div className='discount_box'>
+        {/* <div className='discount_box'>
           {discount}
-        </div>
+        </div> */}
       </div>
     </div>
   )

@@ -18,7 +18,7 @@ export default function CategoryBar({ list = [] }) {
                     {
                         list ?
                             list.map((e, i) =>
-                                <Link key={i} to={`${pathname}?${queryString({ ...defaultSearch, categories: e.id })}`}>{e.title}</Link>) :
+                                <Link key={i} to={`${pathname}?${queryString({ ...defaultSearch, categoryId: e._id })}`}>{e.name}</Link>) :
                             [...Array(5)].map(e => <Skeleton width={140} height={50} />)
                     }
                 </div>

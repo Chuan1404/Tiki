@@ -2,7 +2,7 @@ import { Loading } from 'components'
 import { useQuery } from 'hooks'
 import React from 'react'
 import { useParams } from 'react-router'
-import { productService } from 'Services'
+import { productService } from 'services'
 import { ProductSection, SliderSection, TableSection, TextSection } from './components'
 import TopSection from './components/TopSection'
 import './style.scss'
@@ -10,11 +10,11 @@ import './style.scss'
 export default function ProductDetail() {
   const { slug } = useParams()
 
-
   const {
     data: product,
     fetching: productFetching } = useQuery(() => productService.getProduct(`?slug=${slug}`), [slug])
   if (productFetching) return <Loading />
+
   return (
     <div className='productDetail'>
       <ProductSection

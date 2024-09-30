@@ -49,9 +49,6 @@ export default function Checkout() {
     })
   }
   const handleSendOrder = () => {
-    console.log([...checkList.map(id => {
-      return { id }
-    })])
     dispatch({
       type: 'POST_ORDER',
       payload: {

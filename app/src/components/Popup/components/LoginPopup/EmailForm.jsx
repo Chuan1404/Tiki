@@ -8,7 +8,7 @@ import { closeLogin } from 'store/slices/pageSlice';
 export default function EmailForm({ setActive }) {
     const dispatch = useDispatch();
     const { form, register } = useForm({
-        username: '',
+        email: '',
         password: ''
     })
     const submit = () => {
@@ -31,7 +31,7 @@ export default function EmailForm({ setActive }) {
                 <Inputs
                     type='email'
                     placeholder='acb@email.com'
-                    {...register('username')} />
+                    {...register('email')} />
                 <Inputs
                     type='password'
                     placeholder='Mật khẩu'

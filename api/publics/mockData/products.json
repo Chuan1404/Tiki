@@ -1,0 +1,26 @@
+[
+  {
+    "categoryId": 1,
+    "name": "Hanoi Trace Of The Old Days",
+    "slug": "hanoi-trace-of-the-old-days-1",
+    "brandName": null,
+    "price": 395000,
+    "thumbnailUrl": "https://salt.tikicdn.com/cache/750x750/ts/product/cd/f8/62/42d9d32a1b04cee41865d1795b1c8060.jpg.webp",
+    "ratingAverage": 3.5,
+    "reviewCount": 100,
+    "createdAt": "2024-09-27T09:41:59.297+00:00",
+    "updatedAt": "2024-09-27T09:41:59.297+00:00"
+  },
+  {
+    "categoryId": 2,
+    "name": "Ma Trận Cuộc Đời Keanu Ree",
+    "slug": "ma-tran-cuoc-doi-keanu-ree-1",
+    "brandName": null,
+    "price": 107500,
+    "thumbnailUrl": "https://salt.tikicdn.com/cache/750x750/ts/product/3e/d3/7e/bc614d9bcb9d786f67b17a48528c3a05.jpg.webp",
+    "ratingAverage": 3.5,
+    "reviewCount": 100,
+    "createdAt": "2024-09-27T09:41:59.297+00:00",
+    "updatedAt": "2024-09-27T09:41:59.297+00:00"
+  }
+]

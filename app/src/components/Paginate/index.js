@@ -6,7 +6,7 @@ import { queryObject, queryString } from 'utils'
 import './style.scss'
 
 
-export default function Paginate({ totalPage }) {
+export default function Paginate({ totalPage = 1 }) {
     const { pathname } = useLocation();
     const query = queryObject({ page: '1' });
     const renderList = () => {

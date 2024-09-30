@@ -1,6 +1,6 @@
 import { useQuery } from 'hooks'
 import React from 'react'
-import { productService } from 'Services'
+import { productService } from 'services'
 
 export default function TopSection({ categories }) {
 
