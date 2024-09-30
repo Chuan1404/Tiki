@@ -7,7 +7,6 @@ import { productService } from 'services'
 export default function SliderSection({ title, categories }) {
     const [translate, setTranslate] = useState(0);
 
-
     const {
         data,
         fetching

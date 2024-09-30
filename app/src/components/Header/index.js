@@ -22,7 +22,7 @@ export default function Header() {
         if (!token) openPopup()
         else navigate('/checkout')
     }
-    if (user.isLogin && isNaN(cart.listItems?.length)) return <Loading />
+    if (user.isLogin && isNaN(cart?.length)) return <Loading />
     return (
         <header className={`header ${isFocus && 'active'}`}>
             <div className="container header-container">
@@ -40,7 +40,7 @@ export default function Header() {
                     <div className="users_item" onClick={openCart}>
                         <img src="/imgs/cart.png" alt="" />
                         <span>Giỏ Hàng</span>
-                        {cart.listItems && <div className='quality'>{cart.listItems.length}</div>}
+                        {cart && <div className='quality'>{cart.length}</div>}
                     </div>
                 </div>
             </div >

@@ -17,7 +17,7 @@ export default function Checkout() {
 
   useEffect(() => {
     if (checkList.length != 0) {
-      const list = cart.listItems.map(item => item.product._id)
+      const list = cart.map(item => item.product._id)
       const newCheckList = checkList.filter(item => list.includes(item));
       setCheckList(newCheckList)
     }
@@ -26,7 +26,7 @@ export default function Checkout() {
   useEffect(() => {
     if (checkList.length != 0) {
       let newSum = 0;
-      cart.listItems.forEach(item => {
+      cart.forEach(item => {
         if (checkList.includes(item.product._id)) newSum += item.quantity * item.product.real_price
       })
       setSum(newSum)
@@ -35,7 +35,7 @@ export default function Checkout() {
   const initState = cart.length == 0
 
   const handleChange = e => {
-    if (e.target.checked) setCheckList(() => cart.listItems.map(item => item.product._id))
+    if (e.target.checked) setCheckList(() => cart.map(item => item.product._id))
     else setCheckList([])
   }
   const handleCheckAllItem = id => e => {
@@ -67,7 +67,7 @@ export default function Checkout() {
       }
     })
   }
-  if (initState) return <Loading />
+  // if (initState) return <Loading />
   return (
     <div className='checkout'>
       <div className="container">
@@ -75,7 +75,7 @@ export default function Checkout() {
           <h1>Giỏ hàng</h1>
         </div>
         <div className="checkout_list">
-          {cart.listItems?.length == 0 ?
+          {cart.length == 0 ?
             <div className='no-list'>
               <img src="/imgs/shopping.png" alt="" />
               <span>Không có sản phẩm nào trong giỏ hàng của bạn.</span>
@@ -95,7 +95,7 @@ export default function Checkout() {
                   <div className='col_5' onClick={handleDeleteCheckItem}><img src='/imgs/trash.svg' /></div>
                 </div>
                 <div className='list_items'>
-                  {cart.listItems.map(item => {
+                  {cart.map(item => {
                     return <Item
                       key={item.product.id}
                       id={item.product._id}
@@ -112,7 +112,7 @@ export default function Checkout() {
               <div className="bill">
                 <div className="bill_info">
                   <span>Giao tới</span>
-                  <p>{user.data.name} | {user.data.phone}</p>
+                  <p>{user.data?.name} | {user.data?.phone}</p>
                   <span>{ward}, {district}, {city}</span>
                 </div>
                 <div className="bill_sum">

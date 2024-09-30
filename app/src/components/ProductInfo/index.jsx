@@ -31,6 +31,7 @@ export default function ProductInfo({ product = {} }) {
     options.forEach(item => item.classList.remove('active'))
     e.target.classList.add('active')
   }
+  
   const changeAddress = e => {
     e.preventDefault();
     dispatch(openAddress())
@@ -39,7 +40,7 @@ export default function ProductInfo({ product = {} }) {
     <div className='productInfo'>
       <div className="productInfo_header">
         <span className='branch'>
-          Thương hiệu: {product.brand_name == undefined ? product.brand_name : 'No branch'}
+          Thương hiệu: {product.brand_name ? product.brand_name : 'No branch'}
         </span>
         <h1 className='name'>
           {product.name}
@@ -47,14 +48,14 @@ export default function ProductInfo({ product = {} }) {
         <div className='star'>
           <Stars number={product.rating_average} />
           <span style={{ color: 'rgb(120, 120, 120)' }}>
-            ({product.review_count} lượt đánh giá)
+            ({product.review_count || 0} lượt đánh giá)
           </span>
         </div>
       </div>
       <div className="productInfo_price">
-        <span className='price'>{format(product.real_price)}</span>
+        <span className='price'>{format(product.price)}</span>
         <span className='real_price'>{format(product.price)}</span>
-        <div className='discount_box'>-{product.discount_rate}%</div>
+        <div className='discount_box'>-{product.discount_rate || 0}%</div>
       </div>
       <div className='productInfo_options'>
         <div className="option address">

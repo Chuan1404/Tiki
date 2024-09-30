@@ -20,9 +20,11 @@ export default function ProductDetail() {
       <ProductSection
         data={product.data}
         fetching={productFetching} />
+        
       {product.data?.[0].categories && <SliderSection
         title={'sản phẩm tương tự'}
         categories={product.data?.[0].categories} />}
+
       <div className="productDetail_info">
         <div className="container">
           <div>

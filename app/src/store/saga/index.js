@@ -61,6 +61,7 @@ function* updateArress(action) {
         console.log(err)
     }
 }
+
 function* updateCart(action) {
     try {
         const update = yield call(cartService.updateCart, action.payload.id, action.payload.quantity)
