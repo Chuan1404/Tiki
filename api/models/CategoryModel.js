@@ -7,7 +7,7 @@ const categorySchema = new Schema({
     _id: Number,
     name: {
         type: String,
-        require: true,
+        required: true,
     },
     description: {
         type: String,

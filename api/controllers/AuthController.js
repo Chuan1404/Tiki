@@ -108,6 +108,7 @@ class AuthController {
   async refreshToken(req, res) {
     const token = req.body.refreshToken;
     let tokenModel = await RefreshTokenModel.findOne({ token });
+
     if (!tokenModel) {
       return res.status(401).json({
         error: "UnAuthorized",

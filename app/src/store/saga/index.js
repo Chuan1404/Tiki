@@ -65,7 +65,7 @@ function* updateArress(action) {
 function* updateCart(action) {
     try {
         const update = yield call(cartService.updateCart, action.payload.id, action.payload.quantity)
-        if (update.updateCount) {
+        if (update.data) {
             yield put({
                 type: 'GET_CART'
             })
@@ -78,7 +78,6 @@ function* updateCart(action) {
 function* postOrder(action) {
     try {
         const res = yield call(orderService.order, action.payload);
-        console.log(res)
         if (res.data) {
             yield put({ type: 'GET_ORDER' })
         } else if(res.err) {
@@ -92,7 +91,7 @@ function* postOrder(action) {
 function* removeCart(action) {
     try {
         const res = yield call(cartService.removeCart, action.payload)
-        if (res.updateCount) {
+        if (res.data) {
             yield put({
                 type: 'GET_CART'
             })

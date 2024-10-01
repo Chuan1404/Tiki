@@ -5,7 +5,7 @@ class CartController {
   async getAll(req, res) {
     const userId = req.userId;
 
-    const carts = await cartModel.find({ userId });
+    const carts = await cartModel.find({ userId }).populate("productObject");
     return res.status(200).json({
       data: carts,
     });
@@ -14,18 +14,19 @@ class CartController {
   // [PUT] /cart/update/:id
   async update(req, res) {
     const userId = req.userId;
-    const productId = req.body.id;
+    const productId = req.params.id;
     const quantity = req.body.quantity;
 
     try {
       let cart = await cartModel.findOne({ userId, productId });
-
-      let response = {};
+      let response = {}
       if (cart) {
-        response = cartModel.updateOne({ userId, productId }, { quantity });
+        response = await cartModel.updateOne({ userId, productId }, { quantity });
       } else {
-        response = cartModel.create({ userId, productId, quantity });
+        response = await cartModel.create({ userId, productId, quantity });
       }
+
+      let updateCount = await cartModel.countDocuments({ userId, productId });
       return res.json({
         data: response,
       });
@@ -39,7 +40,7 @@ class CartController {
   // [DELETE] /cart/delete/:id
   async delete(req, res) {
     const userId = req.userId;
-    const productId = req.body.id;
+    const productId = req.params.id;
 
     try {
       let response = await cartModel.deleteOne({ userId, productId });

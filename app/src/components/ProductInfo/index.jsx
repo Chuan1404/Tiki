@@ -9,7 +9,7 @@ import './style.scss';
 export default function ProductInfo({ product = {} }) {
   const dispatch = useDispatch()
   const [quantity, setQuantity] = useState(1);
-
+  const { user, isLogin } = useSelector(store => store.auth);
   const { city, district, ward } = useSelector(store => store.address)
 
   const format = (number) => {
@@ -17,13 +17,19 @@ export default function ProductInfo({ product = {} }) {
   }
   const handleBuy = () => {
     window.scrollTo(0,0);
-    dispatch({
-      type: 'UPDATE_CART',
-      payload: {
-        id: product._id,
-        quantity
-      }
-    })
+    if(isLogin) {
+      dispatch({
+        type: 'UPDATE_CART',
+        payload: {
+          id: product._id,
+          quantity
+        }
+      })
+    }
+    else {
+      alert("Bạn cần đăng nhập trước")
+    }
+    
   }
 
   const handleClick = index => e => {
