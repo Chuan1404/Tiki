@@ -1,15 +1,24 @@
 const productModel = require("../models/ProductModel");
-const { requestToQuey } = require("../utils/requestUtils");
+const { requestToProductQuery } = require("../utils/requestUtils");
+const { paginate } = require("../utils/pagination");
 
 class ProductController {
   // [GET] /product
   async getAll(req, res) {
-    const query = requestToQuey(req);
-
-    const products = await productModel.find(query);
-    return res.status(200).json({
-      data: products,
-    });
+    try {
+      const query = requestToProductQuery(req);
+      const options = {
+        limit: req.query.limit,
+        page: req.query.page,
+      }
+      const response = await paginate(productModel, query, options);
+      
+      res.status(200).json(response);
+    } catch (error) {
+      res.status(500).json({
+        error,
+      });
+    }
   }
 
   // [POST] /product/add
@@ -22,11 +31,11 @@ class ProductController {
 
     try {
       let response = await productModel.create(req.body);
-      return res.json({
+      res.json({
         data: response,
       });
     } catch (err) {
-      return res.json({
+      res.json({
         error: err,
       });
     }
@@ -42,11 +51,11 @@ class ProductController {
 
     try {
       let response = await productModel.updateOne({ _id: productId }, body);
-      return res.json({
+      res.json({
         data: response,
       });
     } catch (err) {
-      return res.json({
+      res.json({
         error: err,
       });
     }
@@ -58,11 +67,11 @@ class ProductController {
 
     try {
       let response = await productModel.deleteOne({ _id: productId });
-      return res.json({
+      res.json({
         data: response,
       });
     } catch (err) {
-      return res.json({
+      res.json({
         error: err,
       });
     }

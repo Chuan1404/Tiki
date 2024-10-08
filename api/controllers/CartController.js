@@ -6,6 +6,8 @@ class CartController {
     const userId = req.userId;
 
     const carts = await cartModel.find({ userId }).populate("productObject");
+
+    
     return res.status(200).json({
       data: carts,
     });

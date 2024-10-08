@@ -1,25 +1,36 @@
 const categoryModel = require("../models/CategoryModel");
+const { paginate } = require("../utils/pagination");
 
 class CategoryController {
   // [GET] /category
   async getAll(req, res) {
-    let categories = await categoryModel.find({});
+    try {
+      const query = {}
+      const options = {
+        limit: req.query.limit,
+        page: req.query.page,
+      }
 
-    return res.status(200).json({
-      data: categories,
-    });
+      const response = await paginate(categoryModel, query, options);
+      
+      res.status(200).json(response);
+    } catch (error) {
+      res.status(500).json({
+        error,
+      });
+    }
   }
 
   // [POST] /category/add
   async add(req, res) {
     try {
       let response = await categoryModel.create(req.body);
-      return res.json({
+      res.json({
         data: response,
       });
-    } catch (err) {
-      return res.json({
-        error: err,
+    } catch (error) {
+      res.json({
+        error,
       });
     }
   }
@@ -30,12 +41,12 @@ class CategoryController {
     const categoryId = req.params.id;
     try {
       let response = await categoryModel.updateOne({ _id: categoryId }, body);
-      return res.json({
+      res.json({
         data: response,
       });
-    } catch (err) {
-      return res.json({
-        error: err,
+    } catch (error) {
+      res.json({
+        error,
       });
     }
   }
@@ -46,12 +57,12 @@ class CategoryController {
 
     try {
       let response = await categoryModel.deleteOne({ _id: categoryId });
-      return res.json({
+      res.json({
         data: response,
       });
-    } catch (err) {
-      return res.json({
-        error: err,
+    } catch (error) {
+      res.json({
+        error,
       });
     }
   }
