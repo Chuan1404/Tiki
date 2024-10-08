@@ -4,11 +4,22 @@ class CartController {
   // [GET] /cart
   async getAll(req, res) {
     const userId = req.userId;
+    const limit = req.query.limit || 10;
+    const page = req.query.page | 1;
 
-    const carts = await cartModel.find({ userId }).populate("productObject");
+    const carts = await cartModel
+      .find({ userId })
+      .populate("productObject")
+      .limit(limit)
+      .skip(limit * (page - 1));
 
-    
-    return res.status(200).json({
+    const count = await cartModel.countDocuments({ userId });
+    const totalPage = Math.ceil(count / limit);
+
+    res.status(200).json({
+      totalPage,
+      limit,
+      page,
       data: carts,
     });
   }
@@ -21,19 +32,21 @@ class CartController {
 
     try {
       let cart = await cartModel.findOne({ userId, productId });
-      let response = {}
+      let response = {};
       if (cart) {
-        response = await cartModel.updateOne({ userId, productId }, { quantity });
+        response = await cartModel.updateOne(
+          { userId, productId },
+          { quantity }
+        );
       } else {
         response = await cartModel.create({ userId, productId, quantity });
       }
 
-      let updateCount = await cartModel.countDocuments({ userId, productId });
-      return res.json({
+      res.json({
         data: response,
       });
     } catch (err) {
-      return res.json({
+      res.json({
         error: err,
       });
     }
@@ -46,11 +59,11 @@ class CartController {
 
     try {
       let response = await cartModel.deleteOne({ userId, productId });
-      return res.json({
+      res.json({
         data: response,
       });
     } catch (err) {
-      return res.json({
+      res.json({
         error: err,
       });
     }

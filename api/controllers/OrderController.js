@@ -1,26 +1,36 @@
 const orderModel = require("../models/OrderModel");
-const { requestToQuey } = require("../utils/requestUtils");
+const { paginate } = require("../utils/pagination");
 
 class OrderController {
   // [GET] /order
   async getAll(req, res) {
-    let userId = req.userId;
+    try {
+      let userId = req.userId;
+      const query = { userId };
+      const options = {
+        limit: req.query.limit,
+        page: req.query.page,
+      };
 
-    const orders = await orderModel.find({ userId });
-    return res.status(200).json({
-      data: orders,
-    });
+      const response = await paginate(orderModel, query, options);
+
+      res.status(200).json(response);
+    } catch (error) {
+      res.status(500).json({
+        error,
+      });
+    }
   }
 
   // [POST] /order/add
   async add(req, res) {
     try {
       let response = await orderModel.create(req.body);
-      return res.json({
+      res.json({
         data: response,
       });
     } catch (err) {
-      return res.json({
+      res.json({
         error: err,
       });
     }

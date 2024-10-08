@@ -1,21 +1,41 @@
-const UserModel = require("../models/UserModel");
+const userModel = require("../models/UserModel");
 
 class UserController {
- // [GET] /user/get-info
- async getInfo(req, res) {
+  // [GET] /user
+  async getAll(req, res) {
+    const limit = req.query.limit || 10;
+    const page = req.query.page | 1;
+
+    const users = await userModel
+      .find()
+      .limit(limit)
+      .skip(limit * (page - 1));
+
+    const count = await userModel.countDocuments();
+    const totalPage = Math.ceil(count / limit);
+
+    res.status(200).json({
+      totalPage,
+      limit,
+      page,
+      data: users,
+    });
+  }
+
+  // [GET] /user/get-info
+  async getInfo(req, res) {
     const id = req.userId;
-    const user = await UserModel.findOne({ _id: id });
+    const user = await userModel.findOne({ _id: id });
     if (!user) {
-      return res.status(400).json({
+      res.status(400).json({
         error: "User doesn't exist",
       });
     } else {
-      return res.status(200).json({
+      res.status(200).json({
         data: user,
       });
     }
   }
-
 }
 
 module.exports = new UserController();

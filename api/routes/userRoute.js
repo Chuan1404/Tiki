@@ -5,6 +5,7 @@ const authToken = require("../utils/authToken")
 
 router.use(authToken)
 router.get("/get-info", userController.getInfo)
+router.get("/", userController.getAll)
 
 module.exports = router
 

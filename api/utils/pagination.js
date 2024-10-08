@@ -10,7 +10,6 @@ async function paginate(model, query = {}, options = { limit: 10, page: 1 }) {
   const totalPage = Math.ceil(count / limit);
   return {
     totalPage,
-    count,
     limit,
     page,
     data,
