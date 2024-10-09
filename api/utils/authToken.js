@@ -20,6 +20,7 @@ function authToken(req, res, next) {
       return 
     }
     req.userId = data.id;
+    req.userRole = data.role;
     next();
   });
 }

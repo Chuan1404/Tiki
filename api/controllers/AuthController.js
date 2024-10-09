@@ -11,7 +11,7 @@ class AuthController {
     const existedUser = await UserModel.findOne({ email: body.email });
 
     if (existedUser) {
-      return res.status(409).json({
+      res.status(409).json({
         error: "Account existed",
       });
     } else {
@@ -21,15 +21,17 @@ class AuthController {
 
       let savedUser = await model.save();
       if (!savedUser) {
-        return res.status(400).json({
+        res.status(400).json({
           status: 400,
           error: "Create user fail!",
         });
+        return;
       }
 
       const payload = {
         id: savedUser._id,
         email: savedUser.email,
+        role: savedUser.role,
       };
 
       const accessTokenLife = process.env.ACCESS_TOKEN_LIFE;
@@ -48,7 +50,7 @@ class AuthController {
         token: refreshToken,
       });
 
-      return res.status(200).json({
+      res.status(200).json({
         data: {
           accessToken,
           refreshToken,
@@ -69,13 +71,14 @@ class AuthController {
       const isValidPassword = bcrypt.compareSync(body.password, user.password);
 
       if (!isValidPassword) {
-        return res.status(400).json({
+        res.status(400).json({
           error: "Email or password incorrect !",
         });
       } else {
         const payload = {
           id: user._id,
           email: user.email,
+          role: user.role,
         };
 
         const accessTokenLife = process.env.ACCESS_TOKEN_LIFE;
@@ -119,17 +122,18 @@ class AuthController {
       tokenModel.token,
       process.env.REFRESH_TOKEN_SECRET,
       async (err, data) => {
-        console.log(err);
         if (err) {
           await RefreshTokenModel.deleteOne({ token });
 
-          return res.status(401).json({
+          res.status(401).json({
             error: "UnAuthorized",
           });
+          return;
         }
         const payload = {
           id: data.id,
           email: data.email,
+          role: data.role
         };
 
         const accessTokenLife = process.env.ACCESS_TOKEN_LIFE;
