@@ -62,9 +62,9 @@ class AuthController {
   // [POST] /auth/login
   async login(req, res) {
     const body = req.body;
-    const user = await UserModel.findOne({ email: body.email });
+    const user = await UserModel.findOne({ email: body.email, role: body.role });
     if (!user) {
-      return res.status(400).json({
+      res.status(400).json({
         error: "Email or password incorrect !",
       });
     } else {
@@ -97,7 +97,7 @@ class AuthController {
           token: refreshToken,
         });
 
-        return res.status(200).json({
+        res.status(200).json({
           data: {
             accessToken,
             refreshToken,
@@ -113,9 +113,10 @@ class AuthController {
     let tokenModel = await RefreshTokenModel.findOne({ token });
 
     if (!tokenModel) {
-      return res.status(401).json({
+      res.status(401).json({
         error: "UnAuthorized",
       });
+      return
     }
 
     jwt.verify(
@@ -133,7 +134,7 @@ class AuthController {
         const payload = {
           id: data.id,
           email: data.email,
-          role: data.role
+          role: data.role,
         };
 
         const accessTokenLife = process.env.ACCESS_TOKEN_LIFE;
@@ -143,7 +144,7 @@ class AuthController {
           expiresIn: accessTokenLife,
         });
 
-        return res.status(200).json({
+        res.status(200).json({
           data: {
             accessToken,
             refreshToken: token,
