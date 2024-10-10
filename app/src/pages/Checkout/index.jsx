@@ -1,4 +1,4 @@
-import { Buttons, Inputs, Loading } from "components";
+import { Buttons, Header, Inputs, Loading } from "components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -67,97 +67,100 @@ export default function Checkout() {
   };
   // if (initState) return <Loading />
   return (
-    <div className="checkout">
-      <div className="container">
-        <div className="checkout_header">
-          <h1>Giỏ hàng</h1>
-        </div>
-        <div className="checkout_list">
-          {cart.length == 0 ? (
-            <div className="no-list">
-              <img src="/imgs/shopping.png" alt="" />
-              <span>Không có sản phẩm nào trong giỏ hàng của bạn.</span>
-              <Buttons
-                onClick={() => navigator("/")}
-                size="middle"
-                bgcolor="yellow"
-                radius
-              >
-                Tiếp tục mua sắm
-              </Buttons>
-            </div>
-          ) : (
-            <div className="checkout_list-section">
-              <div className="list">
-                <div className="list_control">
-                  <div className="col_1">
-                    <Inputs type="checkbox" onChange={handleChange}>
-                      Tất cả
-                    </Inputs>
+    <>
+      <Header />
+      <div className="checkout">
+        <div className="container">
+          <div className="checkout_header">
+            <h1>Giỏ hàng</h1>
+          </div>
+          <div className="checkout_list">
+            {cart.length == 0 ? (
+              <div className="no-list">
+                <img src="/imgs/shopping.png" alt="" />
+                <span>Không có sản phẩm nào trong giỏ hàng của bạn.</span>
+                <Buttons
+                  onClick={() => navigator("/")}
+                  size="middle"
+                  bgcolor="yellow"
+                  radius
+                >
+                  Tiếp tục mua sắm
+                </Buttons>
+              </div>
+            ) : (
+              <div className="checkout_list-section">
+                <div className="list">
+                  <div className="list_control">
+                    <div className="col_1">
+                      <Inputs type="checkbox" onChange={handleChange}>
+                        Tất cả
+                      </Inputs>
+                    </div>
+                    <div className="col_2">
+                      <span>Đơn giá</span>
+                    </div>
+                    <div className="col_3">
+                      <span>Số Lượng</span>
+                    </div>
+                    <div className="col_4">
+                      <span>Thành tiền</span>
+                    </div>
+                    <div className="col_5" onClick={handleDeleteCheckItem}>
+                      <img src="/imgs/trash.svg" />
+                    </div>
                   </div>
-                  <div className="col_2">
-                    <span>Đơn giá</span>
-                  </div>
-                  <div className="col_3">
-                    <span>Số Lượng</span>
-                  </div>
-                  <div className="col_4">
-                    <span>Thành tiền</span>
-                  </div>
-                  <div className="col_5" onClick={handleDeleteCheckItem}>
-                    <img src="/imgs/trash.svg" />
+                  <div className="list_items">
+                    {cart.map((item) => {
+                      return (
+                        <Item
+                          key={item.productId}
+                          id={item.productId}
+                          name={item.productObject.name}
+                          realPrice={item.productObject.price}
+                          price={
+                            item.productObject.discount != 0 &&
+                            item.productObject.price
+                          }
+                          quantity={item.quantity}
+                          img={item.productObject.thumbnailUrl}
+                          isCheck={checkList.includes(item.productId)}
+                          onChange={handleCheckAllItem}
+                        />
+                      );
+                    })}
                   </div>
                 </div>
-                <div className="list_items">
-                  {cart.map((item) => {
-                    return (
-                      <Item
-                        key={item.productId}
-                        id={item.productId}
-                        name={item.productObject.name}
-                        realPrice={item.productObject.price}
-                        price={
-                          item.productObject.discount != 0 &&
-                          item.productObject.price
-                        }
-                        quantity={item.quantity}
-                        img={item.productObject.thumbnailUrl}
-                        isCheck={checkList.includes(item.productId)}
-                        onChange={handleCheckAllItem}
-                      />
-                    );
-                  })}
+                <div className="bill">
+                  <div className="bill_info">
+                    <span>Giao tới</span>
+                    <p>
+                      {user.data?.name} | {user.data?.phone}
+                    </p>
+                    <span>
+                      {ward}, {district}, {city}
+                    </span>
+                  </div>
+                  <div className="bill_sum">
+                    <p>Tổng tiền</p>
+                    <span className="sum">
+                      {new Intl.NumberFormat("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      }).format(sum)}
+                    </span>
+                  </div>
+                  <div className="bill_btn" onClick={handleSendOrder}>
+                    <Buttons bgcolor="red" size="large" radius>
+                      Mua Hàng
+                    </Buttons>
+                  </div>
                 </div>
               </div>
-              <div className="bill">
-                <div className="bill_info">
-                  <span>Giao tới</span>
-                  <p>
-                    {user.data?.name} | {user.data?.phone}
-                  </p>
-                  <span>
-                    {ward}, {district}, {city}
-                  </span>
-                </div>
-                <div className="bill_sum">
-                  <p>Tổng tiền</p>
-                  <span className="sum">
-                    {new Intl.NumberFormat("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    }).format(sum)}
-                  </span>
-                </div>
-                <div className="bill_btn" onClick={handleSendOrder}>
-                  <Buttons bgcolor="red" size="large" radius>
-                    Mua Hàng
-                  </Buttons>
-                </div>
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -1,5 +1,6 @@
 import {
   CategoryBar,
+  Header,
   MenuSide,
   Paginate,
   ProductAccordion,
@@ -42,40 +43,46 @@ export default function Home() {
   if (!search) return <Navigate to={`/?${queryString(searchObj)}`} />;
 
   return (
-    <div id="home">
-      <CategoryBar list={categories} />
-      <div className="container home-container">
-        <div className="homeSide">
-          <MenuSide />
-        </div>
-        <div className="homeSection">
-          {!productFetching ? (
-            query.categories ? (
-              categories.map(
-                (item, index) =>
-                  item._id == query.categoryId && (
-                    <p key={index} className="title">
-                      {item.title}
-                    </p>
-                  )
+    <>
+      <Header />
+      <div id="home">
+        <CategoryBar list={categories} />
+        <div className="container home-container">
+          <div className="homeSide">
+            <MenuSide />
+          </div>
+          <div className="homeSection">
+            {!productFetching ? (
+              query.categories ? (
+                categories.map(
+                  (item, index) =>
+                    item._id == query.categoryId && (
+                      <p key={index} className="title">
+                        {item.title}
+                      </p>
+                    )
+                )
+              ) : (
+                query.name && (
+                  <p className="title">Kết quả tìm kiếm cho `{query.name}`</p>
+                )
               )
             ) : (
-              query.name && (
-                <p className="title">Kết quả tìm kiếm cho `{query.name}`</p>
-              )
-            )
-          ) : (
-            <Skeleton className="title" width={200} height={30} />
-          )}
+              <Skeleton className="title" width={200} height={30} />
+            )}
 
-          <div className="homeProduct">
-            <ProductAccordion data={products.data} fetching={productFetching} />
-          </div>
-          <div className="homePaginate">
-            <Paginate totalPage={products.paginate?.totalPage} />
+            <div className="homeProduct">
+              <ProductAccordion
+                data={products.data}
+                fetching={productFetching}
+              />
+            </div>
+            <div className="homePaginate">
+              <Paginate totalPage={products.paginate?.totalPage} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
