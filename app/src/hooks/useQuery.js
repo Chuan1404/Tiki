@@ -15,6 +15,7 @@ const useQuery = (promise, dependencyList = []) => {
 
     return {
         data,
+        setData,
         fetching
     }
 }

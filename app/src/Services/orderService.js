@@ -8,9 +8,9 @@ const orderService = {
             body: JSON.stringify(orderObj)
         })
     },
-    getAllOrder() {
-        return callApiWithToken(`${API}/order`);
-    }
+    getOrder(queryString) {
+        return callApiWithToken(`${API}/order/?${queryString}`);
+    },
 }
 
 export default orderService
