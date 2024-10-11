@@ -6,13 +6,13 @@ class OrderController {
   async getAll(req, res) {
     try {
       let userId = req.userId;
-      const query = { userId };
       const options = {
         limit: req.query.limit,
         page: req.query.page,
       };
+      options.query = { userId }
 
-      const response = await paginate(orderModel, query, options);
+      const response = await paginate(orderModel, options);
 
       res.status(200).json(response);
     } catch (error) {

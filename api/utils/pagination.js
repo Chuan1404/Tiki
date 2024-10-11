@@ -1,11 +1,21 @@
-async function paginate(model, query = {}, options = { limit: 10, page: 1 }) {
+async function paginate(model, options = { limit: 10, page: 1 }) {
   const page = parseInt(options.page) || 1;
   const limit = parseInt(options.limit) || 10;
+  let query = {}
+  let populates = []
 
-  const data = await model
-    .find(query)
-    .limit(limit)
-    .skip(limit * (page - 1));
+  if(options.query) {
+    query = options.query
+  }
+
+  const modelQuery = model.find(query).lean();
+
+  if(options.populateFields?.length > 0) {
+    populates = options.populateFields.map(field => ({path: field}))
+    modelQuery.populate(populates)
+  }
+
+  const data = await modelQuery.limit(limit).skip(limit * (page - 1));
   const total = await model.countDocuments(query);
   return {
     total,

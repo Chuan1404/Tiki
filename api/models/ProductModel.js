@@ -34,6 +34,12 @@ const productSchema = new Schema({
     },
 }, {timestamps: true})
 
+productSchema.virtual("categoryObject", {
+    ref: "Category",
+    localField: "categoryId",
+    foreignField: "_id",
+    justOne: true
+})
 
 productSchema.pre('save', function (next) {
     this.slug = slugify(this.name, { lower: true });
@@ -49,5 +55,8 @@ productSchema.pre('updateOne', function (next) {
     }
     next();
 });
+
+productSchema.set('toJSON', { virtuals: true });
+productSchema.set('toObject', { virtuals: true });
 
 module.exports = mongoose.model("Product", productSchema)

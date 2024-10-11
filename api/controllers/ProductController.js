@@ -6,13 +6,18 @@ class ProductController {
   // [GET] /product
   async getAll(req, res) {
     try {
-      const query = requestToProductQuery(req);
       const options = {
         limit: req.query.limit,
         page: req.query.page,
-      }
-      const response = await paginate(productModel, query, options);
-      
+        query: requestToProductQuery(req),
+        populateFields: ["categoryObject"],
+      };
+
+      let response = await paginate(productModel, options);
+      response.data = response.data.map((item) => ({
+        ...item,
+        categoryName: item.categoryObject.name,
+      }));
       res.status(200).json(response);
     } catch (error) {
       res.status(500).json({

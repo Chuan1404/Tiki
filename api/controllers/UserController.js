@@ -4,12 +4,11 @@ const { paginate } = require("../utils/pagination");
 class UserController {
   // [GET] /user
   async getAll(req, res) {
-    const query = {};
     const options = {
       limit: req.query.limit,
       page: req.query.page,
     };
-    const response = await paginate(userModel, query, options);
+    const response = await paginate(userModel, options);
 
     res.status(200).json(response);
   }

@@ -5,13 +5,12 @@ class CategoryController {
   // [GET] /category
   async getAll(req, res) {
     try {
-      const query = {}
       const options = {
         limit: req.query.limit,
         page: req.query.page,
       }
 
-      const response = await paginate(categoryModel, query, options);
+      const response = await paginate(categoryModel, options);
       
       res.status(200).json(response);
     } catch (error) {

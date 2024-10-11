@@ -1,4 +1,5 @@
 const cartModel = require("../models/CartModel");
+const { paginate } = require("../utils/pagination");
 
 class CartController {
   // [GET] /cart
@@ -7,21 +8,15 @@ class CartController {
     const limit = req.query.limit || 10;
     const page = req.query.page | 1;
 
-    const carts = await cartModel
-      .find({ userId })
-      .populate("productObject")
-      .limit(limit)
-      .skip(limit * (page - 1));
-
-    const count = await cartModel.countDocuments({ userId });
-    const totalPage = Math.ceil(count / limit);
-
-    res.status(200).json({
-      totalPage,
+    let options = {
       limit,
       page,
-      data: carts,
-    });
+      query: { userId },
+      populateFields: ['productObject']
+    };
+    
+    const response = await paginate(cartModel, options);
+    res.status(200).json(response);
   }
 
   // [PUT] /cart/update/:id
