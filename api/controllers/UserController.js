@@ -1,25 +1,17 @@
 const userModel = require("../models/UserModel");
+const { paginate } = require("../utils/pagination");
 
 class UserController {
   // [GET] /user
   async getAll(req, res) {
-    const limit = req.query.limit || 10;
-    const page = req.query.page | 1;
+    const query = {};
+    const options = {
+      limit: req.query.limit,
+      page: req.query.page,
+    };
+    const response = await paginate(userModel, query, options);
 
-    const users = await userModel
-      .find()
-      .limit(limit)
-      .skip(limit * (page - 1));
-
-    const count = await userModel.countDocuments();
-    const totalPage = Math.ceil(count / limit);
-
-    res.status(200).json({
-      totalPage,
-      limit,
-      page,
-      data: users,
-    });
+    res.status(200).json(response);
   }
 
   // [GET] /user/get-info
@@ -33,6 +25,42 @@ class UserController {
     } else {
       res.status(200).json({
         data: user,
+      });
+    }
+  }
+
+  // [PUT] /user/update/:id
+  async update(req, res) {
+    const { name, email, role } = req.body;
+    const userId = req.params.id;
+
+    try {
+      let response = await userModel.updateOne(
+        { _id: userId },
+        { name, email, role }
+      );
+      res.json({
+        data: response,
+      });
+    } catch (err) {
+      res.json({
+        error: err,
+      });
+    }
+  }
+
+  // [DELETE] /user/delete/:id
+  async delete(req, res) {
+    const userId = req.params.id;
+
+    try {
+      let response = await userModel.deleteOne({ _id: userId });
+      res.json({
+        data: response,
+      });
+    } catch (err) {
+      res.json({
+        error: err,
       });
     }
   }

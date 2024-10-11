@@ -8,4 +8,7 @@ router.use(authToken);
 router.get("/get-info", userController.getInfo);
 router.get("/", authorizeUser("admin"), userController.getAll);
 
+router.put("/update/:id", userController.update);
+router.delete("/delete/:id", userController.delete);
+
 module.exports = router;
