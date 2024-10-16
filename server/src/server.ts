@@ -3,6 +3,8 @@ import express from "express";
 import { connect } from "./share/component/mongoose";
 import { setUpCategoryModule } from "./modules/category";
 import { setUpProductModule } from "./modules/product";
+import { setUpUserModule } from "./modules/user";
+import { setUpCartModule } from "./modules/cart";
 
 dotenv.config();
 
@@ -18,6 +20,9 @@ dotenv.config();
 
   app.use("/", setUpCategoryModule());
   app.use("/", setUpProductModule());
+  app.use("/", setUpUserModule());
+  app.use("/", setUpCartModule());
+  
 
   app.listen(PORT, () => {
     console.log(`Server run at port ${PORT}`);

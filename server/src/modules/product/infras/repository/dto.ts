@@ -1,39 +1,66 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Document, Schema, UpdateQuery } from "mongoose";
 import { ModelStatus } from "../../../../share/model/baseModel";
+import slugify from "slugify"
 
 export const modelName = "Product";
 
 export function init() {
-  const productSchema = new Schema({
-    id: {
-      type: String,
-      unique: true,
-      require: true,
+  const productSchema = new Schema(
+    {
+      id: {
+        type: String,
+        unique: true,
+        require: true,
+      },
+      name: {
+        type: String,
+        required: true,
+      },
+      price: {
+        type: Number,
+        required: true,
+      },
+      thumbnailUrl: {
+        type: String,
+      },
+      slug: {
+        type: String,
+        unique: true,
+      },
+      brandName: {
+        type: String,
+      },
+      status: {
+        type: String,
+        enum: ModelStatus,
+        default: ModelStatus.ACTIVE,
+      },
     },
-    name: {
-      type: String,
-      required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-    thumbnailUrl: {
-      type: String,
-    },
-    slug: {
-      type: String,
-      unique: true,
-    },
-    brandName: {
-      type: String,
-    },
-    status: {
-      type: String,
-      enum: ModelStatus,
-      default: ModelStatus.ACTIVE
-    }
-  }, {timestamps: true});
+    { timestamps: true }
+  );
+  productSchema.virtual("categoryObject", {
+    ref: "Category",
+    localField: "categoryId",
+    foreignField: "id",
+    justOne: true,
+  });
 
+  productSchema.pre("save", function (next) {
+    this.slug = slugify(this.name, { lower: true });
+    next();
+  });
+
+  productSchema.pre("updateOne", function (next) {
+    const update = this.getUpdate() as UpdateQuery<Document>;;
+
+    if (update && update.name) {
+      update.slug = slugify(update.name, { lower: true });
+      this.setUpdate(update);
+    }
+    next();
+  });
+
+  productSchema.set("toJSON", { virtuals: true });
+  productSchema.set("toObject", { virtuals: true });
   mongoose.model(modelName, productSchema);
 }

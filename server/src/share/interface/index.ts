@@ -15,3 +15,11 @@ export interface ICommandRepository<Entity, UpdateDTO> {
 export interface IRepository<Entity, Cond, UpdateDTO>
   extends IQueryRepository<Entity, Cond>,
     ICommandRepository<Entity, UpdateDTO> {}
+
+export interface IHashPassword {
+  hash(rawPassword: string): string
+}
+
+export interface IComparePassword {
+  compare(rawPassword: string, hashedPassword: string): boolean
+}
