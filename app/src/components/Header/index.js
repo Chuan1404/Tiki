@@ -26,9 +26,9 @@ export default function Header() {
     return (
         <header className={`header ${isFocus && 'active'}`}>
             <div className="container header-container">
-                <div className="logo">
+                {/* <div className="logo">
                     <Link to='/'><img src="/imgs/logo.png" alt="" /></Link>
-                </div>
+                </div> */}
                 <div className="header_search">
                     <Search isFocus={isFocus} setIsFocus={setIsFocus} />
                 </div>

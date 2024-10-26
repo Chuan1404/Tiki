@@ -149,7 +149,7 @@ const Product = () => {
       console.log("Validate Failed:", errInfo);
     }
   };
-
+  console.log(products)
   const columns = [
     {
       title: "ID",
@@ -158,7 +158,7 @@ const Product = () => {
     },
     {
       title: "Category",
-      dataIndex: "categoryId",
+      dataIndex: "categoryName",
       editable: true,
     },
     {
