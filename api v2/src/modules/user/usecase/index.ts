@@ -1,28 +1,33 @@
+import jwt from "jsonwebtoken";
 import { v7 } from "uuid";
+import { IComparePassword, IHashPassword } from "../../../share/interface";
 import {
   ErrDataExisted,
   ErrDataInvalid,
   ErrDataNotFound,
 } from "../../../share/model/baseError";
+import { ModelStatus } from "../../../share/model/baseModel";
+import { PagingDTO } from "../../../share/model/paging";
+import { IUserReposity, IUserUseCase } from "../interface";
 import { User, UserRole, UserSchema } from "../model";
 import {
   UserCondDTO,
   UserCreateDTO,
   UserCreateSchema,
+  UserLoginDTO,
+  UserLoginSchema,
+  UserPayloadDTO,
   UserUpdateDTO,
   UserUpdateSchema,
 } from "../model/dto";
-import { ModelStatus } from "../../../share/model/baseModel";
-import { PagingDTO } from "../../../share/model/paging";
-import { IUserReposity, IUserUseCase } from "../interface";
-import { IHashPassword } from "../../../share/interface";
+import { ErrLoginFail } from "../model/error";
 
 export class UserUsecase implements IUserUseCase {
   constructor(
     private readonly repository: IUserReposity,
-    private readonly passwordHasher: IHashPassword
+    private readonly passwordHasher: IHashPassword,
+    private readonly comparePassword: IComparePassword
   ) {}
-
   async create(data: UserCreateDTO): Promise<string> {
     const {
       success,
@@ -89,7 +94,7 @@ export class UserUsecase implements IUserUseCase {
 
     return UserSchema.parse(data);
   }
-  
+
   async list(cond: UserCondDTO, paging: PagingDTO): Promise<User[] | null> {
     let data = await this.repository.list(cond, paging);
 
@@ -103,5 +108,50 @@ export class UserUsecase implements IUserUseCase {
     }
 
     return await this.repository.delete(id, isHard);
+  }
+
+  register(data: UserCreateDTO): Promise<string> {
+    throw new Error("Method not implemented.");
+  }
+
+  async login(data: UserLoginDTO): Promise<string> {
+    let { success, data: parsedData } = UserLoginSchema.safeParse(data);
+
+    if (!success) {
+      throw ErrDataInvalid;
+    }
+
+    const user = await this.repository.findByCond({
+      email: parsedData?.email,
+      role: parsedData?.role,
+    });
+
+    if (!user) {
+      throw ErrLoginFail;
+    }
+
+    const isValidPassword = this.comparePassword.compare(
+      parsedData!.password,
+      user.password
+    );
+
+    if (!isValidPassword) {
+      throw ErrLoginFail;
+    }
+
+    const payload: UserPayloadDTO = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
+
+    const accessTokenLife = process.env.ACCESS_TOKEN_LIFE ?? "1h";
+    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET ?? "accessToken";
+
+    let accessToken = jwt.sign(payload, accessTokenSecret, {
+      expiresIn: accessTokenLife,
+    });
+
+    return accessToken;
   }
 }

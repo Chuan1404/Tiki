@@ -65,6 +65,7 @@
     "is-glob": "^4.0.3",
     "is-number": "^7.0.0",
     "is-property": "^1.0.2",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "long": "^5.2.3",
     "lru-cache": "^7.18.3",
@@ -146,6 +147,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.7.5",
     "@types/uuid": "^10.0.0",
     "typescript": "^5.6.3"

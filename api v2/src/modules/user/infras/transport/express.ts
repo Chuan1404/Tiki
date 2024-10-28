@@ -73,4 +73,15 @@ export class UserHttpService {
       data: id,
     });
   }
+
+  async login(req: Request, res: Response) {
+    try {
+      let token = await this.useCase.login(req.body);
+      res.status(200).json({
+        data: token,
+      });
+    } catch (error) {
+      res.status(400).json({ error: (error as Error).message });
+    }
+  }
 }
