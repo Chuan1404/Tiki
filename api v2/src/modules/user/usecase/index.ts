@@ -20,7 +20,11 @@ import {
   UserUpdateDTO,
   UserUpdateSchema,
 } from "../model/dto";
-import { ErrLoginFail } from "../model/error";
+import {
+  ErrLoginFail,
+  ErrMissingToken,
+  ErrUnAuthentication,
+} from "../model/error";
 
 export class UserUsecase implements IUserUseCase {
   constructor(
@@ -28,6 +32,7 @@ export class UserUsecase implements IUserUseCase {
     private readonly passwordHasher: IHashPassword,
     private readonly comparePassword: IComparePassword
   ) {}
+
   async create(data: UserCreateDTO): Promise<string> {
     const {
       success,
@@ -65,6 +70,7 @@ export class UserUsecase implements IUserUseCase {
 
     return newId;
   }
+
   async update(id: string, data: UserUpdateDTO): Promise<boolean> {
     const {
       success,
@@ -147,11 +153,32 @@ export class UserUsecase implements IUserUseCase {
 
     const accessTokenLife = process.env.ACCESS_TOKEN_LIFE ?? "1h";
     const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET ?? "accessToken";
-
+    const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE ?? "24h";
+    const refreshTokenSecret =
+      process.env.REFRESH_TOKEN_SECRET ?? "refreshToken";
+      
     let accessToken = jwt.sign(payload, accessTokenSecret, {
       expiresIn: accessTokenLife,
     });
+    let refreshToken = jwt.sign(payload, refreshTokenSecret, {
+      expiresIn: refreshTokenLife,
+    });
 
     return accessToken;
+  }
+
+  async verifyToken(token: string): Promise<UserPayloadDTO | null> {
+    if (!token) {
+      throw ErrMissingToken;
+    }
+
+    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET ?? "accessToken";
+    let decoded = jwt.verify(token, accessTokenSecret) as UserPayloadDTO;
+
+    if (!decoded) {
+      throw ErrUnAuthentication;
+    }
+
+    return decoded;
   }
 }

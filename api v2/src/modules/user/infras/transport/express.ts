@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { IUserUseCase } from "../../interface";
 import { PagingDTOSchema } from "../../../../share/model/paging";
 import { UserCondScheme } from "../../model/dto";
+import { ErrUnAuthorization } from "../../model/error";
 
 export class UserHttpService {
   constructor(private readonly useCase: IUserUseCase) {}
@@ -80,6 +81,28 @@ export class UserHttpService {
       res.status(200).json({
         data: token,
       });
+    } catch (error) {
+      res.status(400).json({ error: (error as Error).message });
+    }
+  }
+
+  async profile(req: Request, res: Response) {
+    try {
+      const authorizationHeader  = req.headers.authorization;
+
+      if (!authorizationHeader ) {
+        res.status(401).json({
+          error: ErrUnAuthorization.message,
+        });
+        return;
+      }
+
+      const token = authorizationHeader.split(" ")[1];
+
+      const payload = await this.useCase.verifyToken(token);
+
+      const user = await this.useCase.get(payload?.id!);
+      res.status(400).json({ data: user });
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });
     }
