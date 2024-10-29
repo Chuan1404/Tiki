@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ModelStatus } from "../../../share/model/baseModel";
+import { EModelStatus } from "../../../share/model/enums";
 import { BrandSchema } from ".";
 
 export const BrandCreateSchema = BrandSchema.pick({
@@ -13,12 +13,12 @@ export const BrandUpdateSchema = z.object({
     .string()
     .max(255, "descriptions must be at most 255 characters")
     .optional(),
-  status: z.nativeEnum(ModelStatus).optional(),
+  status: z.nativeEnum(EModelStatus).optional(),
 });
 
 export const BrandCondScheme = z.object({
   name: z.string().optional(),
-  status: z.nativeEnum(ModelStatus).optional(),
+  status: z.nativeEnum(EModelStatus).optional(),
 });
 
 export type BrandUpdateDTO = z.infer<typeof BrandUpdateSchema>;

@@ -1,5 +1,5 @@
 import { date, nativeEnum, number, string, z } from "zod";
-import { ModelStatus } from "../../../share/model/baseModel";
+import { EModelStatus } from "../../../share/model/enums";
 
 export const ProductSchema = z.object({
   id: string(),
@@ -9,7 +9,7 @@ export const ProductSchema = z.object({
   slug: string().optional(),
   brandId: string().optional(),
   categoryId: string(),
-  status: nativeEnum(ModelStatus),
+  status: nativeEnum(EModelStatus),
   createdAt: date(),
   updatedAt: date(),
 });

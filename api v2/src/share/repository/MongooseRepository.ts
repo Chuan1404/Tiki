@@ -1,7 +1,7 @@
 import mongoose, { Types } from "mongoose";
 import { IRepository } from "../interface";
 import { PagingDTO } from "../model/paging";
-import { ModelStatus } from "../model/baseModel";
+import { EModelStatus } from "../model/enums";
 
 export abstract class MongooseRepository<Entity, EntityCondDTO, EntityUpdateDTO>
   implements IRepository<Entity, EntityCondDTO, EntityUpdateDTO>
@@ -28,7 +28,7 @@ export abstract class MongooseRepository<Entity, EntityCondDTO, EntityUpdateDTO>
 
   async list(cond: EntityCondDTO, paging: PagingDTO): Promise<Entity[] | null> {
     const { page, limit } = paging;
-    const condSQL = { ...cond, status: { $ne: ModelStatus.DELETED } };
+    const condSQL = { ...cond, status: { $ne: EModelStatus.DELETED } };
 
     const rows = await mongoose.models[this.modelName]
       .find(condSQL)
@@ -53,7 +53,7 @@ export abstract class MongooseRepository<Entity, EntityCondDTO, EntityUpdateDTO>
     } else {
       await mongoose.models[this.modelName].updateOne(
         { id },
-        { status: ModelStatus.DELETED }
+        { status: EModelStatus.DELETED }
       );
     }
 

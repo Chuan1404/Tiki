@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ModelStatus } from "../../../share/model/baseModel";
+import { EModelStatus } from "../../../share/model/enums";
 
 export const CategoryCreateSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
@@ -12,12 +12,12 @@ export const CategoryUpdateSchema = z.object({
     .string()
     .max(255, "descriptions must be at most 255 characters")
     .optional(),
-  status: z.nativeEnum(ModelStatus).optional(),
+  status: z.nativeEnum(EModelStatus).optional(),
 });
 
 export const CategoryCondScheme = z.object({
   name: z.string().optional(),
-  status: z.nativeEnum(ModelStatus).optional(),
+  status: z.nativeEnum(EModelStatus).optional(),
 });
 
 export type CategoryUpdateDTO = z.infer<typeof CategoryUpdateSchema>;

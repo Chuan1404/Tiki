@@ -1,7 +1,5 @@
 import { v7 } from "uuid";
-import {
-  ErrDataNotFound
-} from "../../../share/model/baseError";
+import { ErrDataNotFound } from "../../../share/model/errors";
 import { PagingDTO } from "../../../share/model/paging";
 import { ICartReposity, ICartUseCase } from "../interface";
 import { Cart, CartSchema } from "../model";
@@ -9,7 +7,7 @@ import {
   CartCondDTO,
   CartDeleteDTO,
   CartUpdateDTO,
-  CartUpdateSchema
+  CartUpdateSchema,
 } from "../model/dto";
 
 export class CartUsecase implements ICartUseCase {

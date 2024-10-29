@@ -13,8 +13,8 @@ export const setUpBrandModule = () => {
 
   const router = Router();
 
-  router.get("/brands", httpService.list.bind(httpService));
   router.get("/brands/:id", httpService.get.bind(httpService));
+  router.get("/brands", httpService.list.bind(httpService));
   router.post("/brands", httpService.create.bind(httpService));
   router.patch("/brands/:id", httpService.update.bind(httpService));
   router.delete("/brands/:id", httpService.delete.bind(httpService));

@@ -1,9 +1,12 @@
 import { v7 } from "uuid";
+import { EModelStatus } from "../../../share/model/enums";
 import {
   ErrDataExisted,
   ErrDataInvalid,
   ErrDataNotFound,
-} from "../../../share/model/baseError";
+} from "../../../share/model/errors";
+import { PagingDTO } from "../../../share/model/paging";
+import { IProductReposity, IProductUseCase } from "../interface";
 import { Product, ProductSchema } from "../model";
 import {
   ProductCondDTO,
@@ -12,9 +15,6 @@ import {
   ProductUpdateDTO,
   ProductUpdateSchema,
 } from "../model/dto";
-import { ModelStatus } from "../../../share/model/baseModel";
-import { PagingDTO } from "../../../share/model/paging";
-import { IProductReposity, IProductUseCase } from "../interface";
 
 export class ProductUsecase implements IProductUseCase {
   constructor(private readonly repository: IProductReposity) {}
@@ -46,7 +46,7 @@ export class ProductUsecase implements IProductUseCase {
       categoryId: parsedData.categoryId,
       price: parsedData.price,
       thumbnailUrl: parsedData.thumbnailUrl ?? "",
-      status: ModelStatus.ACTIVE,
+      status: EModelStatus.ACTIVE,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -68,7 +68,7 @@ export class ProductUsecase implements IProductUseCase {
 
     let Product = await this.repository.get(id);
 
-    if (!Product || Product.status === ModelStatus.DELETED) {
+    if (!Product || Product.status === EModelStatus.DELETED) {
       throw ErrDataInvalid;
     }
 
@@ -77,7 +77,7 @@ export class ProductUsecase implements IProductUseCase {
   async get(id: string): Promise<Product | null> {
     let data = await this.repository.get(id);
 
-    if (!data || data.status === ModelStatus.DELETED) {
+    if (!data || data.status === EModelStatus.DELETED) {
       throw ErrDataNotFound;
     }
 
@@ -94,7 +94,7 @@ export class ProductUsecase implements IProductUseCase {
 
   async delete(id: string, isHard: boolean = false): Promise<boolean> {
     let Product = await this.repository.get(id);
-    if (!Product || Product.status === ModelStatus.DELETED) {
+    if (!Product || Product.status === EModelStatus.DELETED) {
       throw ErrDataNotFound;
     }
 

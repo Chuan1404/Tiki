@@ -3,8 +3,8 @@ import {
   ErrDataExisted,
   ErrDataInvalid,
   ErrDataNotFound,
-} from "../../../share/model/baseError";
-import { ModelStatus } from "../../../share/model/baseModel";
+} from "../../../share/model/errors";
+import { EModelStatus } from "../../../share/model/enums";
 import { PagingDTO } from "../../../share/model/paging";
 import { IBrandReposity, IBrandUseCase } from "../interface";
 import { Brand, BrandSchema } from "../model";
@@ -41,7 +41,7 @@ export class BrandUsecase implements IBrandUseCase {
     const Brand: Brand = {
       id: newId,
       name: parsedData.name,
-      status: ModelStatus.ACTIVE,
+      status: EModelStatus.ACTIVE,
       description: parsedData.description,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -64,7 +64,7 @@ export class BrandUsecase implements IBrandUseCase {
 
     let Brand = await this.repository.get(id);
 
-    if (!Brand || Brand.status === ModelStatus.DELETED) {
+    if (!Brand || Brand.status === EModelStatus.DELETED) {
       throw ErrDataInvalid;
     }
 
@@ -73,7 +73,7 @@ export class BrandUsecase implements IBrandUseCase {
   async get(id: string): Promise<Brand | null> {
     let data = await this.repository.get(id);
 
-    if (!data || data.status === ModelStatus.DELETED) {
+    if (!data || data.status === EModelStatus.DELETED) {
       throw ErrDataNotFound;
     }
 
@@ -90,7 +90,7 @@ export class BrandUsecase implements IBrandUseCase {
 
   async delete(id: string, isHard: boolean = false): Promise<boolean> {
     let Brand = await this.repository.get(id);
-    if (!Brand || Brand.status === ModelStatus.DELETED) {
+    if (!Brand || Brand.status === EModelStatus.DELETED) {
       throw ErrDataNotFound;
     }
 

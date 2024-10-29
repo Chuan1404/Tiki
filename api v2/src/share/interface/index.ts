@@ -1,5 +1,7 @@
+import { UserPayloadDTO, UserTokenDTO } from "../../modules/user/model/dto";
 import { PagingDTO } from "../model/paging";
 
+// repository
 export interface IQueryRepository<Entity, Cond> {
   get(id: string): Promise<Entity | null>;
   findByCond(cond: Cond): Promise<Entity | null>;
@@ -16,10 +18,18 @@ export interface IRepository<Entity, Cond, UpdateDTO>
   extends IQueryRepository<Entity, Cond>,
     ICommandRepository<Entity, UpdateDTO> {}
 
+// password
+
 export interface IHashPassword {
-  hash(rawPassword: string): string
+  hash(rawPassword: string): string;
 }
 
 export interface IComparePassword {
-  compare(rawPassword: string, hashedPassword: string): boolean
+  compare(rawPassword: string, hashedPassword: string): boolean;
 }
+
+// jwt
+// export interface IJwt {
+//   verifyToken(token: string): UserPayloadDTO;
+//   generateToken(payload: UserPayloadDTO, options: Object): UserTokenDTO;
+// }

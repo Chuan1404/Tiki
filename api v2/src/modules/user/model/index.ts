@@ -1,18 +1,14 @@
 import { string, z } from "zod";
-import { ModelStatus } from "../../../share/model/baseModel";
+import { EModelStatus, EUserRole } from "../../../share/model/enums";
 
-export enum UserRole {
-  USER = 'USER',
-  ADMIN = 'ADMIN'
-}
 
 export const UserSchema = z.object({
   id: string(),
   name: string().min(3, "Name must be at least 3 characters"),
   password: string(),
   email: string(),
-  status: z.nativeEnum(ModelStatus),
-  role: z.nativeEnum(UserRole),
+  status: z.nativeEnum(EModelStatus),
+  role: z.nativeEnum(EUserRole),
   createdAt: z.date(),
   updatedAt: z.date(),
 });

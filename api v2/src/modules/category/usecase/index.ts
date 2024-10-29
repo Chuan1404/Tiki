@@ -1,10 +1,5 @@
 import { v7 } from "uuid";
-import {
-  ErrDataExisted,
-  ErrDataInvalid,
-  ErrDataNotFound,
-} from "../../../share/model/baseError";
-import { ModelStatus } from "../../../share/model/baseModel";
+import { EModelStatus } from "../../../share/model/enums";
 import { PagingDTO } from "../../../share/model/paging";
 import { ICategoryReposity, ICategoryUseCase } from "../interface";
 import { Category, CategorySchema } from "../model";
@@ -15,16 +10,14 @@ import {
   CategoryUpdateDTO,
   CategoryUpdateSchema,
 } from "../model/dto";
+import { ErrDataExisted, ErrDataInvalid, ErrDataNotFound } from "../../../share/model/errors";
+
 
 export class CategoryUsecase implements ICategoryUseCase {
   constructor(private readonly repository: ICategoryReposity) {}
 
   async create(data: CategoryCreateDTO): Promise<string> {
-    const {
-      success,
-      data: parsedData,
-      error,
-    } = CategoryCreateSchema.safeParse(data);
+    const { success, data: parsedData } = CategoryCreateSchema.safeParse(data);
 
     if (!success) {
       throw ErrDataInvalid;
@@ -42,7 +35,7 @@ export class CategoryUsecase implements ICategoryUseCase {
     const category: Category = {
       id: newId,
       name: parsedData.name,
-      status: ModelStatus.ACTIVE,
+      status: EModelStatus.ACTIVE,
       description: parsedData.description,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -65,7 +58,7 @@ export class CategoryUsecase implements ICategoryUseCase {
 
     let category = await this.repository.get(id);
 
-    if (!category || category.status === ModelStatus.DELETED) {
+    if (!category || category.status === EModelStatus.DELETED) {
       throw ErrDataInvalid;
     }
 
@@ -74,7 +67,7 @@ export class CategoryUsecase implements ICategoryUseCase {
   async get(id: string): Promise<Category | null> {
     let data = await this.repository.get(id);
 
-    if (!data || data.status === ModelStatus.DELETED) {
+    if (!data || data.status === EModelStatus.DELETED) {
       throw ErrDataNotFound;
     }
 
@@ -91,7 +84,7 @@ export class CategoryUsecase implements ICategoryUseCase {
 
   async delete(id: string, isHard: boolean = false): Promise<boolean> {
     let Category = await this.repository.get(id);
-    if (!Category || Category.status === ModelStatus.DELETED) {
+    if (!Category || Category.status === EModelStatus.DELETED) {
       throw ErrDataNotFound;
     }
 

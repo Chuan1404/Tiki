@@ -1,6 +1,6 @@
 import { string, z } from "zod";
-import { UserRole, UserSchema } from ".";
-import { ModelStatus } from "../../../share/model/baseModel";
+import { UserSchema } from ".";
+import { EModelStatus, EUserRole } from "../../../share/model/enums";
 
 export const UserCreateSchema = UserSchema.pick({
   name: true,
@@ -22,15 +22,15 @@ export const UserPayloadSchema = UserSchema.pick({
 
 export const UserUpdateSchema = z.object({
   name: string().min(3, "Name must be at least 3 characters").optional(),
-  status: z.nativeEnum(ModelStatus).optional(),
-  role: z.nativeEnum(UserRole).optional(),
+  status: z.nativeEnum(EModelStatus).optional(),
+  role: z.nativeEnum(EUserRole).optional(),
 });
 
 export const UserCondScheme = z.object({
   name: string().optional(),
   email: string().optional(),
-  status: z.nativeEnum(ModelStatus).optional(),
-  role: z.nativeEnum(UserRole).optional(),
+  status: z.nativeEnum(EModelStatus).optional(),
+  role: z.nativeEnum(EUserRole).optional(),
 });
 
 export type UserTokenDTO = {

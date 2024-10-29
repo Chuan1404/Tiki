@@ -1,6 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { ModelStatus } from "../../../../share/model/baseModel";
-import { UserRole } from "../../model";
+import { EModelStatus, EUserRole } from "../../../../share/model/enums";
 
 export const modelName = "User";
 
@@ -26,13 +25,13 @@ export function init() {
       },
       role: {
         type: String,
-        enum: UserRole,
-        default: UserRole.USER
+        enum: EUserRole,
+        default: EUserRole.USER
       },
       status: {
         type: String,
-        enum: ModelStatus,
-        default: ModelStatus.ACTIVE,
+        enum: EModelStatus,
+        default: EModelStatus.ACTIVE,
       },
     },
     { timestamps: true }

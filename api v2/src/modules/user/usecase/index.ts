@@ -5,11 +5,11 @@ import {
   ErrDataExisted,
   ErrDataInvalid,
   ErrDataNotFound,
-} from "../../../share/model/baseError";
-import { ModelStatus } from "../../../share/model/baseModel";
+} from "../../../share/model/errors";
+import { EModelStatus, EUserRole } from "../../../share/model/enums";
 import { PagingDTO } from "../../../share/model/paging";
 import { IUserReposity, IUserUseCase } from "../interface";
-import { User, UserRole, UserSchema } from "../model";
+import { User, UserSchema } from "../model";
 import {
   UserCondDTO,
   UserCreateDTO,
@@ -60,8 +60,8 @@ export class UserUsecase implements IUserUseCase {
       name: parsedData.name,
       email: parsedData.email,
       password: hashedPassword,
-      role: UserRole.USER,
-      status: ModelStatus.ACTIVE,
+      role: EUserRole.USER,
+      status: EModelStatus.ACTIVE,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -84,7 +84,7 @@ export class UserUsecase implements IUserUseCase {
 
     let User = await this.repository.get(id);
 
-    if (!User || User.status === ModelStatus.DELETED) {
+    if (!User || User.status === EModelStatus.DELETED) {
       throw ErrDataInvalid;
     }
 
@@ -94,7 +94,7 @@ export class UserUsecase implements IUserUseCase {
   async get(id: string): Promise<User | null> {
     let data = await this.repository.get(id);
 
-    if (!data || data.status === ModelStatus.DELETED) {
+    if (!data || data.status === EModelStatus.DELETED) {
       throw ErrDataNotFound;
     }
 
@@ -109,7 +109,7 @@ export class UserUsecase implements IUserUseCase {
 
   async delete(id: string, isHard: boolean = false): Promise<boolean> {
     let User = await this.repository.get(id);
-    if (!User || User.status === ModelStatus.DELETED) {
+    if (!User || User.status === EModelStatus.DELETED) {
       throw ErrDataNotFound;
     }
 
@@ -156,7 +156,7 @@ export class UserUsecase implements IUserUseCase {
     const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE ?? "24h";
     const refreshTokenSecret =
       process.env.REFRESH_TOKEN_SECRET ?? "refreshToken";
-      
+
     let accessToken = jwt.sign(payload, accessTokenSecret, {
       expiresIn: accessTokenLife,
     });

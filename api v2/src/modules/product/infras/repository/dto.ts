@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema, UpdateQuery } from "mongoose";
-import { ModelStatus } from "../../../../share/model/baseModel";
+import { EModelStatus } from "../../../../share/model/enums";
 import slugify from "slugify"
 
 export const modelName = "Product";
@@ -37,8 +37,8 @@ export function init() {
       },
       status: {
         type: String,
-        enum: ModelStatus,
-        default: ModelStatus.ACTIVE,
+        enum: EModelStatus,
+        default: EModelStatus.ACTIVE,
       },
     },
     { timestamps: true }

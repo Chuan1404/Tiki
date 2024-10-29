@@ -1,4 +1,4 @@
-import { ModelStatus } from "../../../../share/model/baseModel";
+import { EModelStatus } from "../../../../share/model/enums";
 
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
@@ -22,8 +22,8 @@ export function init() {
       },
       status: {
         type: String,
-        enum: ModelStatus,
-        default: ModelStatus.ACTIVE,
+        enum: EModelStatus,
+        default: EModelStatus.ACTIVE,
       },
     },
     { timestamps: true }

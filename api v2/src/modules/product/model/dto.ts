@@ -1,5 +1,5 @@
 import { number, string, z } from "zod";
-import { ModelStatus } from "../../../share/model/baseModel";
+import { EModelStatus } from "../../../share/model/enums";
 
 export const ProductCreateSchema = z.object({
   name: string().min(3, "Name must be at least 3 characters"),
@@ -15,7 +15,7 @@ export const ProductUpdateSchema = z.object({
   price: number().min(0).default(0).optional(),
   thumbnailUrl: string().optional(),
   brandName: string().optional(),
-  status: z.nativeEnum(ModelStatus).optional(),
+  status: z.nativeEnum(EModelStatus).optional(),
   categoryId: string().optional(),
   brandId: string().optional(),
 });
@@ -24,7 +24,7 @@ export const ProductCondScheme = z.object({
   name: z.string().optional(),
   price: number().optional(),
   brandName: string().optional(),
-  status: z.nativeEnum(ModelStatus).optional(),
+  status: z.nativeEnum(EModelStatus).optional(),
   categoryId: string().optional(),
   brandId: string().optional(),
 });
