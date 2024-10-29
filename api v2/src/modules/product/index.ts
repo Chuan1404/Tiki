@@ -4,7 +4,7 @@ import { ProductRepository } from "./infras/repository";
 import { ProductUsecase } from "./usecase";
 import { ProductHttpService } from "./infras/transport/express";
 import upload from "../../share/configs/multer";
-import { RPCCategoryRepository } from "./infras/rpc";
+import { RPCBrandRepository, RPCCategoryRepository } from "./infras/rpc";
 import { rpc } from "../../share/configs/rpc";
 
 export const setUpProductModule = () => {
@@ -12,8 +12,9 @@ export const setUpProductModule = () => {
 
   const repository = new ProductRepository(modelName);
   const rpcCategory = new RPCCategoryRepository(rpc.productCategory);
+  const rpcBrand = new RPCBrandRepository(rpc.productBrand);
   const usecase = new ProductUsecase(repository);
-  const httpService = new ProductHttpService(usecase, rpcCategory);
+  const httpService = new ProductHttpService(usecase, rpcCategory, rpcBrand);
 
   const router = Router();
 

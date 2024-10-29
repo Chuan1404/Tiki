@@ -5,6 +5,7 @@ import { setUpCategoryModule } from "./modules/category";
 import { setUpProductModule } from "./modules/product";
 import { setUpUserModule } from "./modules/user";
 import { setUpCartModule } from "./modules/cart";
+import { setUpBrandModule } from "./modules/brand";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ dotenv.config();
   app.use("/", setUpProductModule());
   app.use("/", setUpUserModule());
   app.use("/", setUpCartModule());
+  app.use("/", setUpBrandModule());
 
   app.listen(PORT, () => {
     console.log(`Server run at port ${PORT}`);
