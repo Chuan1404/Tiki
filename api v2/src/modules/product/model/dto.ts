@@ -4,8 +4,10 @@ import { ModelStatus } from "../../../share/model/baseModel";
 export const ProductCreateSchema = z.object({
   name: string().min(3, "Name must be at least 3 characters"),
   price: number().min(0).default(0),
-  thumbnailUrl: string(),
+  thumbnailUrl: string().optional(),
   brandName: string().optional(),
+  categoryId: string(),
+  brandId: string().optional(),
 });
 
 export const ProductUpdateSchema = z.object({
@@ -14,6 +16,8 @@ export const ProductUpdateSchema = z.object({
   thumbnailUrl: string().optional(),
   brandName: string().optional(),
   status: z.nativeEnum(ModelStatus).optional(),
+  categoryId: string().optional(),
+  brandId: string().optional(),
 });
 
 export const ProductCondScheme = z.object({
@@ -21,6 +25,8 @@ export const ProductCondScheme = z.object({
   price: number().optional(),
   brandName: string().optional(),
   status: z.nativeEnum(ModelStatus).optional(),
+  categoryId: string().optional(),
+  brandId: string().optional(),
 });
 
 export type ProductCreateDTO = z.infer<typeof ProductCreateSchema>;

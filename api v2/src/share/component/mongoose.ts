@@ -1,9 +1,9 @@
 import { config } from "dotenv";
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 config();
 
-const server = process.env.SERVER;
+const server = process.env.DATABASE_SERVER;
 const database = process.env.DATABASE;
 
 export function connect() {
@@ -16,4 +16,3 @@ export function connect() {
       console.log("Fail to connect database");
     });
 }
-

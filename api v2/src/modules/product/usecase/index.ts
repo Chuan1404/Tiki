@@ -42,9 +42,10 @@ export class ProductUsecase implements IProductUseCase {
     const Product: Product = {
       id: newId,
       name: parsedData.name,
-      brandName: parsedData.brandName as any,
+      brandId: parsedData.brandId,
+      categoryId: parsedData.categoryId,
       price: parsedData.price,
-      thumbnailUrl: parsedData.thumbnailUrl,
+      thumbnailUrl: parsedData.thumbnailUrl ?? "",
       status: ModelStatus.ACTIVE,
       createdAt: new Date(),
       updatedAt: new Date(),

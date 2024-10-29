@@ -27,8 +27,13 @@ export function init() {
         type: String,
         unique: true,
       },
-      brandName: {
+      brandId: {
         type: String,
+        ref: "Brand"
+      },
+      categoryId: {
+        type: String,
+        ref: "Category"
       },
       status: {
         type: String,
@@ -38,12 +43,6 @@ export function init() {
     },
     { timestamps: true }
   );
-  productSchema.virtual("categoryObject", {
-    ref: "Category",
-    localField: "categoryId",
-    foreignField: "id",
-    justOne: true,
-  });
 
   productSchema.pre("save", function (next) {
     this.slug = slugify(this.name, { lower: true });

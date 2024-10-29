@@ -1,6 +1,6 @@
 import { IRepository } from "../../../share/interface";
 import { PagingDTO } from "../../../share/model/paging";
-import { Product } from "../model";
+import { Brand, Category, Product } from "../model";
 import {
   ProductCondDTO,
   ProductCreateDTO,
@@ -16,4 +16,12 @@ export interface IProductUseCase {
   get(id: string): Promise<Product | null>;
   list(cond: ProductCondDTO, paging: PagingDTO): Promise<Product[] | null>;
   delete(id: string, isHard?: boolean): Promise<boolean>;
+}
+
+export interface ICategoryQueryRepository {
+  get(id: string): Promise<Category | null>;
+}
+
+export interface IBrandQueryRepository {
+  get(id: string): Promise<Brand | null>;
 }

@@ -1,14 +1,22 @@
 import { Request, Response } from "express";
-import { IProductUseCase } from "../../interface";
+import { IBrandQueryRepository, ICategoryQueryRepository, IProductUseCase } from "../../interface";
 import { PagingDTOSchema } from "../../../../share/model/paging";
-import { ProductCondScheme } from "../../model/dto";
+import { ProductCondScheme, ProductCreateDTO } from "../../model/dto";
 
 export class ProductHttpService {
-  constructor(private readonly useCase: IProductUseCase) {}
+  constructor(
+    private readonly useCase: IProductUseCase,
+    private readonly categoryRepository: ICategoryQueryRepository,
+    private readonly brandRepository: IBrandQueryRepository
+  ) {}
 
   async create(req: Request, res: Response) {
     try {
-      const result = await this.useCase.create(req.body);
+      const body: ProductCreateDTO = {
+        ...req.body,
+        price: Number.parseFloat(req.body.price),
+      };
+      const result = await this.useCase.create(body);
       res.status(201).json({ data: result });
     } catch (error) {
       console.log(error);
@@ -20,6 +28,14 @@ export class ProductHttpService {
     const { id } = req.params;
     try {
       let product = await this.useCase.get(id);
+
+      if (product) {
+        const category = await this.categoryRepository.get(product.categoryId);
+        product.category = category
+
+        const brand = await this.brandRepository.get(product.brandId!);
+        product.brand = brand
+      }
 
       res.status(200).json({
         data: product,

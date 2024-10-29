@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { init, modelName } from "./infras/repository/dto";
-import { UserRepository } from "./infras/repository";
-import { UserUsecase } from "./usecase";
-import { UserHttpService } from "./infras/transport/express";
 import { ComparePassword, HashPassword } from "../../share/component/password";
+import { UserRepository } from "./infras/repository";
+import { init, modelName } from "./infras/repository/dto";
+import { UserHttpService } from "./infras/transport/express";
+import { UserUsecase } from "./usecase";
 
 export const setUpUserModule = () => {
   init();

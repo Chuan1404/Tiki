@@ -1,4 +1,4 @@
-import { number, string, z } from "zod";
+import { date, nativeEnum, number, string, z } from "zod";
 import { ModelStatus } from "../../../share/model/baseModel";
 
 export const ProductSchema = z.object({
@@ -7,10 +7,26 @@ export const ProductSchema = z.object({
   price: number().min(0).default(0),
   thumbnailUrl: string(),
   slug: string().optional(),
-  brandName: string().optional(),
-  status: z.nativeEnum(ModelStatus),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  brandId: string().optional(),
+  categoryId: string(),
+  status: nativeEnum(ModelStatus),
+  createdAt: date(),
+  updatedAt: date(),
 });
 
-export type Product = z.infer<typeof ProductSchema>;
+export const BrandSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+});
+
+export const CategorySchema = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+});
+
+export type Product = z.infer<typeof ProductSchema> & {
+  category?: Category | null;
+  brand?: Brand | null;
+};
+export type Category = z.infer<typeof CategorySchema>;
+export type Brand = z.infer<typeof BrandSchema>;
