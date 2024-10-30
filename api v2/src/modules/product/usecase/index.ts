@@ -86,7 +86,7 @@ export class ProductUsecase implements IProductUseCase {
   async list(
     cond: ProductCondDTO,
     paging: PagingDTO
-  ): Promise<Product[] | null> {
+  ): Promise<Product[]> {
     let data = await this.repository.list(cond, paging);
 
     return data ? data.map((item) => ProductSchema.parse(item)) : [];

@@ -17,6 +17,7 @@ export const BrandUpdateSchema = z.object({
 });
 
 export const BrandCondScheme = z.object({
+  id: z.array(z.string()).optional(),
   name: z.string().optional(),
   status: z.nativeEnum(EModelStatus).optional(),
 });

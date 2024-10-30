@@ -19,5 +19,7 @@ export const setUpCategoryModule = () => {
   router.patch("/categories/:id", httpService.update.bind(httpService));
   router.delete("/categories/:id", httpService.delete.bind(httpService));
 
+  router.get("/rpc/categories", httpService.findMany.bind(httpService));
+
   return router
 };

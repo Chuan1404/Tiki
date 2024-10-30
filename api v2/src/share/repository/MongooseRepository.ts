@@ -4,9 +4,8 @@ import { PagingDTO } from "../model/paging";
 import { EModelStatus } from "../model/enums";
 
 export abstract class MongooseRepository<Entity, EntityCondDTO, EntityUpdateDTO>
-  implements IRepository<Entity, EntityCondDTO, EntityUpdateDTO>
-{
-  constructor(private readonly modelName: string) {}
+  implements IRepository<Entity, EntityCondDTO, EntityUpdateDTO> {
+  constructor(private readonly modelName: string) { }
 
   async findByCond(cond: EntityCondDTO): Promise<Entity | null> {
     let data = await mongoose.models[this.modelName].findOne(cond as any);
@@ -26,14 +25,20 @@ export abstract class MongooseRepository<Entity, EntityCondDTO, EntityUpdateDTO>
     return data;
   }
 
-  async list(cond: EntityCondDTO, paging: PagingDTO): Promise<Entity[] | null> {
-    const { page, limit } = paging;
+  async list(cond: EntityCondDTO, paging?: PagingDTO): Promise<Entity[] | null> {
     const condSQL = { ...cond, status: { $ne: EModelStatus.DELETED } };
+    let rows;
 
-    const rows = await mongoose.models[this.modelName]
-      .find(condSQL)
-      .limit(limit)
-      .skip((page - 1) * limit);
+    if (paging) {
+      const { page, limit } = paging;
+      rows = await mongoose.models[this.modelName]
+        .find(condSQL)
+        .limit(limit)
+        .skip((page - 1) * limit);
+    } else {
+      rows = await mongoose.models[this.modelName]
+        .find(condSQL)
+    }
 
     return rows;
   }

@@ -16,6 +16,7 @@ export const CategoryUpdateSchema = z.object({
 });
 
 export const CategoryCondScheme = z.object({
+  id: z.array(z.string()).optional(),
   name: z.string().optional(),
   status: z.nativeEnum(EModelStatus).optional(),
 });

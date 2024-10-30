@@ -1,10 +1,10 @@
 import axios from "axios";
 import { IBrandQueryRepository, ICategoryQueryRepository } from "../../interface";
 import { Brand, BrandSchema, Category, CategorySchema } from "../../model";
+import { BrandCondDTO, CategoryCondDTO } from "../../model/dto";
 
 export class RPCCategoryRepository implements ICategoryQueryRepository {
-  constructor(private readonly baseURL: string) {}
-
+  constructor(private readonly baseURL: string) { }
   async get(id: string): Promise<Category | null> {
     try {
       const { data } = await axios.get(`${this.baseURL}/categories/${id}`);
@@ -15,11 +15,23 @@ export class RPCCategoryRepository implements ICategoryQueryRepository {
       return null;
     }
   }
+
+  async list(cond: CategoryCondDTO): Promise<Category[]> {
+    try {
+      const { data } = await axios.get(`${this.baseURL}/rpc/categories`, { data: cond });
+      const categories = data.data.map((item: any) => CategorySchema.parse(item));
+
+      return categories;
+    } catch (error) {
+      return [];
+    }
+  }
+
 }
 
 export class RPCBrandRepository implements IBrandQueryRepository {
-  constructor(private readonly baseURL: string) {}
-  
+  constructor(private readonly baseURL: string) { }
+
   async get(id: string): Promise<Brand | null> {
     try {
       const { data } = await axios.get(`${this.baseURL}/brands/${id}`);
@@ -30,5 +42,16 @@ export class RPCBrandRepository implements IBrandQueryRepository {
       return null;
     }
   }
-  
+
+  async list(cond: BrandCondDTO): Promise<Brand[]> {
+    try {
+      const { data } = await axios.get(`${this.baseURL}/rpc/brands`, { data: cond });
+      const brands = data.data.map((item: any) => BrandSchema.parse(item));
+
+      return brands;
+    } catch (error) {
+      return [];
+    }
+  }
+
 }

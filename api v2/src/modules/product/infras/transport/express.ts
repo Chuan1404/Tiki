@@ -2,13 +2,15 @@ import { Request, Response } from "express";
 import { IBrandQueryRepository, ICategoryQueryRepository, IProductUseCase } from "../../interface";
 import { PagingDTOSchema } from "../../../../share/model/paging";
 import { ProductCondScheme, ProductCreateDTO } from "../../model/dto";
+import { ProductSchema } from "../../model";
+import { entitiesToHashMap } from "../../../../share/utils";
 
 export class ProductHttpService {
   constructor(
     private readonly useCase: IProductUseCase,
     private readonly categoryRepository: ICategoryQueryRepository,
     private readonly brandRepository: IBrandQueryRepository
-  ) {}
+  ) { }
 
   async create(req: Request, res: Response) {
     try {
@@ -71,11 +73,31 @@ export class ProductHttpService {
       return;
     }
 
-    let cond = ProductCondScheme.parse(req.query);
-    let result = await this.useCase.list(cond, paging);
+    const cond = ProductCondScheme.parse(req.query);
+    let products = await this.useCase.list(cond, paging);
+
+    // get ids
+    const brandIds: string[] = products
+      .map(item => item.brandId)
+      .filter(brandId => brandId !== undefined);
+    const categoryIds: string[] = products.map(item => item.categoryId)
+
+
+    // fetch data and convert to hashMap
+    const brands = await this.brandRepository.list({ id: brandIds })
+    const brandsMap = entitiesToHashMap(brands)
+
+    const categories = await this.categoryRepository.list({ id: categoryIds })
+    const categoriesMap = entitiesToHashMap(categories)
+
+    // map data
+    products = products.map(item => ({
+      ...item, brand: item.brandId ? brandsMap[item.brandId] : null,
+      category: categoriesMap[item.categoryId]
+    }))
 
     res.status(200).json({
-      data: result,
+      data: products,
       paging,
     });
   }

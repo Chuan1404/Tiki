@@ -29,6 +29,16 @@ export const ProductCondScheme = z.object({
   brandId: string().optional(),
 });
 
+export const CategoryCondScheme = z.object({
+  id: z.array(z.string())
+});
+export const BrandCondScheme = z.object({
+  id: z.array(z.string())
+});
+
 export type ProductCreateDTO = z.infer<typeof ProductCreateSchema>;
 export type ProductUpdateDTO = z.infer<typeof ProductUpdateSchema>;
 export type ProductCondDTO = z.infer<typeof ProductCondScheme>;
+
+export type BrandCondDTO = z.infer<typeof BrandCondScheme>
+export type CategoryCondDTO = z.infer<typeof CategoryCondScheme>

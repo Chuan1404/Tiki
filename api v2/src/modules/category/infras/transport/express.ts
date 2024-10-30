@@ -64,6 +64,15 @@ export class CategoryHttpService {
     });
   }
 
+  async findMany(req: Request, res: Response) {
+    let cond = CategoryCondScheme.parse(req.query);
+    let result = await this.useCase.list(cond);
+
+    res.status(200).json({
+      data: result,
+    });
+  }
+
   async delete(req: Request, res: Response) {
     const { id } = req.params;
 

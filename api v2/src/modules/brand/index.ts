@@ -18,6 +18,7 @@ export const setUpBrandModule = () => {
   router.post("/brands", httpService.create.bind(httpService));
   router.patch("/brands/:id", httpService.update.bind(httpService));
   router.delete("/brands/:id", httpService.delete.bind(httpService));
-
+ 
+  router.get("/rpc/brands", httpService.findMany.bind(httpService))
   return router;
 };

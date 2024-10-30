@@ -5,7 +5,7 @@ import { PagingDTO } from "../model/paging";
 export interface IQueryRepository<Entity, Cond> {
   get(id: string): Promise<Entity | null>;
   findByCond(cond: Cond): Promise<Entity | null>;
-  list(cond: Cond, paging: PagingDTO): Promise<Entity[] | null>;
+  list(cond: Cond, paging?: PagingDTO): Promise<Entity[] | null>;
 }
 
 export interface ICommandRepository<Entity, UpdateDTO> {

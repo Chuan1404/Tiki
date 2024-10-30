@@ -14,6 +14,6 @@ export interface IBrandUseCase {
   create(data: BrandCreateDTO): Promise<string>;
   update(id: string, data: BrandUpdateDTO): Promise<boolean>;
   get(id: string): Promise<Brand | null>;
-  list(cond: BrandCondDTO, paging: PagingDTO): Promise<Brand[] | null>;
+  list(cond: BrandCondDTO, paging?: PagingDTO): Promise<Brand[]>;
   delete(id: string, isHard?: boolean): Promise<boolean>;
 }

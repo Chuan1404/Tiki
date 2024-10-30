@@ -82,7 +82,7 @@ export class BrandUsecase implements IBrandUseCase {
   async list(
     cond: BrandCondDTO,
     paging: PagingDTO
-  ): Promise<Brand[] | null> {
+  ): Promise<Brand[]> {
     let data = await this.repository.list(cond, paging);
 
     return data ? data.map((item) => BrandSchema.parse(item)) : [];

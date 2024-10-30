@@ -75,8 +75,8 @@ export class CategoryUsecase implements ICategoryUseCase {
   }
   async list(
     cond: CategoryCondDTO,
-    paging: PagingDTO
-  ): Promise<Category[] | null> {
+    paging?: PagingDTO
+  ): Promise<Category[]> {
     let data = await this.repository.list(cond, paging);
 
     return data ? data.map((item) => CategorySchema.parse(item)) : [];
