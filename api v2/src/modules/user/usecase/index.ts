@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
 import { v7 } from "uuid";
 import { IComparePassword, IHashPassword } from "../../../share/interface";
+import { EModelStatus, EUserRole } from "../../../share/model/enums";
 import {
   ErrDataExisted,
   ErrDataInvalid,
   ErrDataNotFound,
 } from "../../../share/model/errors";
-import { EModelStatus, EUserRole } from "../../../share/model/enums";
 import { PagingDTO } from "../../../share/model/paging";
 import { IUserReposity, IUserUseCase } from "../interface";
 import { User, UserSchema } from "../model";
@@ -17,6 +17,7 @@ import {
   UserLoginDTO,
   UserLoginSchema,
   UserPayloadDTO,
+  UserTokenDTO,
   UserUpdateDTO,
   UserUpdateSchema,
 } from "../model/dto";
@@ -31,7 +32,7 @@ export class UserUsecase implements IUserUseCase {
     private readonly repository: IUserReposity,
     private readonly passwordHasher: IHashPassword,
     private readonly comparePassword: IComparePassword
-  ) {}
+  ) { }
 
   async create(data: UserCreateDTO): Promise<string> {
     const {
@@ -120,7 +121,7 @@ export class UserUsecase implements IUserUseCase {
     throw new Error("Method not implemented.");
   }
 
-  async login(data: UserLoginDTO): Promise<string> {
+  async login(data: UserLoginDTO): Promise<UserTokenDTO> {
     let { success, data: parsedData } = UserLoginSchema.safeParse(data);
 
     if (!success) {
@@ -164,7 +165,12 @@ export class UserUsecase implements IUserUseCase {
       expiresIn: refreshTokenLife,
     });
 
-    return accessToken;
+    const responseData: UserTokenDTO = {
+      accessToken,
+      refreshToken
+    }
+
+    return responseData
   }
 
   async verifyToken(token: string): Promise<UserPayloadDTO | null> {

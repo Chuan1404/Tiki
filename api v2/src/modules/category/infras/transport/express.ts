@@ -4,7 +4,7 @@ import { PagingDTOSchema } from "../../../../share/model/paging";
 import { CategoryCondScheme } from "../../model/dto";
 
 export class CategoryHttpService {
-  constructor(private readonly useCase: ICategoryUseCase) {}
+  constructor(private readonly useCase: ICategoryUseCase) { }
 
   async create(req: Request, res: Response) {
     try {
@@ -74,12 +74,17 @@ export class CategoryHttpService {
   }
 
   async delete(req: Request, res: Response) {
-    const { id } = req.params;
+    try {
+      const { id } = req.params;
 
-    await this.useCase.delete(id);
+      await this.useCase.delete(id);
 
-    res.status(200).json({
-      data: id,
-    });
+      res.status(200).json({
+        data: id,
+      });
+    } catch (error) {
+      res.status(400).json({ error: (error as Error).message });
+    }
+
   }
 }

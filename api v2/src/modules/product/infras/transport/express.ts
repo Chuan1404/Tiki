@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
-import { IBrandQueryRepository, ICategoryQueryRepository, IProductUseCase } from "../../interface";
 import { PagingDTOSchema } from "../../../../share/model/paging";
-import { ProductCondScheme, ProductCreateDTO } from "../../model/dto";
-import { ProductSchema } from "../../model";
 import { entitiesToHashMap } from "../../../../share/utils";
+import { IBrandQueryRepository, ICategoryQueryRepository, IProductUseCase } from "../../interface";
+import { ProductCondScheme, ProductCreateDTO } from "../../model/dto";
 
 export class ProductHttpService {
   constructor(

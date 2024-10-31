@@ -4,6 +4,7 @@ import { UserRepository } from "./infras/repository";
 import { init, modelName } from "./infras/repository/dto";
 import { UserHttpService } from "./infras/transport/express";
 import { UserUsecase } from "./usecase";
+import { authToken } from "../../share/middleware/OAuth2";
 
 export const setUpUserModule = () => {
   init();
@@ -17,16 +18,16 @@ export const setUpUserModule = () => {
 
   const router = Router();
 
-  router.get("/users/profile", httpService.profile.bind(httpService));
-  router.get("/users", httpService.list.bind(httpService));
+  router.get("/users/profile", authToken, httpService.profile.bind(httpService));
+  router.get("/users", authToken, httpService.list.bind(httpService));
 
   router.post("/users/login", httpService.login.bind(httpService));
   router.post("/users/register", httpService.create.bind(httpService));
-  router.post("/users", httpService.create.bind(httpService));
+  router.post("/users", authToken, httpService.create.bind(httpService));
 
-  router.patch("/users/:id", httpService.update.bind(httpService));
+  router.patch("/users/:id", authToken, httpService.update.bind(httpService));
 
-  router.delete("/users/:id", httpService.delete.bind(httpService));
+  router.delete("/users/:id", authToken, httpService.delete.bind(httpService));
 
   return router;
 };

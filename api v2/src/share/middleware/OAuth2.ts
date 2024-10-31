@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { UserPayloadSchema } from "../../modules/user/model/dto";
-import { ErrUnAuthentication } from "../errors";
 import { EUserRole } from "../model/enums";
+import { ErrUnAuthentication } from "../model/errors";
 
 declare global {
   namespace Express {
