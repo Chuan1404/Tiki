@@ -1,24 +1,40 @@
 import { Request, Response } from "express";
 import { PagingDTOSchema } from "../../../../share/model/paging";
 import { ICartUseCase } from "../../interface";
-import { CartCondScheme, CartDeleteDTO, CartUpdateDTO } from "../../model/dto";
+import { CartCondScheme } from "../../model/dto";
 
 export class CartHttpService {
   constructor(private readonly useCase: ICartUseCase) {}
 
-  async update(req: Request, res: Response) {
-    const { productId } = req.params;
-
-    let data: CartUpdateDTO = {
-      productId,
-      userId: "123",
-      quantity: req.body.quantity,
-    };
-
+  async create(req: Request, res: Response) {
     try {
-      await this.useCase.createOrupdate(data);
+      const result = await this.useCase.create(req.body);
+      res.status(201).json({ data: result });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ error: (error as Error).message });
+    }
+  }
+
+  async get(req: Request, res: Response) {
+    const { id } = req.params;
+    try {
+      let cart = await this.useCase.get(id);
+
       res.status(200).json({
-        data: productId,
+        data: cart,
+      });
+    } catch (error) {
+      res.status(400).json({ error: (error as Error).message });
+    }
+  }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    try {
+      await this.useCase.update(id, req.body);
+      res.status(200).json({
+        data: id,
       });
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });
@@ -39,30 +55,22 @@ export class CartHttpService {
       return;
     }
 
-    let cond = CartCondScheme.parse(req.query);
-    let result = await this.useCase.list(cond, paging);
+    const cond = CartCondScheme.parse(req.query);
+    let carts = await this.useCase.list(cond, paging);
 
     res.status(200).json({
-      data: result,
+      data: carts,
       paging,
     });
   }
 
   async delete(req: Request, res: Response) {
-    const { productId } = req.params;
+    const { id } = req.params;
 
-    let data: CartDeleteDTO = {
-      productId,
-      userId: "",
-    };
+    await this.useCase.delete(id, true);
 
-    try {
-      await this.useCase.delete(data);
-      res.status(200).json({
-        data: productId,
-      });
-    } catch (error) {
-      res.status(400).json({ error: (error as Error).message });
-    }
+    res.status(200).json({
+      data: id,
+    });
   }
 }

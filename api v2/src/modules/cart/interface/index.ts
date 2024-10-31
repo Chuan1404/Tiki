@@ -3,15 +3,17 @@ import { PagingDTO } from "../../../share/model/paging";
 import { Cart } from "../model";
 import {
   CartCondDTO,
-  CartDeleteDTO,
+  CartCreateDTO,
   CartUpdateDTO
 } from "../model/dto";
 
 export interface ICartReposity
-  extends IRepository<Cart, CartCondDTO, CartUpdateDTO> {}
+  extends IRepository<Cart, CartCondDTO, CartUpdateDTO> { }
 
 export interface ICartUseCase {
-  createOrupdate(data: CartUpdateDTO): Promise<string>;
+  create(data: CartCreateDTO): Promise<string>;
+  update(id: string, data: CartUpdateDTO): Promise<boolean>;
+  get(id: string): Promise<Cart | null>;
   list(cond: CartCondDTO, paging: PagingDTO): Promise<Cart[] | null>;
-  delete(data: CartDeleteDTO): Promise<boolean>;
+  delete(id: string, isHard: boolean): Promise<boolean>;
 }

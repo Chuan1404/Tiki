@@ -1,11 +1,17 @@
 import { v7 } from "uuid";
-import { ErrDataNotFound } from "../../../share/model/errors";
+import { EModelStatus } from "../../../share/model/enums";
+import {
+  ErrDataExisted,
+  ErrDataInvalid,
+  ErrDataNotFound,
+} from "../../../share/model/errors";
 import { PagingDTO } from "../../../share/model/paging";
 import { ICartReposity, ICartUseCase } from "../interface";
 import { Cart, CartSchema } from "../model";
 import {
   CartCondDTO,
-  CartDeleteDTO,
+  CartCreateDTO,
+  CartCreateSchema,
   CartUpdateDTO,
   CartUpdateSchema,
 } from "../model/dto";
@@ -13,7 +19,42 @@ import {
 export class CartUsecase implements ICartUseCase {
   constructor(private readonly repository: ICartReposity) {}
 
-  async createOrupdate(data: CartUpdateDTO): Promise<string> {
+  async create(data: CartCreateDTO): Promise<string> {
+    const {
+      success,
+      data: parsedData,
+      error,
+    } = CartCreateSchema.safeParse(data);
+
+    if (!success) {
+      throw new Error(error.message);
+    }
+
+    const isExisted = await this.repository.findByCond({
+      userId: parsedData.userId,
+      productId: parsedData.productId
+    });
+
+    if (isExisted) {
+      throw ErrDataExisted;
+    }
+
+    let newId = v7();
+    const Cart: Cart = {
+      id: newId,
+      productId: parsedData.productId,
+      quantity: parsedData.quantity,
+      userId: parsedData.userId,
+      status: EModelStatus.ACTIVE,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    await this.repository.insert(Cart);
+
+    return newId;
+  }
+  async update(id: string, data: CartUpdateDTO): Promise<boolean> {
     const {
       success,
       data: parsedData,
@@ -21,50 +62,41 @@ export class CartUsecase implements ICartUseCase {
     } = CartUpdateSchema.safeParse(data);
 
     if (!success) {
-      throw new Error(error.message);
+      throw ErrDataInvalid;
     }
 
-    let productId = parsedData.productId;
-    let userId = parsedData.userId;
-    let quantity = parsedData.quantity;
+    let Cart = await this.repository.get(id);
 
-    let cart = await this.repository.findByCond({
-      productId,
-      userId,
-    });
-    let id;
-
-    if (cart) {
-      await this.repository.update(cart.id, { quantity });
-      id = cart.id;
-    } else {
-      id = v7();
-      let insertData: Cart = {
-        id,
-        productId: parsedData.productId as string,
-        userId: parsedData.userId as string,
-        quantity: parsedData.quantity,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      await this.repository.insert(insertData);
+    if (!Cart || Cart.status === EModelStatus.DELETED) {
+      throw ErrDataInvalid;
     }
 
-    return id;
+    return await this.repository.update(id, parsedData);
   }
+  async get(id: string): Promise<Cart | null> {
+    let data = await this.repository.get(id);
 
-  async list(cond: CartCondDTO, paging: PagingDTO): Promise<Cart[] | null> {
+    if (!data || data.status === EModelStatus.DELETED) {
+      throw ErrDataNotFound;
+    }
+
+    return CartSchema.parse(data);
+  }
+  async list(
+    cond: CartCondDTO,
+    paging: PagingDTO
+  ): Promise<Cart[]> {
     let data = await this.repository.list(cond, paging);
 
     return data ? data.map((item) => CartSchema.parse(item)) : [];
   }
 
-  async delete(data: CartDeleteDTO): Promise<boolean> {
-    let cart = await this.repository.findByCond(data);
-    if (!cart) {
+  async delete(id: string, isHard: boolean = false): Promise<boolean> {
+    let Cart = await this.repository.get(id);
+    if (!Cart || Cart.status === EModelStatus.DELETED) {
       throw ErrDataNotFound;
     }
 
-    return await this.repository.delete(cart.id, true);
+    return await this.repository.delete(id, isHard);
   }
 }
