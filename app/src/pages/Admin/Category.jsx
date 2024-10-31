@@ -9,8 +9,6 @@ import {
   Typography,
 } from "antd";
 import { useEffect, useState } from "react";
-import { userService } from "services";
-import categoryService from "services/categoryService";
 import { queryString } from "utils";
 
 const EditableCell = ({

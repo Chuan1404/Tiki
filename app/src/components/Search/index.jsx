@@ -4,9 +4,9 @@ import Inputs from "components/Inputs";
 import { useQuery } from "hooks";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { productService } from "services";
 import { queryObject, queryString } from "utils";
 import "./style.scss";
+import { productService } from "services";
 
 export default function Search({ isFocus, setIsFocus }) {
   const [keys, setKeys] = useState("");
