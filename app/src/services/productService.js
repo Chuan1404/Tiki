@@ -2,11 +2,10 @@ import { API } from "constants";
 
 const productService = {
   getProduct(query = "") {
-    return fetch(`${API}/product?${query}`).then((res) => res.json());
+    return fetch(`${API}/products?${query}`).then((res) => res.json());
   },
   addProduct(form) {
-    console.log(form);
-    return fetch(`${API}/product/add`, {
+    return fetch(`${API}/products`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -15,13 +14,13 @@ const productService = {
     }).then((res) => res.json());
   },
   updateProduct(id, form) {
-    return fetch(`${API}/product/update/${id}`, {
+    return fetch(`${API}/products/${id}`, {
       body: JSON.stringify(form),
-      method: "PUT",
+      method: "PATCH",
     });
   },
   deleteProduct(id) {
-    return fetch(`${API}/product/delete/${id}`, {
+    return fetch(`${API}/products/${id}`, {
       method: "DELETE",
     });
   },

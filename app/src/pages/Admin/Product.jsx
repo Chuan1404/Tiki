@@ -149,7 +149,7 @@ const Product = () => {
       console.log("Validate Failed:", errInfo);
     }
   };
-  console.log(products)
+
   const columns = [
     {
       title: "ID",
@@ -284,7 +284,7 @@ const Product = () => {
     JSON.stringify(tableParams.filters),
   ]);
   return (
-    <Form form={form} component={false}>
+    <Form form={form} component={false} handleOk={handleOk}>
       <Button
         style={{ marginBottom: 10 }}
         type="primary"

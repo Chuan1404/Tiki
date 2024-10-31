@@ -2,7 +2,16 @@ import { API } from "constants";
 
 const authService = {
     login(form) {
-        return fetch(`${API}/auth/login`, {
+        return fetch(`${API}/users/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(form)
+        }).then(res => res.json());
+    },
+    register(form) {
+        return fetch(`${API}/users/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -1,15 +1,15 @@
 import { ClosePopUp } from 'components';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeLogin } from 'store/slices/pageSlice';
 import EmailForm from './EmailForm';
-import NumberForm from './NumberForm';
+import RegisterForm from './RegisterForm';
 import './style.scss';
 
 
 
 export default function LoginPopup() {
-    let [formStyle, setFormStyle] = useState(true);
+    const [formStyle, setFormStyle] = useState(true);
     const dispatch = useDispatch()
 
     const changeForm = (e) => {
@@ -22,9 +22,9 @@ export default function LoginPopup() {
     return (
         <div className='loginPopup'>
             <div className="loginPopup_left">
-                {formStyle && <NumberForm
+                {formStyle && <EmailForm
                     setActive={changeForm} />}
-                {!formStyle && <EmailForm
+                {!formStyle && <RegisterForm
                     setActive={changeForm} />}
             </div>
             <div className="loginPopup_right">

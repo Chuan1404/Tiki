@@ -1,30 +1,29 @@
-import Inputs from 'components/Inputs';
+import { Inputs } from 'components';
 import { useForm } from 'hooks';
 import { useDispatch } from 'react-redux';
 import { closeLogin } from 'store/slices/pageSlice';
 
-export default function EmailForm({ setActive }) {
-    const dispatch = useDispatch();
+export default function RegisterForm({ setActive }) {
+    const dispatch = useDispatch()
     const { form, register } = useForm({
         email: '',
         password: '',
+        confirmPassword: '',
         role: 'USER'
     })
+
     const submit = () => {
         dispatch({
-            type: 'LOGIN',
+            type: 'REGISTER',
             payload: form
         })
         dispatch(closeLogin())
     }
+
     return (
         <div className='emailForm'>
-            {/* <div className="emailForm_back">
-                <GrPrevious onClick={setActive} color='rgb(131, 131, 131)' />
-            </div> */}
             <div className="emailForm_content">
-                <h3>Login</h3>
-                <p>Input your email and password</p>
+                <h3>Register</h3>
             </div>
             <div className='emailForm_form'>
                 <Inputs
@@ -32,16 +31,23 @@ export default function EmailForm({ setActive }) {
                     placeholder='Email'
                     {...register('email')} />
                 <Inputs
+                    type='text'
+                    placeholder='Name'
+                    {...register('name')} />
+                <Inputs
                     type='password'
                     placeholder='Password'
+                    {...register('confirmPassword')} />
+                <Inputs
+                    type='password'
+                    placeholder='Confirm password'
                     {...register('password')} />
             </div>
             <div className="form_submit">
                 <button onClick={submit}>Submit</button>
-                <div>
-                    <a href="">Forget passget</a> <br />
-                    <span>Don't have account?</span><a onClick={setActive}>Register</a></div>
+                <a href="" onClick={setActive}>Already have account? Login</a>
             </div>
+
         </div>
     )
 }

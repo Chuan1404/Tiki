@@ -1,7 +1,7 @@
 import { Loading, Search } from 'components';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { openLogin } from 'store/slices/pageSlice';
 import './style.scss';
@@ -13,7 +13,6 @@ export default function Header() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-
     const openPopup = () => {
         if (!isLogin) dispatch(openLogin());
     }
@@ -22,20 +21,20 @@ export default function Header() {
         if (!token) openPopup()
         else navigate('/checkout')
     }
-    if (user.isLogin && isNaN(cart?.length)) return <Loading />
+    if (isLogin && isNaN(cart?.length)) return <Loading />
     return (
         <header className={`header ${isFocus && 'active'}`}>
             <div className="container header-container">
-                {/* <div className="logo">
+                <div className="logo">
                     <Link to='/'><img src="/imgs/logo.png" alt="" /></Link>
-                </div> */}
+                </div>
                 <div className="header_search">
                     <Search isFocus={isFocus} setIsFocus={setIsFocus} />
                 </div>
                 <div className="users">
                     <div className="users_item" onClick={openPopup}>
                         <img src="/imgs/user.png" alt="" />
-                        <span>{user.data?.name}</span>
+                        <span>{user?.name}</span>
                     </div>
                     <div className="users_item" onClick={openCart}>
                         <img src="/imgs/cart.png" alt="" />

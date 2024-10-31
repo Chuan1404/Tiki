@@ -2,11 +2,10 @@ import { API } from "constants";
 
 const categoryService = {
   getCategory(query = "") {
-    return fetch(`${API}/category?${query}`).then((res) => res.json());
+    return fetch(`${API}/categories?${query}`).then((res) => res.json());
   },
   addCategory(form) {
-    console.log(form);
-    return fetch(`${API}/category/add`, {
+    return fetch(`${API}/categories`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -15,13 +14,13 @@ const categoryService = {
     }).then((res) => res.json());
   },
   updateCategory(id, form) {
-    return fetch(`${API}/category/update/${id}`, {
+    return fetch(`${API}/categories/${id}`, {
       body: JSON.stringify(form),
-      method: "PUT",
+      method: "PATCH",
     });
   },
   deleteCategory(id) {
-    return fetch(`${API}/category/delete/${id}`, {
+    return fetch(`${API}/categories/${id}`, {
       method: "DELETE",
     });
   },

@@ -2,26 +2,24 @@ import {
   Button,
   Form,
   Input,
-  InputNumber,
   Modal,
   Popconfirm,
   Table,
   Typography,
 } from "antd";
 import { useEffect, useState } from "react";
+import categoryService from "services/categoryService";
 import { queryString } from "utils";
 
 const EditableCell = ({
   editing,
   dataIndex,
   title,
-  inputType,
   record,
   index,
   children,
   ...restProps
 }) => {
-  const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
   return (
     <td {...restProps}>
       {editing ? (
@@ -30,6 +28,7 @@ const EditableCell = ({
           style={{
             margin: 0,
           }}
+          initialValue={record.name}
           rules={[
             {
               required: true,
@@ -37,7 +36,7 @@ const EditableCell = ({
             },
           ]}
         >
-          {inputNode}
+          <Input />
         </Form.Item>
       ) : (
         children
@@ -45,6 +44,7 @@ const EditableCell = ({
     </td>
   );
 };
+
 const Category = () => {
   const [form] = Form.useForm();
   const [addForm] = Form.useForm();
@@ -64,7 +64,7 @@ const Category = () => {
   const [categories, setCategories] = useState([]);
   const [open, setOpen] = useState(false);
 
-  const handleOk = async () => {
+  const handleAdd = async () => {
     let form = addForm.getFieldsValue();
     let res = await categoryService.addCategory(form);
     if (!res.error) {
@@ -79,7 +79,7 @@ const Category = () => {
       );
       updatedRes.data = updatedRes.data?.map((item) => ({
         ...item,
-        key: item._id,
+        key: item.id,
       }));
       setCategories(updatedRes);
 
@@ -124,7 +124,7 @@ const Category = () => {
         });
 
         let res = await categoryService.updateCategory(
-          item._id,
+          item.id,
           form.getFieldsValue()
         );
         if (!res.error) {
@@ -150,9 +150,9 @@ const Category = () => {
   const columns = [
     {
       title: "ID",
-      dataIndex: "_id",
-      width: "10%",
-      editable: true,
+      dataIndex: "id",
+      width: "30%",
+      editable: false,
     },
     {
       title: "name",
@@ -196,7 +196,7 @@ const Category = () => {
         categories.data?.length >= 1 ? (
           <Popconfirm
             title="Sure to delete?"
-            onConfirm={() => handleDelete(record.key)}
+            onConfirm={() => handleDelete(record.id)}
           >
             <a>Delete</a>
           </Popconfirm>
@@ -268,7 +268,7 @@ const Category = () => {
       <Modal
         open={open}
         title="Add category"
-        onOk={handleOk}
+        onOk={handleAdd}
         onCancel={() => setOpen(false)}
       >
         <Form.Item

@@ -6,13 +6,13 @@ import {
   ProductAccordion,
   Skeleton,
 } from "components";
-import { API } from "constants";
 import "flickity/dist/flickity.css";
 import { useQuery } from "hooks";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router";
 import { productService } from "services";
+import categoryService from "services/categoryService";
 import { queryObject, queryString } from "utils";
 import "./style.scss";
 
@@ -30,7 +30,7 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       setFetching(true);
-      let response = await fetch(`${API}/category`).then((res) => res.json());
+      const response = await categoryService.getCategory()
       setCategories(response.data);
       setFetching(false);
     })();
