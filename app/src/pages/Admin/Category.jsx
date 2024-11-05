@@ -46,7 +46,7 @@ const EditableCell = ({
 };
 
 const Category = () => {
-  const [form] = Form.useForm();
+  const [updateForm] = Form.useForm();
   const [addForm] = Form.useForm();
   const [editingKey, setEditingKey] = useState("");
 
@@ -64,39 +64,18 @@ const Category = () => {
   const [categories, setCategories] = useState([]);
   const [open, setOpen] = useState(false);
 
-  const handleAdd = async () => {
-    let form = addForm.getFieldsValue();
-    let res = await categoryService.addCategory(form);
-    if (!res.error) {
-      setOpen(false);
-      addForm.resetFields();
-
-      const updatedRes = await categoryService.getCategory(
-        queryString({
-          limit: tableParams.pagination.pageSize || 10,
-          page: tableParams.pagination.current || 1,
-        })
-      );
-      updatedRes.data = updatedRes.data?.map((item) => ({
-        ...item,
-        key: item.id,
-      }));
-      setCategories(updatedRes);
-
-      setTableParams({
-        ...tableParams,
-        pagination: {
-          ...tableParams.pagination,
-          total: updatedRes.total,
-        },
-      });
-    }
-  };
 
   const isEditing = (record) => record.key === editingKey;
+  const edit = (record) => {
+    updateForm.setFieldsValue({
+      ...record,
+    });
+    setEditingKey(record.key);
+  };
 
   const handleDelete = async (key) => {
-    const newData = categories.data?.filter((item) => item.key !== key);
+    console.log(key)
+    const newData = categories.data?.filter((item) => item.id !== key);
     let res = await categoryService.deleteCategory(key);
     if (!res.error) {
       setCategories({
@@ -105,17 +84,12 @@ const Category = () => {
       });
     }
   };
-  const edit = (record) => {
-    form.setFieldsValue({
-      ...record,
-    });
-    setEditingKey(record.key);
-  };
-  const save = async (key) => {
+  const handleEdit = async (key) => {
     try {
-      const row = await form.validateFields();
+      const row = await updateForm.validateFields();
       const newData = [...categories.data];
-      const index = newData.findIndex((item) => key === item.key);
+      const index = newData.findIndex((item) => key === item.id);
+      console.log(index)
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, {
@@ -125,27 +99,33 @@ const Category = () => {
 
         let res = await categoryService.updateCategory(
           item.id,
-          form.getFieldsValue()
+          updateForm.getFieldsValue()
         );
+        setEditingKey("");
         if (!res.error) {
           setCategories({
             ...categories,
             data: newData,
           });
-          setEditingKey("");
         }
-      } else {
-        newData.push(row);
-        setCategories({
-          ...categories,
-          data: newData,
-        });
-        setEditingKey("");
       }
     } catch (errInfo) {
       console.log("Validate Failed:", errInfo);
     }
   };
+  const handleAdd = async () => {
+    let updateForm = addForm.getFieldsValue();
+    let res = await categoryService.addCategory(updateForm);
+    if (!res.error) {
+      setOpen(false);
+      addForm.resetFields();
+    }
+    else {
+      alert(res.error)
+    }
+  };
+
+
 
   const columns = [
     {
@@ -168,7 +148,7 @@ const Category = () => {
         return editable ? (
           <span>
             <Typography.Link
-              onClick={() => save(record.key)}
+              onClick={() => handleEdit(record.id)}
               style={{
                 marginInlineEnd: 8,
               }}
@@ -238,22 +218,33 @@ const Category = () => {
           page: tableParams.pagination.current || 1,
         })
       );
-      res.data = res.data?.map((item) => ({ ...item, key: item._id }));
-      setTableParams({
-        ...tableParams,
-        pagination: {
-          ...tableParams.pagination,
-          total: res.total,
-        },
-      });
-      setCategories(res);
+      if (!res.error) {
+        res.data = res.data?.map((item) => ({ ...item, key: item._id }));
+        setTableParams({
+          ...tableParams,
+          pagination: {
+            ...tableParams.pagination,
+            total: res.total,
+          },
+        });
+        setCategories(res);
+      }
+      else {
+        alert(res.error)
+      }
+
     })();
+
+    return () => {
+
+    }
   }, [
     tableParams.pagination?.current,
     tableParams.pagination?.pageSize,
     tableParams?.sortOrder,
     tableParams?.sortField,
     JSON.stringify(tableParams.filters),
+    addForm.getFieldValue()
   ]);
 
   return (
@@ -284,19 +275,22 @@ const Category = () => {
           <Input />
         </Form.Item>
       </Modal>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        dataSource={categories.data}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        pagination={tableParams.pagination}
-        onChange={handleTableChange}
-      />
+      <Form form={updateForm} component={false}>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          dataSource={categories.data}
+          columns={mergedColumns}
+          rowClassName="editable-row"
+          pagination={tableParams.pagination}
+          onChange={handleTableChange}
+        />
+      </Form>
+
     </Form>
   );
 };

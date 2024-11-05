@@ -15,9 +15,12 @@ const categoryService = {
   },
   updateCategory(id, form) {
     return fetch(`${API}/categories/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(form),
       method: "PATCH",
-    });
+    }).then((res) => res.json());
   },
   deleteCategory(id) {
     return fetch(`${API}/categories/${id}`, {
