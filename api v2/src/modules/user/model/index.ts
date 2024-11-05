@@ -13,4 +13,5 @@ export const UserSchema = z.object({
   updatedAt: z.date(),
 });
 
+
 export type User = z.infer<typeof UserSchema>;

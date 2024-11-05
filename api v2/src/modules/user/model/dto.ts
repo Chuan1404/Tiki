@@ -37,6 +37,7 @@ export type UserTokenDTO = {
   accessToken: string,
   refreshToken: string
 }
+
 export type UserCreateDTO = z.infer<typeof UserCreateSchema>;
 export type UserUpdateDTO = z.infer<typeof UserUpdateSchema>;
 export type UserCondDTO = z.infer<typeof UserCondScheme>;

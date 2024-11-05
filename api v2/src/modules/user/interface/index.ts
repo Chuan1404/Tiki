@@ -1,7 +1,8 @@
 import { IRepository } from "../../../share/interface";
 import { PagingDTO } from "../../../share/model/paging";
-import { User } from "../model";
+import { RefreshToken, User } from "../model";
 import {
+  RefreshTokenCondDTO,
   UserCondDTO,
   UserCreateDTO,
   UserLoginDTO,
@@ -11,7 +12,7 @@ import {
 } from "../model/dto";
 
 export interface IUserReposity
-  extends IRepository<User, UserCondDTO, UserUpdateDTO> {}
+  extends IRepository<User, UserCondDTO, UserUpdateDTO> { }
 
 export interface IUserUseCase {
   create(data: UserCreateDTO): Promise<string>;
@@ -23,3 +24,9 @@ export interface IUserUseCase {
   login(data: UserLoginDTO): Promise<UserTokenDTO>;
   verifyToken(token: string): Promise<UserPayloadDTO | null>
 }
+
+export interface IRefreshTokenQueryRepository {
+  create(cond: RefreshTokenCondDTO): Promise<RefreshToken>;
+  refresh(token: string): Promise<RefreshToken>
+}
+

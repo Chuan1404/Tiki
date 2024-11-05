@@ -78,6 +78,7 @@ export class UserHttpService {
   async login(req: Request, res: Response) {
     try {
       let token = await this.useCase.login(req.body);
+
       res.status(200).json({
         data: token,
       });
@@ -103,6 +104,18 @@ export class UserHttpService {
 
       const user = await this.useCase.get(payload?.id!);
       res.status(400).json({ data: user });
+    } catch (error) {
+      res.status(400).json({ error: (error as Error).message });
+    }
+  }
+
+  async refreshToken(req: Request, res: Response) {
+    const { id } = req.params;
+    try {
+      await this.useCase.update(id, req.body);
+      res.status(200).json({
+        data: id,
+      });
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });
     }
