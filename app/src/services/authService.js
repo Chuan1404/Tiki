@@ -22,13 +22,13 @@ const authService = {
 
     refreshToken() {
         const token = JSON.parse(localStorage.getItem('token'))
-        return fetch(`${API}/users/refresh-token`, {
+        return fetch(`${API}/refresh-token/refresh`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                refreshToken: token.refreshToken
+                token: token.refreshToken
             })
         }).then(res => res.json())
     }

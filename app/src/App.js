@@ -7,7 +7,7 @@ import {
   NotFound,
   ProductDetail,
 } from "pages";
-import Category from "pages/Admin/Category";
+import Category from "pages/Admin/category";
 import Dashboard from "pages/Admin/Dashboard";
 import Order from "pages/Admin/Order";
 import Product from "pages/Admin/Product";

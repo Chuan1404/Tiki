@@ -13,7 +13,9 @@ const callApiWithToken = async (url, options = {}) => {
     let res = await fetch(url, options)
     if (res.status === 401) {
         const refreshToken = await authService.refreshToken();
-        token.accessToken = refreshToken.data.accessToken;
+        console.log(refreshToken)
+
+        token.accessToken = refreshToken.data;
         localStorage.setItem('token', JSON.stringify(token))
 
         options = {
