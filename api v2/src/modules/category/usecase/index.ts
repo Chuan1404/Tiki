@@ -56,7 +56,7 @@ export class CategoryUsecase implements ICategoryUseCase {
       throw new Error(error.message);
     }
 
-    let category = await this.repository.get(id);
+    const category = await this.repository.get(id);
 
     if (!category || category.status === EModelStatus.DELETED) {
       throw ErrDataInvalid;

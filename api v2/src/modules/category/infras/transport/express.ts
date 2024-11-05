@@ -11,7 +11,6 @@ export class CategoryHttpService {
       const result = await this.useCase.create(req.body);
       res.status(201).json({ data: result });
     } catch (error) {
-      console.log(error);
       res.status(400).json({ error: (error as Error).message });
     }
   }

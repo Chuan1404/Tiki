@@ -49,7 +49,7 @@ export abstract class MongooseRepository<Entity, EntityCondDTO, EntityUpdateDTO>
     return true;
   }
   async update(id: string, data: EntityUpdateDTO): Promise<boolean> {
-    await mongoose.models[this.modelName].updateOne({ id }, data as any);
+    await mongoose.models[this.modelName].updateOne({ id }, {$set: data as any});
     return true;
   }
   async delete(id: string, isHard: boolean = false): Promise<boolean> {
