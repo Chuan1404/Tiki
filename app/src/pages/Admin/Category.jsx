@@ -50,9 +50,17 @@ const Category = () => {
   const [addForm] = Form.useForm();
   const [editingKey, setEditingKey] = useState("");
 
+  const isEditing = (record) => record.key === editingKey;
+  const edit = (record) => {
+    updateForm.setFieldsValue({
+      ...record,
+    });
+    setEditingKey(record.key);
+  };
   const cancel = () => {
     setEditingKey("");
   };
+
   const [tableParams, setTableParams] = useState({
     pagination: {
       current: 1,
@@ -64,14 +72,6 @@ const Category = () => {
   const [categories, setCategories] = useState([]);
   const [open, setOpen] = useState(false);
 
-
-  const isEditing = (record) => record.key === editingKey;
-  const edit = (record) => {
-    updateForm.setFieldsValue({
-      ...record,
-    });
-    setEditingKey(record.key);
-  };
 
   const handleDelete = async (key) => {
     const newData = categories.data?.filter((item) => item.id !== key);
@@ -122,7 +122,6 @@ const Category = () => {
       alert(res.error)
     }
   };
-
 
 
   const columns = [

@@ -2,27 +2,26 @@ import {
   Button,
   Form,
   Input,
-  InputNumber,
   Modal,
   Popconfirm,
   Table,
-  Typography,
+  Typography
 } from "antd";
 import { useEffect, useState } from "react";
-import { productService, userService } from "services";
 import { queryString } from "utils";
+
+
+import { productService } from "services";
 
 const EditableCell = ({
   editing,
   dataIndex,
   title,
-  inputType,
   record,
   index,
   children,
   ...restProps
 }) => {
-  const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
   return (
     <td {...restProps}>
       {editing ? (
@@ -31,6 +30,7 @@ const EditableCell = ({
           style={{
             margin: 0,
           }}
+          initialValue={record.name}
           rules={[
             {
               required: true,
@@ -38,7 +38,7 @@ const EditableCell = ({
             },
           ]}
         >
-          {inputNode}
+          <Input />
         </Form.Item>
       ) : (
         children
@@ -46,14 +46,23 @@ const EditableCell = ({
     </td>
   );
 };
+
 const Product = () => {
-  const [form] = Form.useForm();
+  const [updateForm] = Form.useForm();
   const [addForm] = Form.useForm();
   const [editingKey, setEditingKey] = useState("");
 
+  const isEditing = (record) => record.key === editingKey;
+  const edit = (record) => {
+    updateForm.setFieldsValue({
+      ...record,
+    });
+    setEditingKey(record.key);
+  };
   const cancel = () => {
     setEditingKey("");
   };
+
   const [tableParams, setTableParams] = useState({
     pagination: {
       current: 1,
@@ -63,44 +72,13 @@ const Product = () => {
   });
 
   const [products, setProducts] = useState([]);
-  const [fetching, setFetching] = useState(true);
-
   const [open, setOpen] = useState(false);
 
-  const handleOk = async () => {
-    let form = addForm.getFieldsValue();
-    let res = await productService.addProduct(form);
-    if (!res.error) {
-      setOpen(false);
-      addForm.resetFields();
 
-      const updatedRes = await productService.getProduct(
-        queryString({
-          limit: tableParams.pagination.pageSize || 10,
-          page: tableParams.pagination.current || 1,
-        })
-      );
-      updatedRes.data = updatedRes.data?.map((item) => ({
-        ...item,
-        key: item._id,
-      }));
-      setProducts(updatedRes);
-
-      setTableParams({
-        ...tableParams,
-        pagination: {
-          ...tableParams.pagination,
-          total: updatedRes.total,
-        },
-      });
-    }
-  };
-
-  const isEditing = (record) => record.key === editingKey;
 
   const handleDelete = async (key) => {
-    const newData = products.data?.filter((item) => item.key !== key);
-    let res = await userService.deleteUser(key);
+    const newData = products.data?.filter((item) => item.id !== key);
+    let res = await productService.deleteCategory(key);
     if (!res.error) {
       setProducts({
         ...products,
@@ -108,17 +86,11 @@ const Product = () => {
       });
     }
   };
-  const edit = (record) => {
-    form.setFieldsValue({
-      ...record,
-    });
-    setEditingKey(record.key);
-  };
-  const save = async (key) => {
+  const handleEdit = async (key) => {
     try {
-      const row = await form.validateFields();
+      const row = await updateForm.validateFields();
       const newData = [...products.data];
-      const index = newData.findIndex((item) => key === item.key);
+      const index = newData.findIndex((item) => key === item.id);
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, {
@@ -126,39 +98,44 @@ const Product = () => {
           ...row,
         });
 
-        let res = await productService.updateProduct(
-          item._id,
-          form.getFieldsValue()
+        let res = await productService.updateCategory(
+          item.id,
+          updateForm.getFieldsValue()
         );
+        setEditingKey("");
         if (!res.error) {
           setProducts({
             ...products,
             data: newData,
           });
-          setEditingKey("");
         }
-      } else {
-        newData.push(row);
-        setProducts({
-          ...products,
-          data: newData,
-        });
-        setEditingKey("");
       }
     } catch (errInfo) {
       console.log("Validate Failed:", errInfo);
     }
   };
+  const handleAdd = async () => {
+    let form = addForm.getFieldsValue();
+    let res = await productService.addCategory(form);
+    if (!res.error) {
+      setOpen(false);
+      addForm.resetFields();
+    }
+    else {
+      alert(res.error)
+    }
+  };
+
 
   const columns = [
     {
       title: "ID",
-      dataIndex: "_id",
+      dataIndex: "id",
       editable: true,
     },
     {
-      title: "Category",
-      dataIndex: "categoryName",
+      title: "Product",
+      dataIndex: "categoryId",
       editable: true,
     },
     {
@@ -168,7 +145,7 @@ const Product = () => {
     },
     {
       title: "Brand Name",
-      dataIndex: "brandName",
+      dataIndex: "brandId",
       editable: true,
     },
     {
@@ -194,7 +171,7 @@ const Product = () => {
         return editable ? (
           <span>
             <Typography.Link
-              onClick={() => save(record.key)}
+              onClick={() => handleEdit(record.key)}
               style={{
                 marginInlineEnd: 8,
               }}
@@ -258,48 +235,58 @@ const Product = () => {
 
   useEffect(() => {
     (async () => {
-      setFetching(true);
       const res = await productService.getProduct(
         queryString({
           limit: tableParams.pagination.pageSize || 10,
           page: tableParams.pagination.current || 1,
         })
       );
-      res.data = res.data?.map((item) => ({ ...item, key: item._id }));
-      setFetching(false);
-      setTableParams({
-        ...tableParams,
-        pagination: {
-          ...tableParams.pagination,
-          total: res.total,
-        },
-      });
-      setProducts(res);
+      if (!res.error) {
+        res.data = res.data?.map((item) => ({ ...item, key: item._id }));
+        setTableParams({
+          ...tableParams,
+          pagination: {
+            ...tableParams.pagination,
+            total: res.total,
+          },
+        });
+        setProducts(res);
+      }
+      else {
+        alert(res.error)
+      }
+
     })();
+
+    return () => {
+
+    }
   }, [
     tableParams.pagination?.current,
     tableParams.pagination?.pageSize,
     tableParams?.sortOrder,
     tableParams?.sortField,
     JSON.stringify(tableParams.filters),
+    addForm.getFieldValue()
   ]);
+
   return (
-    <Form form={form} component={false} handleOk={handleOk}>
+    <Form form={addForm} component={false}>
       <Button
         style={{ marginBottom: 10 }}
         type="primary"
         onClick={() => setOpen(true)}
       >
-        Add product
+        Add Prducy
       </Button>
       <Modal
         open={open}
         title="Add product"
-        onOk={handleOk}
+        onOk={handleAdd}
         onCancel={() => setOpen(false)}
       >
         <Form.Item
-          label="Category"
+          label="Product"
           name="categoryId"
           rules={[
             {
@@ -349,20 +336,28 @@ const Product = () => {
           <Input />
         </Form.Item>
       </Modal>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        dataSource={products.data}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        pagination={tableParams.pagination}
-        onChange={handleTableChange}
-      />
+      <Form form={updateForm} component={false}>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          dataSource={products.data}
+          columns={mergedColumns}
+          rowClassName="editable-row"
+          pagination={tableParams.pagination}
+          onChange={handleTableChange}
+        />
+      </Form>
+
     </Form>
   );
 };
 export default Product;
+
+
+
+
+
