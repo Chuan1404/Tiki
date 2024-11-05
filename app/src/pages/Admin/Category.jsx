@@ -74,7 +74,6 @@ const Category = () => {
   };
 
   const handleDelete = async (key) => {
-    console.log(key)
     const newData = categories.data?.filter((item) => item.id !== key);
     let res = await categoryService.deleteCategory(key);
     if (!res.error) {
@@ -89,7 +88,6 @@ const Category = () => {
       const row = await updateForm.validateFields();
       const newData = [...categories.data];
       const index = newData.findIndex((item) => key === item.id);
-      console.log(index)
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, {
@@ -114,8 +112,8 @@ const Category = () => {
     }
   };
   const handleAdd = async () => {
-    let updateForm = addForm.getFieldsValue();
-    let res = await categoryService.addCategory(updateForm);
+    let form = addForm.getFieldsValue();
+    let res = await categoryService.addCategory(form);
     if (!res.error) {
       setOpen(false);
       addForm.resetFields();
