@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
-import categoryService from "services/categoryService";
+import { userService } from "services";
 import { queryString } from "utils";
 import AddForm from "./AddForm";
 import EditableTable from "./EditableTable";
 
-const Category = () => {
-  const [categories, setCategories] = useState([]);
+const User = () => {
+  const [users, setUsers] = useState([]);
 
   const onAdd = async (formValue) => {
-    const response = await categoryService.addCategory(formValue);
+    const response = await userService.addUser(formValue);
     await fetchData()
     return response
   };
 
   const onDelete = async (id) => {
-    const response = await categoryService.deleteCategory(id);
+    const response = await userService.deleteUser(id);
     return response
   };
   const onEdit = async (id, formValue) => {
-    const response = await categoryService.updateCategory(
+    const response = await userService.updateUser(
       id,
       formValue
     );
@@ -27,7 +27,7 @@ const Category = () => {
   };
 
   const fetchData = async (pageSize = 10, page = 1) => {
-    const response = await categoryService.getCategory(
+    const response = await userService.getUser(
       queryString({
         limit: pageSize,
         page: page,
@@ -36,7 +36,7 @@ const Category = () => {
 
     if (!response.error) {
       response.data = response.data?.map((item) => ({ ...item, key: item._id }));
-      setCategories(response);
+      setUsers(response);
     }
     else {
       alert(response.error)
@@ -53,7 +53,7 @@ const Category = () => {
     <>
       <AddForm handleSubmit={onAdd} />
       <EditableTable
-        data={categories}
+        data={users}
         onEdit={onEdit}
         onDelete={onDelete}
         fetchData={fetchData}
@@ -62,4 +62,4 @@ const Category = () => {
 
   );
 };
-export default Category;
+export default User;

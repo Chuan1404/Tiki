@@ -10,8 +10,8 @@ import {
 import Category from "pages/Admin/category";
 import Dashboard from "pages/Admin/Dashboard";
 import Order from "pages/Admin/Order";
-import Product from "pages/Admin/Product";
-import User from "pages/Admin/User";
+import Product from "pages/Admin/product";
+import User from "pages/Admin/user";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import store from "store";
