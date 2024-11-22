@@ -21,9 +21,9 @@ export default function ProductAccordion({ data = [], fetching = false }) {
     }, [search])
 
     const list = [
-        { sort: 'default', title: 'Phổ Biến' },
-        { sort: 'price.asc', title: 'Giá Thấp' },
-        { sort: 'price.desc', title: 'Giá Cao' }
+        { sort: 'default', title: 'Popular' },
+        { sort: 'price.asc', title: 'Low price' },
+        { sort: 'price.desc', title: 'High price' }
     ]
     return (
         <div className='productAccordion'>
@@ -49,7 +49,7 @@ export default function ProductAccordion({ data = [], fetching = false }) {
                             <ProductCard loading={true} />
                         </li>) :
                     data.map(item => (
-                        <li key={item._id}
+                        <li key={item.id}
                             className='product_list-item'>
                             <ProductCard
                                 slug={item.slug}

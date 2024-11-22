@@ -2,7 +2,7 @@ import { API } from "constants";
 
 const productService = {
   getProduct(query = "") {
-    return fetch(`${API}/products${query}`).then((res) => res.json());
+    return fetch(`${API}/products?${query}`).then((res) => res.json());
   },
   addProduct(form) {
     return fetch(`${API}/products`, {

@@ -9,6 +9,7 @@ function AddForm({ handleSubmit }) {
     const handleAdd = async () => {
         const formValue = form.getFieldsValue();
         const res = await handleSubmit(formValue)
+        console.log(res)
         if (!res.error) {
             setOpen(false);
             form.resetFields();

@@ -3,7 +3,7 @@ import { callApiWithToken } from "utils"
 
 const cartService = {
     getCart() {
-        return callApiWithToken(`${API}/carts`)
+        return callApiWithToken(`${API}/carts/me`)
     },
     addCart(id, quantity = 1) {
         return callApiWithToken(`${API}/carts`, {
@@ -12,13 +12,13 @@ const cartService = {
         })
     },
     updateCart(id, quantity = 1) {
-        return callApiWithToken(`${API}/cart/update/${id}`, {
-            method: 'PUT',
+        return callApiWithToken(`${API}/carts/${id}`, {
+            method: 'PATCH',
             body: JSON.stringify({ quantity })
         })
     },
     removeCart(id) {
-        return callApiWithToken(`${API}/cart/delete/${id}`, {
+        return callApiWithToken(`${API}/carts/${id}`, {
             method: 'DELETE'
         })
     }

@@ -6,7 +6,13 @@ const { callApiWithToken } = require("utils");
 export function* addCart(action) {
     try {
         const carts = yield call(cartService.addCart, action.payload.productId, action.payload.quantity);
-        yield put(setCart(carts.data))
+        if(carts.error) {
+            alert(carts.error)
+            return
+        }
+        yield put({
+            type: 'GET_CART'
+        })
     } catch (err) {
         console.log(err)
     }
@@ -23,7 +29,7 @@ export function* getCart() {
 
 export function* updateCart(action) {
     try {
-        const update = yield callApiWithToken(cartService.updateCart, action.payload.id, action.payload.quantity)
+        const update = yield call(cartService.updateCart, action.payload.id, action.payload.quantity);
         if (update.data) {
             yield put({
                 type: 'GET_CART'

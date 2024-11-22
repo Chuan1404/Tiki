@@ -16,7 +16,7 @@ export default function ProductDetail() {
   const { slug } = useParams();
 
   const { data: product, fetching: productFetching } = useQuery(
-    () => productService.getProduct(`?slug=${slug}`),
+    () => productService.getProduct(`slug=${slug}`),
     [slug]
   );
   if (productFetching) return <Loading />;

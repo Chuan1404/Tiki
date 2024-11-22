@@ -38,7 +38,7 @@ export default function Header() {
                     </div>
                     <div className="users_item" onClick={openCart}>
                         <img src="/imgs/cart.png" alt="" />
-                        <span>Giỏ Hàng</span>
+                        <span>Cart</span>
                         {cart && <div className='quality'>{cart.length}</div>}
                     </div>
                 </div>
