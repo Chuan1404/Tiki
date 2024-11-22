@@ -33,8 +33,9 @@ function AddForm({ handleSubmit }) {
                 onCancel={() => setOpen(false)}
             >
                 <Form.Item
-                    label="Product"
+                    label="Category id"
                     name="categoryId"
+                    layout="vertical"
                     rules={[
                         {
                             required: true,
@@ -48,6 +49,7 @@ function AddForm({ handleSubmit }) {
                 <Form.Item
                     label="Name"
                     name="name"
+                    layout="vertical"
                     rules={[
                         {
                             required: true,
@@ -59,8 +61,9 @@ function AddForm({ handleSubmit }) {
                 </Form.Item>
 
                 <Form.Item
-                    label="Brand Name"
-                    name="brandName"
+                    label="Brand Id"
+                    name="brandId"
+                    layout="vertical"
                     rules={[
                         {
                             required: true,
@@ -73,6 +76,7 @@ function AddForm({ handleSubmit }) {
                 <Form.Item
                     label="Price"
                     name="price"
+                    layout="vertical"
                     rules={[
                         {
                             required: true,

@@ -35,6 +35,7 @@ function AddForm({ handleSubmit }) {
                 <Form.Item
                     label="Name"
                     name="name"
+                    layout="vertical"
                     rules={[
                         {
                             required: true,

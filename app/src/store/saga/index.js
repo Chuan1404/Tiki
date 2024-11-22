@@ -1,6 +1,6 @@
 import { takeLatest } from 'redux-saga/effects';
 import { fetchLogin, fetchRegister } from './authSaga';
-import { getCart, removeCart, removeCarts, updateCart } from './cartSaga';
+import { addCart, getCart, removeCart, removeCarts, updateCart } from './cartSaga';
 import { getOrder, postOrder } from './orderSaga';
 import { getProfile } from './userSaga';
 import { updateArress } from './addressSaga';
@@ -16,6 +16,7 @@ function* mySaga() {
     yield takeLatest('GET_CART', getCart)
     yield takeLatest('GET_ORDER', getOrder)
 
+    yield takeLatest('ADD_CART', addCart)
     yield takeLatest('UPDATE_CART', updateCart)
     yield takeLatest('UPDATE_ADDRESS', updateArress)
 

@@ -19,10 +19,10 @@ export default function ProductInfo({ product = {} }) {
     window.scrollTo(0,0);
     if(isLogin) {
       dispatch({
-        type: 'UPDATE_CART',
+        type: 'ADD_CART',
         payload: {
-          id: product._id,
-          quantity
+          productId: product.id,
+          quantity,
         }
       })
     }

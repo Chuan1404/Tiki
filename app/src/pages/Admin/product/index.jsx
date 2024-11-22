@@ -35,7 +35,7 @@ const Product = () => {
     );
 
     if (!response.error) {
-      response.data = response.data?.map((item) => ({ ...item, key: item._id }));
+      response.data = response.data?.map((item) => ({ ...item, key: item.id }));
       setProducts(response);
     }
     else {

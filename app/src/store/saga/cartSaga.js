@@ -3,6 +3,15 @@ const { cartService } = require("services");
 const { setCart } = require("store/slices/cartSlice");
 const { callApiWithToken } = require("utils");
 
+export function* addCart(action) {
+    try {
+        const carts = yield call(cartService.addCart, action.payload.productId, action.payload.quantity);
+        yield put(setCart(carts.data))
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 export function* getCart() {
     try {
         const carts = yield call(cartService.getCart);

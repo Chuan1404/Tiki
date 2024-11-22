@@ -1,7 +1,6 @@
 // import { Form, Button } from "react-bootstrap";
 
 import LoginAdmin from "components/Popup/components/LoginAdmin";
-import { useForm } from "hooks";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -12,11 +11,11 @@ export default function Admin() {
 
   useEffect(() => {
     if (isLogin) {
-      navigate("/admin", { replace: true }); // Redirect to admin page if logged in
+      navigate("/admin", { replace: true });
     } else {
-      navigate("/admin/login", { replace: true }); // Redirect to login page if not logged in
+      navigate("/admin/login", { replace: true });
     }
-  }, [isLogin, navigate]); // Include `navigate` as a dependency
+  }, [isLogin, navigate]);
 
   return (
     <div id="admin-login">

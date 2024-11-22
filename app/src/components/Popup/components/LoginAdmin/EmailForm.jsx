@@ -7,7 +7,7 @@ export default function EmailForm({ setActive }) {
     const { form, register } = useForm({
         email: '',
         password: '',
-        role: 'admin'
+        role: 'ADMIN'
     })
     const submit = () => {
         dispatch({

@@ -33,12 +33,39 @@ function AddForm({ handleSubmit }) {
                 onCancel={() => setOpen(false)}
             >
                 <Form.Item
+                    layout="vertical"
+                    label="Name"
+                    name="name"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please input name!",
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    layout="vertical"
                     label="Email"
                     name="email"
                     rules={[
                         {
                             required: true,
-                            message: "Please input category name!",
+                            message: "Please input email!",
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    layout="vertical"
+                    label="Password"
+                    name="password"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please input password!",
                         },
                     ]}
                 >

@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+// import "./style.scss";
 
 const items = [
   { key: "1", icon: <PieChartOutlined />, label: <Link to="/admin/">Dashboard</Link>},
