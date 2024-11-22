@@ -1,14 +1,18 @@
 import { Request, Response } from "express";
 import { PagingDTOSchema } from "../../../../share/model/paging";
 import { ICartUseCase } from "../../interface";
-import { CartCondScheme } from "../../model/dto";
+import { CartCondScheme, CartCreateDTO, CartDeleteDTO } from "../../model/dto";
 
 export class CartHttpService {
   constructor(private readonly useCase: ICartUseCase) {}
 
   async create(req: Request, res: Response) {
     try {
-      const result = await this.useCase.create(req.body);
+      const body: CartCreateDTO = {
+        ...req.body,
+        userId: req.userId
+      }
+      const result = await this.useCase.create(body);
       res.status(201).json({ data: result });
     } catch (error) {
       console.log(error);

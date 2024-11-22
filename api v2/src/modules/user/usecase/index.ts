@@ -127,7 +127,6 @@ export class UserUsecase implements IUserUseCase {
     if (!success) {
       throw ErrDataInvalid;
     }
-
     const user = await this.repository.findByCond({
       email: parsedData?.email,
       role: parsedData?.role,

@@ -101,9 +101,8 @@ export class UserHttpService {
       const token = authorizationHeader.split(" ")[1];
 
       const payload = await this.useCase.verifyToken(token);
-
       const user = await this.useCase.get(payload?.id!);
-      res.status(400).json({ data: user });
+      res.status(200).json({ data: user });
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });
     }

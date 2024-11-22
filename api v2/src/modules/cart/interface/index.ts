@@ -7,7 +7,7 @@ import {
   CartUpdateDTO
 } from "../model/dto";
 
-export interface ICartReposity
+export interface ICartRepository
   extends IRepository<Cart, CartCondDTO, CartUpdateDTO> { }
 
 export interface ICartUseCase {

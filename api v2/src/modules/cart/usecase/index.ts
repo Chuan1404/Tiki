@@ -6,7 +6,7 @@ import {
   ErrDataNotFound,
 } from "../../../share/model/errors";
 import { PagingDTO } from "../../../share/model/paging";
-import { ICartReposity, ICartUseCase } from "../interface";
+import { ICartRepository, ICartUseCase } from "../interface";
 import { Cart, CartSchema } from "../model";
 import {
   CartCondDTO,
@@ -17,7 +17,7 @@ import {
 } from "../model/dto";
 
 export class CartUsecase implements ICartUseCase {
-  constructor(private readonly repository: ICartReposity) {}
+  constructor(private readonly repository: ICartRepository) {}
 
   async create(data: CartCreateDTO): Promise<string> {
     const {
@@ -40,7 +40,7 @@ export class CartUsecase implements ICartUseCase {
     }
 
     let newId = v7();
-    const Cart: Cart = {
+    const cart: Cart = {
       id: newId,
       productId: parsedData.productId,
       quantity: parsedData.quantity,
@@ -50,7 +50,7 @@ export class CartUsecase implements ICartUseCase {
       updatedAt: new Date(),
     };
 
-    await this.repository.insert(Cart);
+    await this.repository.insert(cart);
 
     return newId;
   }
@@ -90,7 +90,6 @@ export class CartUsecase implements ICartUseCase {
 
     return data ? data.map((item) => CartSchema.parse(item)) : [];
   }
-
   async delete(id: string, isHard: boolean = false): Promise<boolean> {
     let Cart = await this.repository.get(id);
     if (!Cart || Cart.status === EModelStatus.DELETED) {

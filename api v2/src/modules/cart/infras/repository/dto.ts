@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { EModelStatus } from "../../../../share/model/enums";
 
 export const modelName = "Cart";
 
@@ -23,6 +24,11 @@ export function init() {
       quantity: {
         type: Number,
         default: 1,
+      },
+      status: {
+        type: String,
+        enum: EModelStatus,
+        default: EModelStatus.ACTIVE,
       },
     },
     { timestamps: true }
