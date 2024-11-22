@@ -114,7 +114,7 @@ export class CartHttpService {
   async delete(req: Request, res: Response) {
     try {
       const { id } = req.params;
-
+      
       await this.useCase.delete(id, true);
   
       res.status(200).json({
