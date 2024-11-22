@@ -14,7 +14,7 @@ export function* addCart(action) {
             type: 'GET_CART'
         })
     } catch (err) {
-        console.log(err)
+        console.log("You have already added this product to cart")
     }
 }
 

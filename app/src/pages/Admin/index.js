@@ -4,7 +4,8 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   PieChartOutlined,
-  ProductOutlined
+  ProductOutlined,
+  ShoppingCartOutlined
 } from "@ant-design/icons";
 import { Button, Menu } from "antd";
 import { useEffect, useState } from "react";
@@ -18,7 +19,8 @@ const items = [
   { key: "2", icon: <DesktopOutlined />, label: <Link to="/admin/user">User</Link> },
   { key: "3", icon: <ContainerOutlined />, label: <Link to="/admin/category">Category</Link> },
   { key: "4", icon: <ProductOutlined />, label: <Link to="/admin/product">Product</Link> },
-  { key: "5", icon: <ContainerOutlined />, label: <Link to="/admin/order">Order</Link> },
+  // { key: "5", icon: <ContainerOutlined />, label: <Link to="/admin/order">Order</Link> },
+  { key: "5", icon: <ShoppingCartOutlined />, label: <Link to="/admin/cart">Cart</Link> },
 ];
 
 export default function Admin() {

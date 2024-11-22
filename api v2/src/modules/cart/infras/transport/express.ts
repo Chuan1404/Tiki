@@ -112,12 +112,18 @@ export class CartHttpService {
   }
 
   async delete(req: Request, res: Response) {
-    const { id } = req.params;
+    try {
+      const { id } = req.params;
 
-    await this.useCase.delete(id, true);
-
-    res.status(200).json({
-      data: id,
-    });
+      await this.useCase.delete(id, true);
+  
+      res.status(200).json({
+        data: id,
+      });
+    } catch(error) {
+      res.status(400).json({
+        error: (error as Error).message
+      })
+    }
   }
 }

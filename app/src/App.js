@@ -7,6 +7,7 @@ import {
   NotFound,
   ProductDetail,
 } from "pages";
+import Cart from "pages/Admin/cart";
 import Category from "pages/Admin/category";
 import Dashboard from "pages/Admin/Dashboard";
 import Order from "pages/Admin/Order";
@@ -31,6 +32,7 @@ export default function App() {
               <Route path="category" element={<Category />} />
               <Route path="product" element={<Product />} />
               <Route path="order" element={<Order />} />
+              <Route path="cart" element={<Cart />} />
               <Route index element={<Dashboard />} />
             </Route>
             <Route path="*" element={<NotFound />} />
