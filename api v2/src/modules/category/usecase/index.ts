@@ -1,7 +1,7 @@
 import { v7 } from "uuid";
 import { EModelStatus } from "../../../share/model/enums";
 import { PagingDTO } from "../../../share/model/paging";
-import { ICategoryReposity, ICategoryUseCase } from "../interface";
+import { ICategoryRepository, ICategoryUseCase } from "../interface";
 import { Category, CategorySchema } from "../model";
 import {
   CategoryCondDTO,
@@ -14,7 +14,7 @@ import { ErrDataExisted, ErrDataInvalid, ErrDataNotFound } from "../../../share/
 
 
 export class CategoryUsecase implements ICategoryUseCase {
-  constructor(private readonly repository: ICategoryReposity) {}
+  constructor(private readonly repository: ICategoryRepository) {}
 
   async create(data: CategoryCreateDTO): Promise<string> {
     const { success, data: parsedData } = CategoryCreateSchema.safeParse(data);

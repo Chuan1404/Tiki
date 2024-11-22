@@ -28,5 +28,7 @@ export const setUpProductModule = () => {
   router.patch("/products/:id", httpService.update.bind(httpService));
   router.delete("/products/:id", httpService.delete.bind(httpService));
 
+  // internal call
+  router.get("/rpc/products", httpService.findMany.bind(httpService));
   return router;
 };

@@ -1,7 +1,7 @@
-import { date, nativeEnum, number, string, z } from "zod";
+import { date, nativeEnum, number, object, string, z } from "zod";
 import { EModelStatus } from "../../../share/model/enums";
 
-export const ProductSchema = z.object({
+export const ProductSchema = object({
   id: string(),
   name: string().min(3, "Name must be at least 3 characters"),
   price: number().min(0).default(0),
@@ -14,14 +14,14 @@ export const ProductSchema = z.object({
   updatedAt: date(),
 });
 
-export const BrandSchema = z.object({
+export const BrandSchema = object({
   id: z.string().uuid(),
   name: z.string(),
 });
 
-export const CategorySchema = z.object({
-  id: z.string().uuid(),
-  name: z.string(),
+export const CategorySchema = object({
+  id: string().uuid(),
+  name: string(),
 });
 
 export type Product = z.infer<typeof ProductSchema> & {

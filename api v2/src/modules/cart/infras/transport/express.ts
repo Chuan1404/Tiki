@@ -1,21 +1,24 @@
 import { Request, Response } from "express";
 import { PagingDTOSchema } from "../../../../share/model/paging";
-import { ICartUseCase } from "../../interface";
+import { ICartUseCase, IProductQueryRepository } from "../../interface";
 import { CartCondScheme, CartCreateDTO, CartDeleteDTO } from "../../model/dto";
+import { entitiesToHashMap } from "../../../../share/utils";
 
 export class CartHttpService {
-  constructor(private readonly useCase: ICartUseCase) {}
+  constructor(
+    private readonly useCase: ICartUseCase,
+    private readonly productRepository: IProductQueryRepository
+  ) {}
 
   async create(req: Request, res: Response) {
     try {
       const body: CartCreateDTO = {
         ...req.body,
-        userId: req.userId
-      }
+        userId: req.userId,
+      };
       const result = await this.useCase.create(body);
       res.status(201).json({ data: result });
     } catch (error) {
-      console.log(error);
       res.status(400).json({ error: (error as Error).message });
     }
   }
@@ -27,6 +30,46 @@ export class CartHttpService {
 
       res.status(200).json({
         data: cart,
+      });
+    } catch (error) {
+      res.status(400).json({ error: (error as Error).message });
+    }
+  }
+
+  async myCart(req: Request, res: Response) {
+    try {
+      const {
+        success,
+        data: paging,
+        error,
+      } = PagingDTOSchema.safeParse(req.query);
+
+      if (!success) {
+        res.status(400).json({
+          error: error.message,
+        });
+        return;
+      }
+
+      const cond = CartCondScheme.parse({
+        ...req.query,
+        userId: req.userId,
+      });
+      let carts = await this.useCase.list(cond, paging);
+
+      // get ids
+      const productIds: string[] = carts.map((item) => item.productId) || [];
+
+      // fetch data and convert to hashMap
+      const products = await this.productRepository.list({ id: productIds });
+      const productsMap = entitiesToHashMap(products);
+
+      carts = carts.map(item => ({
+        ...item,
+        product: productsMap[item.productId]
+      }))
+      res.status(200).json({
+        data: carts,
       });
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });

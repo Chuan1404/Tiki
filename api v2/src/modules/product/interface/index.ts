@@ -9,14 +9,14 @@ import {
   ProductUpdateDTO,
 } from "../model/dto";
 
-export interface IProductReposity
+export interface IProductRepository
   extends IRepository<Product, ProductCondDTO, ProductUpdateDTO> {}
 
 export interface IProductUseCase {
   create(data: ProductCreateDTO): Promise<string>;
   update(id: string, data: ProductUpdateDTO): Promise<boolean>;
   get(id: string): Promise<Product | null>;
-  list(cond: ProductCondDTO, paging: PagingDTO): Promise<Product[]>;
+  list(cond: ProductCondDTO, paging?: PagingDTO): Promise<Product[]>;
   delete(id: string, isHard?: boolean): Promise<boolean>;
 }
 

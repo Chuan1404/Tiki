@@ -7,7 +7,7 @@ import {
   CategoryUpdateDTO,
 } from "../model/dto";
 
-export interface ICategoryReposity
+export interface ICategoryRepository
   extends IRepository<Category, CategoryCondDTO, CategoryUpdateDTO> {}
 
 export interface ICategoryUseCase {

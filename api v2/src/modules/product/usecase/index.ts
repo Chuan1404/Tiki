@@ -6,7 +6,7 @@ import {
   ErrDataNotFound,
 } from "../../../share/model/errors";
 import { PagingDTO } from "../../../share/model/paging";
-import { IProductReposity, IProductUseCase } from "../interface";
+import { IProductRepository, IProductUseCase } from "../interface";
 import { Product, ProductSchema } from "../model";
 import {
   ProductCondDTO,
@@ -17,7 +17,7 @@ import {
 } from "../model/dto";
 
 export class ProductUsecase implements IProductUseCase {
-  constructor(private readonly repository: IProductReposity) {}
+  constructor(private readonly repository: IProductRepository) {}
 
   async create(data: ProductCreateDTO): Promise<string> {
     const {
@@ -85,7 +85,7 @@ export class ProductUsecase implements IProductUseCase {
   }
   async list(
     cond: ProductCondDTO,
-    paging: PagingDTO
+    paging?: PagingDTO
   ): Promise<Product[]> {
     let data = await this.repository.list(cond, paging);
 

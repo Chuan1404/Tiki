@@ -4,18 +4,21 @@ import { CartRepository } from "./infras/repository";
 import { CartUsecase } from "./usecase";
 import { CartHttpService } from "./infras/transport/express";
 import { authToken } from "../../share/middleware/OAuth2";
+import { RPCProductRepository } from "./infras/rpc";
+import { rpc } from "../../share/configs/rpc";
 
 export const setUpCartModule = () => {
   init();
 
   const repository = new CartRepository(modelName);
   const usecase = new CartUsecase(repository);
-  const httpService = new CartHttpService(usecase);
+  const rpcProduct = new RPCProductRepository(rpc.cartProduct);
+  const httpService = new CartHttpService(usecase, rpcProduct);
 
   const router = Router();
 
+  router.get("/carts/me", authToken, httpService.myCart.bind(httpService));
   router.get("/carts", authToken, httpService.list.bind(httpService));
-  router.get("/carts/:id", authToken, httpService.get.bind(httpService));
   router.post(
     "/carts",
     authToken,
