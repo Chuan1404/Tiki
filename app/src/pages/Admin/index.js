@@ -1,4 +1,5 @@
 import {
+  BranchesOutlined,
   ContainerOutlined,
   DesktopOutlined,
   MenuFoldOutlined,
@@ -21,6 +22,7 @@ const items = [
   { key: "4", icon: <ProductOutlined />, label: <Link to="/admin/product">Product</Link> },
   // { key: "5", icon: <ContainerOutlined />, label: <Link to="/admin/order">Order</Link> },
   { key: "5", icon: <ShoppingCartOutlined />, label: <Link to="/admin/cart">Cart</Link> },
+  { key: "6", icon: <BranchesOutlined />, label: <Link to="/admin/brand">Brand</Link> },
 ];
 
 export default function Admin() {
