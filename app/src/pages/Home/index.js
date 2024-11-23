@@ -64,7 +64,7 @@ export default function Home() {
                 )
               ) : (
                 query.name && (
-                  <p className="title">Kết quả tìm kiếm cho `{query.name}`</p>
+                  <p className="title">Search result for `{query.name}`</p>
                 )
               )
             ) : (

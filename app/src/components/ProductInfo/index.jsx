@@ -27,7 +27,7 @@ export default function ProductInfo({ product = {} }) {
       })
     }
     else {
-      alert("Bạn cần đăng nhập trước")
+      alert("You need to sign in first")
     }
     
   }
@@ -46,7 +46,7 @@ export default function ProductInfo({ product = {} }) {
     <div className='productInfo'>
       <div className="productInfo_header">
         <span className='branch'>
-          Thương hiệu: {product.brand_name ? product.brand_name : 'No branch'}
+          Brand: {product.brand_name ? product.brand_name : 'No branch'}
         </span>
         <h1 className='name'>
           {product.name}
@@ -54,7 +54,7 @@ export default function ProductInfo({ product = {} }) {
         <div className='star'>
           <Stars number={product.rating_average} />
           <span style={{ color: 'rgb(120, 120, 120)' }}>
-            ({product.review_count || 0} lượt đánh giá)
+            ({product.review_count || 0} review)
           </span>
         </div>
       </div>
@@ -65,10 +65,10 @@ export default function ProductInfo({ product = {} }) {
       </div>
       <div className='productInfo_options'>
         <div className="option address">
-          <span className='option_name'>Vận Chuyển</span>
+          <span className='option_name'>Delivery</span>
           <div className='option_content'>
             <p>{`${ward}, ${district}, ${city}`}</p>
-            <a href="" onClick={changeAddress}>Đổi địa chỉ</a>
+            <a href="" onClick={changeAddress}>Change address</a>
           </div>
         </div>
 
@@ -85,7 +85,7 @@ export default function ProductInfo({ product = {} }) {
           </div>)}
 
         <div className="option quantity">
-          <span className='option_name'>Số lượng</span>
+          <span className='option_name'>Quantity</span>
           <div className='option_content'>
             <CountControl value={quantity} setValue={setQuantity} />
           </div>
@@ -96,7 +96,7 @@ export default function ProductInfo({ product = {} }) {
           bgcolor='red'
           size='large'
           radius
-          onClick={handleBuy}>Chọn Mua</Buttons>
+          onClick={handleBuy}>Add to cart</Buttons>
       </div>
     </div>
   )
