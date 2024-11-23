@@ -14,6 +14,7 @@ import CountControl from "./CountControl";
 import ClosePopUp from "./ClosePopup";
 import Popup from "./Popup";
 import Loading from "./Loading";
+import SelectLoader from "./SelectLoader"
 
 export {
     Buttons,
@@ -31,5 +32,6 @@ export {
     CountControl,
     ClosePopUp,
     Popup,
-    Loading
+    Loading,
+    SelectLoader
 };

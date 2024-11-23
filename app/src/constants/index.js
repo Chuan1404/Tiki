@@ -1,8 +1,17 @@
-const API = 'http://localhost:3001';
+const API = "http://localhost:3001";
 const PAYMENT_METHOD = {
-    CASH: 1,
-}
+  CASH: 1,
+};
 const SHIPPING_METHOD = {
-    STANDARD: 1,
-}
-export { API, PAYMENT_METHOD, SHIPPING_METHOD }
+  STANDARD: 1,
+};
+
+const MAX_SELECT_LIMIT = 100;
+const MIN_SELECT_LIMIT = 10;
+export {
+  API,
+  PAYMENT_METHOD,
+  SHIPPING_METHOD,
+  MIN_SELECT_LIMIT,
+  MAX_SELECT_LIMIT,
+};
