@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String       @id @map("_id")
+  email     String       @unique
+  name      String
+  password  String
+  status    EModelStatus @default(ACTIVE)
+  role      EUserRole    @default(CUSTOMER)
+  createdAt DateTime     @default(now()) @map("created_at") @db.Timestamp()
+  updatedAt DateTime     @updatedAt @map("updated_at") @db.Timestamp()
+}
+
+model Category {
+  id          String       @id @map("_id")
+  name        String
+  description String
+  status      EModelStatus @default(ACTIVE)
+  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamp()
+  updatedAt   DateTime     @updatedAt @map("updated_at") @db.Timestamp()
+}
+
+model Brand {
+  id          String       @id @map("_id")
+  name        String
+  description String
+  status      EModelStatus @default(ACTIVE)
+  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamp()
+  updatedAt   DateTime     @updatedAt @map("updated_at") @db.Timestamp()
+}
+
+model Product {
+  id           String       @id @map("_id")
+  categoryId   String?      @map("category_id")
+  brandId      String?      @map("brand_id")
+  name         String
+  price        Float
+  thumbnailUrl String       @map("thumbnail_url")
+  slug         String
+  status       EModelStatus @default(ACTIVE)
+  createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamp()
+  updatedAt    DateTime     @updatedAt @map("updated_at") @db.Timestamp()
+
+  @@index([categoryId], map: "category_id")
+  @@index([brandId], map: "brand_id")
+}
+
+model Cart {
+  id        String       @id @map("_id")
+  productId String       @map("product_id")
+  userId    String       @map("user_id")
+  quantity  Int
+  status    EModelStatus @default(ACTIVE)
+  createdAt DateTime     @default(now()) @map("created_at") @db.Timestamp()
+  updatedAt DateTime     @updatedAt @map("updated_at") @db.Timestamp()
+
+  @@index([productId], map: "product_id")
+  @@index([userId], map: "user_id")
+}
+
+model RefreshToken {
+  id        String       @id @map("_id")
+  userId    String?      @map("user_id")
+  token     String
+  status    EModelStatus @default(ACTIVE)
+  createdAt DateTime     @default(now()) @map("created_at") @db.Timestamp()
+  updatedAt DateTime     @updatedAt @map("updated_at") @db.Timestamp()
+
+  @@index([userId], map: "user_id")
+  @@map("refresh_token")
+}
+
+enum EModelStatus {
+  ACTIVE
+  INACTIVE
+  DELETED
+}
+
+enum EUserRole {
+  ADMIN
+  CUSTOMER
+}

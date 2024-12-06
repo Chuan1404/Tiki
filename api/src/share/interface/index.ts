@@ -1,4 +1,3 @@
-import { UserPayloadDTO, UserTokenDTO } from "../../modules/user/model/dto";
 import { PagingDTO } from "../model/paging";
 
 // repository
@@ -27,9 +26,3 @@ export interface IHashPassword {
 export interface IComparePassword {
   compare(rawPassword: string, hashedPassword: string): boolean;
 }
-
-// jwt
-// export interface IJwt {
-//   verifyToken(token: string): UserPayloadDTO;
-//   generateToken(payload: UserPayloadDTO, options: Object): UserTokenDTO;
-// }
