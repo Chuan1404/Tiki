@@ -1,15 +1,14 @@
 import { Router } from "express";
-import { init, modelName } from "./infras/repository/dto";
 import { CategoryRepository } from "./infras/repository";
-import { CategoryUsecase } from "./usecase";
 import { CategoryHttpService } from "./infras/transport/express";
+import { CategoryUseCase } from "./useCase";
 
 export const setUpCategoryModule = () => {
-  init();
+  // init();
 
-  const repository = new CategoryRepository(modelName);
-  const usecase = new CategoryUsecase(repository);
-  const httpService = new CategoryHttpService(usecase);
+  const repository = new CategoryRepository();
+  const useCase = new CategoryUseCase(repository);
+  const httpService = new CategoryHttpService(useCase);
 
   const router = Router();
 

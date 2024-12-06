@@ -27,7 +27,7 @@ import {
   ErrUnAuthentication,
 } from "../model/error";
 
-export class UserUsecase implements IUserUseCase {
+export class UserUseCase implements IUserUseCase {
   constructor(
     private readonly repository: IUserReposity,
     private readonly passwordHasher: IHashPassword,

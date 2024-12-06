@@ -16,7 +16,7 @@ import {
   BrandUpdateSchema,
 } from "../model/dto";
 
-export class BrandUsecase implements IBrandUseCase {
+export class BrandUseCase implements IBrandUseCase {
   constructor(private readonly repository: IBrandReposity) {}
 
   async create(data: BrandCreateDTO): Promise<string> {

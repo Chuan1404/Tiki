@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors"
-import { connect } from "./share/component/mongoose";
 import { setUpCategoryModule } from "./modules/category";
 import { setUpProductModule } from "./modules/product";
 import { setUpUserModule } from "./modules/user";
@@ -12,7 +11,6 @@ import { setUpRefreshTokenModule } from "./modules/refreshToken";
 dotenv.config();
 
 (async () => {
-  connect();
   console.log("Connection has been established successfully");
 
   const app = express();

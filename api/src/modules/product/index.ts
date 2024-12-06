@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { init, modelName } from "./infras/repository/dto";
 import { ProductRepository } from "./infras/repository";
-import { ProductUsecase } from "./usecase";
+import { ProductUseCase } from "./useCase";
 import { ProductHttpService } from "./infras/transport/express";
 import upload from "../../share/configs/multer";
 import { RPCBrandRepository, RPCCategoryRepository } from "./infras/rpc";
@@ -13,8 +13,8 @@ export const setUpProductModule = () => {
   const repository = new ProductRepository(modelName);
   const rpcCategory = new RPCCategoryRepository(rpc.productCategory);
   const rpcBrand = new RPCBrandRepository(rpc.productBrand);
-  const usecase = new ProductUsecase(repository);
-  const httpService = new ProductHttpService(usecase, rpcCategory, rpcBrand);
+  const useCase = new ProductUseCase(repository);
+  const httpService = new ProductHttpService(useCase, rpcCategory, rpcBrand);
 
   const router = Router();
 

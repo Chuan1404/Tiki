@@ -16,7 +16,7 @@ import {
   CartUpdateSchema,
 } from "../model/dto";
 
-export class CartUsecase implements ICartUseCase {
+export class CartUseCase implements ICartUseCase {
   constructor(private readonly repository: ICartRepository) {}
 
   async create(data: CartCreateDTO): Promise<string> {

@@ -16,7 +16,7 @@ import {
   RefreshTokenUpdateSchema,
 } from "../model/dto";
 
-export class RefreshTokenUsecase implements IRefreshTokenUseCase {
+export class RefreshTokenUseCase implements IRefreshTokenUseCase {
   constructor(
     private readonly repository: IRefreshTokenReposity,
   ) { }

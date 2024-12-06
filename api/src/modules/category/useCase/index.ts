@@ -13,7 +13,7 @@ import {
 import { ErrDataExisted, ErrDataInvalid, ErrDataNotFound } from "../../../share/model/errors";
 
 
-export class CategoryUsecase implements ICategoryUseCase {
+export class CategoryUseCase implements ICategoryUseCase {
   constructor(private readonly repository: ICategoryRepository) {}
 
   async create(data: CategoryCreateDTO): Promise<string> {

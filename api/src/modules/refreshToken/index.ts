@@ -3,14 +3,14 @@ import { authToken } from "../../share/middleware/OAuth2";
 import { RefreshTokenRepository } from "./infras/repository";
 import { init, modelName } from "./infras/repository/dto";
 import { RefreshTokenHttpService } from "./infras/transport/express";
-import { RefreshTokenUsecase } from "./usecase";
+import { RefreshTokenUseCase } from "./useCase";
 
 export const setUpRefreshTokenModule = () => {
   init();
 
   const repository = new RefreshTokenRepository(modelName);
-  const usecase = new RefreshTokenUsecase(repository);
-  const httpService = new RefreshTokenHttpService(usecase);
+  const useCase = new RefreshTokenUseCase(repository);
+  const httpService = new RefreshTokenHttpService(useCase);
 
   const router = Router();
 

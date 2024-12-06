@@ -16,7 +16,7 @@ import {
   ProductUpdateSchema,
 } from "../model/dto";
 
-export class ProductUsecase implements IProductUseCase {
+export class ProductUseCase implements IProductUseCase {
   constructor(private readonly repository: IProductRepository) {}
 
   async create(data: ProductCreateDTO): Promise<string> {

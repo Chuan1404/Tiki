@@ -1,15 +1,15 @@
 import { Router } from "express";
 import { init, modelName } from "./infras/repository/dto";
 import { BrandRepository } from "./infras/repository";
-import { BrandUsecase } from "./usecase";
+import { BrandUseCase } from "./useCase";
 import { BrandHttpService } from "./infras/transport/express";
 
 export const setUpBrandModule = () => {
   init();
 
   const repository = new BrandRepository(modelName);
-  const usecase = new BrandUsecase(repository);
-  const httpService = new BrandHttpService(usecase);
+  const useCase = new BrandUseCase(repository);
+  const httpService = new BrandHttpService(useCase);
 
   const router = Router();
 

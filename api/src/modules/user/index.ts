@@ -3,7 +3,7 @@ import { ComparePassword, HashPassword } from "../../share/component/password";
 import { UserRepository } from "./infras/repository";
 import { init, modelName } from "./infras/repository/dto";
 import { UserHttpService } from "./infras/transport/express";
-import { UserUsecase } from "./usecase";
+import { UserUseCase } from "./useCase";
 import { authToken } from "../../share/middleware/OAuth2";
 
 export const setUpUserModule = () => {
@@ -13,8 +13,8 @@ export const setUpUserModule = () => {
   const comparePassword = new ComparePassword();
 
   const repository = new UserRepository(modelName);
-  const usecase = new UserUsecase(repository, hashPassword, comparePassword);
-  const httpService = new UserHttpService(usecase);
+  const useCase = new UserUseCase(repository, hashPassword, comparePassword);
+  const httpService = new UserHttpService(useCase);
 
   const router = Router();
 
