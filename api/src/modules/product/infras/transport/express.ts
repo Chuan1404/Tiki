@@ -7,7 +7,7 @@ import { ProductCondScheme, ProductCreateDTO } from "../../model/dto";
 export class ProductHttpService {
   constructor(
     private readonly useCase: IProductUseCase,
-    private readonly categoryRepository: ICategoryQueryRepository,
+    private readonly CategoryPrismaRepository: ICategoryQueryRepository,
     private readonly brandRepository: IBrandQueryRepository
   ) { }
 
@@ -31,7 +31,7 @@ export class ProductHttpService {
       let product = await this.useCase.get(id);
 
       if (product) {
-        const category = await this.categoryRepository.get(product.categoryId);
+        const category = await this.CategoryPrismaRepository.get(product.categoryId);
         product.category = category
 
         const brand = await this.brandRepository.get(product.brandId!);
@@ -86,7 +86,7 @@ export class ProductHttpService {
     const brands = await this.brandRepository.list({ id: brandIds })
     const brandsMap = entitiesToHashMap(brands)
 
-    const categories = await this.categoryRepository.list({ id: categoryIds })
+    const categories = await this.CategoryPrismaRepository.list({ id: categoryIds })
     const categoriesMap = entitiesToHashMap(categories)
 
     // map data

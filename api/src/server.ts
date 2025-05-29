@@ -7,8 +7,20 @@ import { setUpUserModule } from "./modules/user";
 import { setUpCartModule } from "./modules/cart";
 import { setUpBrandModule } from "./modules/brand";
 import { setUpRefreshTokenModule } from "./modules/refreshToken";
+import mongoose from "mongoose";
 
 dotenv.config();
+
+  const server = process.env.DATABASE_SERVER;
+  const database = process.env.DATABASE;
+  mongoose
+  .connect(`mongodb://${server}/${database}`)
+  .then(() => {
+    console.log("Database connection successful");
+  })
+  .catch((err) => {
+    console.error("Database connection error");
+  });
 
 (async () => {
   console.log("Connection has been established successfully");

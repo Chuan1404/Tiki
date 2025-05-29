@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { CategoryRepository } from "./infras/repository";
 import { CategoryHttpService } from "./infras/transport/express";
 import { CategoryUseCase } from "./useCase";
+import { CategoryMongoRepository } from "./infras/repository";
 
 export const setUpCategoryModule = () => {
   // init();
 
-  const repository = new CategoryRepository();
+  const repository = new CategoryMongoRepository();
   const useCase = new CategoryUseCase(repository);
   const httpService = new CategoryHttpService(useCase);
 
