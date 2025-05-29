@@ -5,81 +5,85 @@ import { BrandCondScheme } from "../../model/dto";
 import AppError from "../../../../share/errors/AppError";
 
 export class BrandHttpService {
-  constructor(private readonly useCase: IBrandUseCase) {}
+    constructor(private readonly useCase: IBrandUseCase) {}
 
-  async create(req: Request, res: Response, next: NextFunction) {
-    try {
-      const result = await this.useCase.create(req.body);
-      res.status(201).json({ data: result });
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  async get(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-    try {
-      const brand = await this.useCase.get(id);
-
-      res.status(200).json({
-        data: brand,
-      });
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  async update(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-    try {
-      await this.useCase.update(id, req.body);
-      res.status(200).json({
-        data: id,
-      });
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  async list(req: Request, res: Response, next: NextFunction) {
-    const {
-      success,
-      data: paging,
-      error,
-    } = PagingDTOSchema.safeParse(req.query);
-
-    if (!success) {
-      res.status(400).json({
-        error: error.message,
-      });
-      return;
+    async create(req: Request, res: Response, next: NextFunction) {
+        try {
+            const result = await this.useCase.create(req.body);
+            res.status(201).json({ data: result });
+        } catch (error) {
+            next(error);
+        }
     }
 
-    let cond = BrandCondScheme.parse(req.query);
-    let result = await this.useCase.list(cond, paging);
+    async get(req: Request, res: Response, next: NextFunction) {
+        const { id } = req.params;
+        try {
+            const brand = await this.useCase.get(id);
 
-    res.status(200).json({
-      data: result,
-      paging,
-    });
-  }
+            res.status(200).json({
+                data: brand,
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
 
-  async findMany(req: Request, res: Response, next: NextFunction) {
-    let cond = BrandCondScheme.parse(req.body);
-    let result = await this.useCase.list(cond);
+    async update(req: Request, res: Response, next: NextFunction) {
+        const { id } = req.params;
+        try {
+            await this.useCase.update(id, req.body);
+            res.status(200).json({
+                data: id,
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
 
-    res.status(200).json({
-      data: result,
-    });
-  }
+    async list(req: Request, res: Response, next: NextFunction) {
+        const {
+            success,
+            data: paging,
+            error,
+        } = PagingDTOSchema.safeParse(req.query);
 
-  async delete(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
+        if (!success) {
+            res.status(400).json({
+                error: error.message,
+            });
+            return;
+        }
 
-    await this.useCase.delete(id);
+        let cond = BrandCondScheme.parse(req.query);
+        let result = await this.useCase.list(cond, paging);
 
-    res.status(200).json({
-      data: id,
-    });
-  }
+        res.status(200).json({
+            data: result,
+            paging,
+        });
+    }
+
+    async findMany(req: Request, res: Response, next: NextFunction) {
+        let cond = BrandCondScheme.parse(req.body);
+        let result = await this.useCase.list(cond);
+
+        res.status(200).json({
+            data: result,
+        });
+    }
+
+    async delete(req: Request, res: Response, next: NextFunction) {
+        const { id } = req.params;
+
+        try {
+            await this.useCase.delete(id);
+
+            res.status(200).json({
+                data: id,
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
