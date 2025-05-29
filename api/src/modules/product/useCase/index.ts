@@ -15,6 +15,7 @@ import {
     ProductUpdateDTO,
     ProductUpdateSchema,
 } from "../model/dto";
+import { Product_InvalidError, ProductId_NotFoundError, ProductName_ExistedError } from "../model/error";
 
 export class ProductUseCase implements IProductUseCase {
     constructor(private readonly repository: IProductRepository) {}
@@ -35,11 +36,11 @@ export class ProductUseCase implements IProductUseCase {
         });
 
         if (isExisted) {
-            throw ErrDataExisted;
+            throw ProductName_ExistedError(data.name);
         }
 
         let newId = v7();
-        const Product: Product = {
+        const product: Product = {
             id: newId,
             name: parsedData.name,
             brandId: parsedData.brandId,
@@ -51,7 +52,7 @@ export class ProductUseCase implements IProductUseCase {
             updatedAt: new Date(),
         };
 
-        await this.repository.insert(Product);
+        await this.repository.insert(product);
 
         return newId;
     }
@@ -64,13 +65,13 @@ export class ProductUseCase implements IProductUseCase {
         } = ProductUpdateSchema.safeParse(data);
 
         if (!success) {
-            throw ErrDataInvalid;
+            throw Product_InvalidError;
         }
 
-        let Product = await this.repository.get(id);
+        let product = await this.repository.get(id);
 
-        if (!Product || Product.status === EModelStatus.DELETED) {
-            throw ErrDataInvalid;
+        if (!product || product.status === EModelStatus.DELETED) {
+            throw ProductId_NotFoundError(id);
         }
 
         return await this.repository.update(id, parsedData);
@@ -80,7 +81,7 @@ export class ProductUseCase implements IProductUseCase {
         let data = await this.repository.get(id);
 
         if (!data || data.status === EModelStatus.DELETED) {
-            throw ErrDataNotFound;
+            throw ProductId_NotFoundError(id);
         }
 
         return ProductSchema.parse(data);
@@ -93,9 +94,9 @@ export class ProductUseCase implements IProductUseCase {
     }
 
     async delete(id: string, isHard: boolean = false): Promise<boolean> {
-        let Product = await this.repository.get(id);
-        if (!Product || Product.status === EModelStatus.DELETED) {
-            throw ErrDataNotFound;
+        let product = await this.repository.get(id);
+        if (!product || product.status === EModelStatus.DELETED) {
+            throw ProductId_NotFoundError(id);
         }
 
         return await this.repository.delete(id, isHard);
