@@ -1,23 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { ErrUnAuthentication } from "../../../../share/model/errors";
 import { IRefreshTokenUseCase } from "../../interface";
-import { RefreshTokenCondDTO, RefreshTokenCreateDTO } from "../../model/dto";
 
 export class RefreshTokenHttpService {
   constructor(private readonly useCase: IRefreshTokenUseCase) { }
 
-  // async create(req: Request, res: Response) {
-  //   try {
-  //     const response = await this.useCase.create(req.body);
-
-  //     res.status(201).json({ data: response });
-  //   } catch (error) {
-  //     res.status(400).json({ error: (error as Error).message });
-  //   }
-  // }
-
-  async refresh(req: Request, res: Response) {
+  async refresh(req: Request, res: Response, next: NextFunction) {
     try {
       const refreshTokenSecret =
         process.env.REFRESH_TOKEN_SECRET ?? "refreshToken";
@@ -42,7 +30,7 @@ export class RefreshTokenHttpService {
 
       res.status(201).json({ data: accessToken });
     } catch (error) {
-      res.status(400).json({ error: (error as Error).message });
+      next(error)
     }
   }
 }

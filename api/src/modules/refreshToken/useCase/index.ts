@@ -1,112 +1,114 @@
 import { v7 } from "uuid";
 import { EModelStatus } from "../../../share/model/enums";
-import {
-  ErrDataExisted,
-  ErrDataInvalid,
-  ErrDataNotFound,
-} from "../../../share/model/errors";
+import { ErrDataNotFound } from "../../../share/model/errors";
 import { PagingDTO } from "../../../share/model/paging";
 import { IRefreshTokenReposity, IRefreshTokenUseCase } from "../interface";
+import {
+    RefreshToken_ExistedError,
+    RefreshToken_InvalidError,
+    RefreshToken_NotFoundError,
+} from "../interface/error";
 import { RefreshToken, RefreshTokenSchema } from "../model";
 import {
-  RefreshTokenCondDTO,
-  RefreshTokenCreateDTO,
-  RefreshTokenCreateSchema,
-  RefreshTokenUpdateDTO,
-  RefreshTokenUpdateSchema,
+    RefreshTokenCondDTO,
+    RefreshTokenCreateDTO,
+    RefreshTokenCreateSchema,
+    RefreshTokenUpdateDTO,
+    RefreshTokenUpdateSchema,
 } from "../model/dto";
 
 export class RefreshTokenUseCase implements IRefreshTokenUseCase {
-  constructor(
-    private readonly repository: IRefreshTokenReposity,
-  ) { }
+    constructor(private readonly repository: IRefreshTokenReposity) {}
 
-  async create(data: RefreshTokenCreateDTO): Promise<string> {
-    const {
-      success,
-      data: parsedData,
-      error,
-    } = RefreshTokenCreateSchema.safeParse(data);
+    async create(data: RefreshTokenCreateDTO): Promise<string> {
+        const {
+            success,
+            data: parsedData,
+            error,
+        } = RefreshTokenCreateSchema.safeParse(data);
 
-    if (!success) {
-      throw new Error(error.message);
+        if (!success) {
+            throw new Error(error.message);
+        }
+
+        const isExisted = await this.repository.findByCond({
+            token: parsedData.token,
+        });
+
+        if (isExisted) {
+            throw RefreshToken_ExistedError;
+        }
+
+        let newId = v7();
+        const refreshToken: RefreshToken = {
+            id: newId,
+            token: parsedData.token,
+            userId: parsedData.userId,
+            status: EModelStatus.ACTIVE,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        };
+
+        await this.repository.insert(refreshToken);
+
+        return newId;
     }
 
-    const isExisted = await this.repository.findByCond({
-      token: parsedData.token
-    });
+    async update(id: string, data: RefreshTokenUpdateDTO): Promise<boolean> {
+        const {
+            success,
+            data: parsedData,
+            error,
+        } = RefreshTokenUpdateSchema.safeParse(data);
 
-    if (isExisted) {
-      throw ErrDataExisted;
+        if (!success) {
+            throw RefreshToken_InvalidError;
+        }
+
+        let RefreshToken = await this.repository.get(id);
+
+        if (!RefreshToken || RefreshToken.status === EModelStatus.DELETED) {
+            throw RefreshToken_InvalidError;
+        }
+
+        return await this.repository.update(id, parsedData);
     }
 
-    let newId = v7();
-    const refreshToken: RefreshToken = {
-      id: newId,
-      token: parsedData.token,
-      userId: parsedData.userId,
-      status: EModelStatus.ACTIVE,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+    async get(id: string): Promise<RefreshToken | null> {
+        let data = await this.repository.get(id);
 
-    await this.repository.insert(refreshToken);
+        if (!data || data.status === EModelStatus.DELETED) {
+            throw ErrDataNotFound;
+        }
 
-    return newId;
-  }
-
-  async update(id: string, data: RefreshTokenUpdateDTO): Promise<boolean> {
-    const {
-      success,
-      data: parsedData,
-      error,
-    } = RefreshTokenUpdateSchema.safeParse(data);
-
-    if (!success) {
-      throw ErrDataInvalid;
+        return RefreshTokenSchema.parse(data);
     }
 
-    let RefreshToken = await this.repository.get(id);
+    async findByCond(cond: RefreshTokenCondDTO): Promise<RefreshToken | null> {
+        let data = await this.repository.findByCond(cond);
 
-    if (!RefreshToken || RefreshToken.status === EModelStatus.DELETED) {
-      throw ErrDataInvalid;
+        if (!data || data.status === EModelStatus.DELETED) {
+            throw ErrDataNotFound;
+        }
+
+        return RefreshTokenSchema.parse(data);
     }
 
-    return await this.repository.update(id, parsedData);
-  }
+    async list(
+        cond: RefreshTokenCondDTO,
+        paging: PagingDTO
+    ): Promise<RefreshToken[] | null> {
+        let data = await this.repository.list(cond, paging);
 
-  async get(id: string): Promise<RefreshToken | null> {
-    let data = await this.repository.get(id);
-
-    if (!data || data.status === EModelStatus.DELETED) {
-      throw ErrDataNotFound;
+        return data ? data.map((item) => RefreshTokenSchema.parse(item)) : [];
     }
 
-    return RefreshTokenSchema.parse(data);
-  }
+    async delete(id: string, isHard: boolean = false): Promise<boolean> {
+        let RefreshToken = await this.repository.get(id);
+        if (!RefreshToken || RefreshToken.status === EModelStatus.DELETED) {
+            throw RefreshToken_NotFoundError;
+        }
 
-  async findByCond(cond: RefreshTokenCondDTO): Promise<RefreshToken | null> {
-    let data = await this.repository.findByCond(cond);
-
-    if (!data || data.status === EModelStatus.DELETED) {
-      throw ErrDataNotFound;
+        return await this.repository.delete(id, isHard);
     }
-
-    return RefreshTokenSchema.parse(data);
-  }
-
-  async list(cond: RefreshTokenCondDTO, paging: PagingDTO): Promise<RefreshToken[] | null> {
-    let data = await this.repository.list(cond, paging);
-
-    return data ? data.map((item) => RefreshTokenSchema.parse(item)) : [];
-  }
-
-  async delete(id: string, isHard: boolean = false): Promise<boolean> {
-    let RefreshToken = await this.repository.get(id);
-    if (!RefreshToken || RefreshToken.status === EModelStatus.DELETED) {
-      throw ErrDataNotFound;
-    }
-
-    return await this.repository.delete(id, isHard);
-  }
 }
