@@ -1,100 +1,96 @@
 import { v7 } from "uuid";
-import {
-  ErrDataExisted,
-  ErrDataInvalid,
-  ErrDataNotFound,
-} from "../../../share/model/errors";
 import { EModelStatus } from "../../../share/model/enums";
 import { PagingDTO } from "../../../share/model/paging";
 import { IBrandReposity, IBrandUseCase } from "../interface";
 import { Brand, BrandSchema } from "../model";
 import {
-  BrandCondDTO,
-  BrandCreateDTO,
-  BrandCreateSchema,
-  BrandUpdateDTO,
-  BrandUpdateSchema,
+    BrandCondDTO,
+    BrandCreateDTO,
+    BrandCreateSchema,
+    BrandUpdateDTO,
+    BrandUpdateSchema,
 } from "../model/dto";
-import NotFoundError from "../../../share/errors/NotFoundError";
+import {
+    BrandId_NotFoundError,
+    BrandName_ExistedError,
+    BrandName_InvalidError,
+} from "../model/error";
 
 export class BrandUseCase implements IBrandUseCase {
-  constructor(private readonly repository: IBrandReposity) {}
+    constructor(private readonly repository: IBrandReposity) {}
 
-  async create(data: BrandCreateDTO): Promise<string> {
-    const {
-      success,
-      data: parsedData,
-    } = BrandCreateSchema.safeParse(data);
+    async create(data: BrandCreateDTO): Promise<string> {
+        const { success, data: parsedData, error } = BrandCreateSchema.safeParse(data);
 
-    if (!success) {
-      throw ErrDataInvalid;
+        if (!success) {
+            throw BrandName_InvalidError(data.name);
+        }
+
+        const isExisted = await this.repository.findByCond({
+            name: parsedData.name,
+        });
+
+        if (isExisted) {
+            throw BrandName_ExistedError(data.name);
+        }
+
+        let newId = v7();
+        const brand: Brand = {
+            id: newId,
+            name: parsedData.name,
+            status: EModelStatus.ACTIVE,
+            description: parsedData.description,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        };
+
+        await this.repository.insert(brand);
+
+        return newId;
     }
 
-    const isExisted = await this.repository.findByCond({
-      name: parsedData.name,
-    });
+    async update(id: string, data: BrandUpdateDTO): Promise<boolean> {
+        const {
+            success,
+            data: parsedData,
+            error,
+        } = BrandUpdateSchema.safeParse(data);
 
-    if (isExisted) {
-      throw ErrDataExisted;
+        if (!success) {
+            throw BrandName_InvalidError(data.name!);
+        }
+
+        let brand = await this.repository.get(id);
+
+        if (!brand || brand.status === EModelStatus.DELETED) {
+            throw BrandId_NotFoundError(id);
+        }
+
+        return await this.repository.update(id, parsedData);
     }
 
-    let newId = v7();
-    const Brand: Brand = {
-      id: newId,
-      name: parsedData.name,
-      status: EModelStatus.ACTIVE,
-      description: parsedData.description,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+    async get(id: string): Promise<Brand | null> {
+        let data = await this.repository.get(id);
 
-    await this.repository.insert(Brand);
+        if (!data || data.status === EModelStatus.DELETED) {
+            throw BrandId_NotFoundError(id);
+        }
 
-    return newId;
-  }
-  async update(id: string, data: BrandUpdateDTO): Promise<boolean> {
-    const {
-      success,
-      data: parsedData,
-      error,
-    } = BrandUpdateSchema.safeParse(data);
+        return BrandSchema.parse(data);
+    }
+    
+    async list(cond: BrandCondDTO, paging: PagingDTO): Promise<Brand[]> {
+        let data = await this.repository.list(cond, paging);
 
-    if (!success) {
-      throw new Error(error.message);
+        return data ? data.map((item) => BrandSchema.parse(item)) : [];
     }
 
-    let Brand = await this.repository.get(id);
+    async delete(id: string, isHard: boolean = false): Promise<boolean> {
+        let brand = await this.repository.get(id);
+        if (!brand || brand.status === EModelStatus.DELETED) {
+            throw BrandId_NotFoundError(id);
+        }
 
-    if (!Brand || Brand.status === EModelStatus.DELETED) {
-      throw ErrDataInvalid;
+        return await this.repository.delete(id, isHard);
     }
-
-    return await this.repository.update(id, parsedData);
-  }
-  async get(id: string): Promise<Brand | null> {
-    let data = await this.repository.get(id);
-
-    if (!data || data.status === EModelStatus.DELETED) {
-      throw new NotFoundError(`Not found any brand with id ${id}`);
-    }
-
-    return BrandSchema.parse(data);
-  }
-  async list(
-    cond: BrandCondDTO,
-    paging: PagingDTO
-  ): Promise<Brand[]> {
-    let data = await this.repository.list(cond, paging);
-
-    return data ? data.map((item) => BrandSchema.parse(item)) : [];
-  }
-
-  async delete(id: string, isHard: boolean = false): Promise<boolean> {
-    let Brand = await this.repository.get(id);
-    if (!Brand || Brand.status === EModelStatus.DELETED) {
-      throw ErrDataNotFound;
-    }
-
-    return await this.repository.delete(id, isHard);
-  }
 }

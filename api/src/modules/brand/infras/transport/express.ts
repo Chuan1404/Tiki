@@ -2,17 +2,17 @@ import { NextFunction, Request, Response } from "express";
 import { IBrandUseCase } from "../../interface";
 import { PagingDTOSchema } from "../../../../share/model/paging";
 import { BrandCondScheme } from "../../model/dto";
+import AppError from "../../../../share/errors/AppError";
 
 export class BrandHttpService {
   constructor(private readonly useCase: IBrandUseCase) {}
 
-  async create(req: Request, res: Response) {
+  async create(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.useCase.create(req.body);
       res.status(201).json({ data: result });
     } catch (error) {
-      console.log(error);
-      res.status(400).json({ error: (error as Error).message });
+      next(error)
     }
   }
 
@@ -29,7 +29,7 @@ export class BrandHttpService {
     }
   }
 
-  async update(req: Request, res: Response) {
+  async update(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
     try {
       await this.useCase.update(id, req.body);
@@ -37,11 +37,11 @@ export class BrandHttpService {
         data: id,
       });
     } catch (error) {
-      res.status(400).json({ error: (error as Error).message });
+      next(error)
     }
   }
 
-  async list(req: Request, res: Response) {
+  async list(req: Request, res: Response, next: NextFunction) {
     const {
       success,
       data: paging,
@@ -64,7 +64,7 @@ export class BrandHttpService {
     });
   }
 
-  async findMany(req: Request, res: Response) {
+  async findMany(req: Request, res: Response, next: NextFunction) {
     let cond = BrandCondScheme.parse(req.body);
     let result = await this.useCase.list(cond);
 
@@ -73,7 +73,7 @@ export class BrandHttpService {
     });
   }
 
-  async delete(req: Request, res: Response) {
+  async delete(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
 
     await this.useCase.delete(id);
