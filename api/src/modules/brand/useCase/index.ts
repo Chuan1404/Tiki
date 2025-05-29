@@ -15,6 +15,7 @@ import {
   BrandUpdateDTO,
   BrandUpdateSchema,
 } from "../model/dto";
+import NotFoundError from "../../../share/errors/NotFoundError";
 
 export class BrandUseCase implements IBrandUseCase {
   constructor(private readonly repository: IBrandReposity) {}
@@ -74,7 +75,7 @@ export class BrandUseCase implements IBrandUseCase {
     let data = await this.repository.get(id);
 
     if (!data || data.status === EModelStatus.DELETED) {
-      throw ErrDataNotFound;
+      throw new NotFoundError(`Not found any brand with id ${id}`);
     }
 
     return BrandSchema.parse(data);

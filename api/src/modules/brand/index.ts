@@ -11,7 +11,7 @@ export const setUpBrandModule = () => {
   const useCase = new BrandUseCase(repository);
   const httpService = new BrandHttpService(useCase);
 
-  const router = Router();
+  const router = Router();  
 
   router.get("/brands/:id", httpService.get.bind(httpService));
   router.get("/brands", httpService.list.bind(httpService));

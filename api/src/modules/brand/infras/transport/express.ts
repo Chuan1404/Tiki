@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { IBrandUseCase } from "../../interface";
 import { PagingDTOSchema } from "../../../../share/model/paging";
 import { BrandCondScheme } from "../../model/dto";
@@ -16,16 +16,16 @@ export class BrandHttpService {
     }
   }
 
-  async get(req: Request, res: Response) {
+  async get(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
     try {
-      let Brand = await this.useCase.get(id);
+      const brand = await this.useCase.get(id);
 
       res.status(200).json({
-        data: Brand,
+        data: brand,
       });
     } catch (error) {
-      res.status(400).json({ error: (error as Error).message });
+      next(error)
     }
   }
 

@@ -8,6 +8,7 @@ import { setUpCartModule } from "./modules/cart";
 import { setUpBrandModule } from "./modules/brand";
 import { setUpRefreshTokenModule } from "./modules/refreshToken";
 import mongoose from "mongoose";
+import errorHandler from "./share/middleware/errorHandler";
 
 dotenv.config();
 
@@ -39,6 +40,8 @@ dotenv.config();
   app.use("/", setUpCartModule());
   app.use("/", setUpBrandModule());
   app.use("/", setUpRefreshTokenModule());
+
+  app.use(errorHandler as any)
 
   app.listen(PORT, () => {
     console.log(`Server run at port ${PORT}`);

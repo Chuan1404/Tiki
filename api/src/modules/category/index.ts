@@ -12,7 +12,7 @@ export const setUpCategoryModule = () => {
     const httpService = new CategoryHttpService(useCase);
 
     const router = Router();
-
+    
     router.get("/categories", httpService.list.bind(httpService));
     router.get("/categories/:id", httpService.get.bind(httpService));
     router.post("/categories", httpService.create.bind(httpService));
