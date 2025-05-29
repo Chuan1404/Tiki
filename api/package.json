@@ -25,6 +25,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/server.ts",
+    "debug": "node --inspect-brk -r ts-node/register src/server.ts",
     "build": "npx tsc",
     "dev": "nodemon src/server.ts"
   },

@@ -3,8 +3,6 @@ import { EModelStatus } from "../../../../../share/model/enums";
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-export const modelName = "Category";
-
 export function init() {
     const categorySchema = new Schema(
         {
@@ -29,5 +27,5 @@ export function init() {
         { timestamps: true }
     );
 
-    mongoose.model(modelName, categorySchema);
+    mongoose.model("Category", categorySchema);
 }
