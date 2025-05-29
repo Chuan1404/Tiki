@@ -2,23 +2,23 @@ import { array, nativeEnum, object, string, z } from "zod";
 import { EModelStatus } from "../../../share/model/enums";
 
 export const CategoryCreateSchema = object({
-  name: string().min(3, "Name must be at least 3 characters"),
-  description: string().optional(),
+    name: string().min(3, "Name must be at least 3 characters"),
+    description: string().optional(),
 });
 
 export const CategoryUpdateSchema = object({
-  name: string().min(3, "Name must be at least 3 characters").optional(),
-  description: z
-    .string()
-    .max(255, "descriptions must be at most 255 characters")
-    .optional(),
-  status: nativeEnum(EModelStatus).optional(),
+    name: string().min(3, "Name must be at least 3 characters").optional(),
+    description: z
+        .string()
+        .max(255, "descriptions must be at most 255 characters")
+        .optional(),
+    status: nativeEnum(EModelStatus).optional(),
 });
 
 export const CategoryCondScheme = object({
-  id: array(string()).optional(),
-  name: string().optional(),
-  status: nativeEnum(EModelStatus).optional(),
+    id: array(string()).optional(),
+    name: string().optional(),
+    status: nativeEnum(EModelStatus).optional(),
 });
 
 export type CategoryUpdateDTO = z.infer<typeof CategoryUpdateSchema>;
