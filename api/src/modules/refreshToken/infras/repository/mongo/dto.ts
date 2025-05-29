@@ -1,24 +1,23 @@
-import { EModelStatus } from "../../../../share/model/enums";
+import mongoose, { Schema } from "mongoose";
+import { EModelStatus, EUserRole } from "../../../../../share/model/enums";
 
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-
-export const modelName = "Brand";
+export const modelName = "RefreshToken";
 
 export function init() {
-  const brandSchema = new Schema(
+  const refreshTokenSchema = new Schema(
     {
       id: {
         type: String,
-        required: true,
         unique: true,
+        require: true,
       },
-      name: {
+      token: {
         type: String,
         required: true,
       },
-      description: {
+      userId: {
         type: String,
+        required: true,
       },
       status: {
         type: String,
@@ -29,5 +28,5 @@ export function init() {
     { timestamps: true }
   );
 
-  mongoose.model(modelName, brandSchema);
+  mongoose.model(modelName, refreshTokenSchema);
 }

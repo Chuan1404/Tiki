@@ -1,9 +1,3 @@
-import { MongooseRepository } from "../../../../share/repository/MongooseRepository";
-import { Brand } from "../../model";
-import { BrandCondDTO, BrandUpdateDTO } from "../../model/dto";
+import BrandMongooseRepository from "./mongo";
 
-export class BrandRepository extends MongooseRepository<
-  Brand,
-  BrandCondDTO,
-  BrandUpdateDTO
-> {}
+export { BrandMongooseRepository };

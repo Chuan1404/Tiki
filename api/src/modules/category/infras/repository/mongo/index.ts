@@ -2,7 +2,7 @@ import { MongooseRepository } from "../../../../../share/repository/MongooseRepo
 import { Category } from "../../../model";
 import { CategoryCondDTO, CategoryUpdateDTO } from "../../../model/dto";
 
-export default class CategoryMongoRepository extends MongooseRepository<
+export default class CategoryMongooseRepository extends MongooseRepository<
     Category,
     CategoryCondDTO,
     CategoryUpdateDTO

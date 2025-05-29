@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { EModelStatus, EUserRole } from "../../../../share/model/enums";
+import { EModelStatus, EUserRole } from "../../../../../share/model/enums";
 
 export const modelName = "User";
 

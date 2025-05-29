@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { ComparePassword, HashPassword } from "../../share/component/password";
-import { UserRepository } from "./infras/repository";
-import { init, modelName } from "./infras/repository/dto";
+import { init, modelName } from "./infras/repository/mongo/dto";
 import { UserHttpService } from "./infras/transport/express";
 import { UserUseCase } from "./useCase";
 import { authToken } from "../../share/middleware/OAuth2";
+import { UserMongooseRepository } from "./infras/repository";
 
 export const setUpUserModule = () => {
   init();
@@ -12,7 +12,7 @@ export const setUpUserModule = () => {
   const hashPassword = new HashPassword();
   const comparePassword = new ComparePassword();
 
-  const repository = new UserRepository(modelName);
+  const repository = new UserMongooseRepository(modelName);
   const useCase = new UserUseCase(repository, hashPassword, comparePassword);
   const httpService = new UserHttpService(useCase);
 

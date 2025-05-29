@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema, UpdateQuery } from "mongoose";
-import { EModelStatus } from "../../../../share/model/enums";
+import { EModelStatus } from "../../../../../share/model/enums";
 import slugify from "slugify";
 
 export const modelName = "Product";

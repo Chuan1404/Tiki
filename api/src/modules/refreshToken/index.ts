@@ -1,14 +1,14 @@
 import { Router } from "express";
 import { authToken } from "../../share/middleware/OAuth2";
-import { RefreshTokenRepository } from "./infras/repository";
-import { init, modelName } from "./infras/repository/dto";
+import { init, modelName } from "./infras/repository/mongo/dto";
 import { RefreshTokenHttpService } from "./infras/transport/express";
 import { RefreshTokenUseCase } from "./useCase";
+import { RefreshTokenMongooseRepository } from "./infras/repository";
 
 export const setUpRefreshTokenModule = () => {
   init();
 
-  const repository = new RefreshTokenRepository(modelName);
+  const repository = new RefreshTokenMongooseRepository(modelName);
   const useCase = new RefreshTokenUseCase(repository);
   const httpService = new RefreshTokenHttpService(useCase);
 

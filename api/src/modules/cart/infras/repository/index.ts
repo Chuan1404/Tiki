@@ -1,9 +1,3 @@
-import { MongooseRepository } from "../../../../share/repository/MongooseRepository";
-import { Cart } from "../../model";
-import { CartCondDTO, CartUpdateDTO } from "../../model/dto";
+import CartMongooseRepository from "./mongo";
 
-export class CartRepository extends MongooseRepository<
-  Cart,
-  CartCondDTO,
-  CartUpdateDTO
-> {}
+export { CartMongooseRepository };
