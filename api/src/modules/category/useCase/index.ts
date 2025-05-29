@@ -11,10 +11,10 @@ import {
     CategoryUpdateSchema,
 } from "../model/dto";
 import {
-    ErrDataExisted,
-    ErrDataInvalid,
-    ErrDataNotFound,
-} from "../../../share/model/errors";
+    CategoryId_NotFoundError,
+    CategoryName_ExistedError,
+    CategoryName_InvalidError,
+} from "../model/error";
 
 export class CategoryUseCase implements ICategoryUseCase {
     constructor(private readonly repository: ICategoryRepository) {}
@@ -24,7 +24,7 @@ export class CategoryUseCase implements ICategoryUseCase {
             CategoryCreateSchema.safeParse(data);
 
         if (!success) {
-            throw ErrDataInvalid;
+            throw CategoryName_InvalidError(data.name);
         }
 
         const isExisted = await this.repository.findByCond({
@@ -32,7 +32,7 @@ export class CategoryUseCase implements ICategoryUseCase {
         });
 
         if (isExisted) {
-            throw ErrDataExisted;
+            throw CategoryName_ExistedError(data.name);
         }
 
         let newId = v7();
@@ -49,6 +49,7 @@ export class CategoryUseCase implements ICategoryUseCase {
 
         return newId;
     }
+
     async update(id: string, data: CategoryUpdateDTO): Promise<boolean> {
         const {
             success,
@@ -63,20 +64,22 @@ export class CategoryUseCase implements ICategoryUseCase {
         const category = await this.repository.get(id);
 
         if (!category || category.status === EModelStatus.DELETED) {
-            throw ErrDataInvalid;
+            throw CategoryId_NotFoundError(id);
         }
 
         return await this.repository.update(id, parsedData);
     }
+
     async get(id: string): Promise<Category | null> {
         let data = await this.repository.get(id);
 
         if (!data || data.status === EModelStatus.DELETED) {
-            throw ErrDataNotFound;
+            throw CategoryId_NotFoundError(id);
         }
 
         return CategorySchema.parse(data);
     }
+    
     async list(cond: CategoryCondDTO, paging?: PagingDTO): Promise<Category[]> {
         let data = await this.repository.list(cond, paging);
 
@@ -84,9 +87,9 @@ export class CategoryUseCase implements ICategoryUseCase {
     }
 
     async delete(id: string, isHard: boolean = false): Promise<boolean> {
-        let Category = await this.repository.get(id);
-        if (!Category || Category.status === EModelStatus.DELETED) {
-            throw ErrDataNotFound;
+        let category = await this.repository.get(id);
+        if (!category || category.status === EModelStatus.DELETED) {
+            throw CategoryId_NotFoundError(id);
         }
 
         return await this.repository.delete(id, isHard);
