@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { PagingDTOSchema } from "../../../../share/model/paging";
 import { IUserUseCase } from "../../interface";
 import { UserCondScheme } from "../../model/dto";
@@ -6,17 +6,16 @@ import { UserCondScheme } from "../../model/dto";
 export class UserHttpService {
     constructor(private readonly useCase: IUserUseCase) {}
 
-    async create(req: Request, res: Response) {
+    async create(req: Request, res: Response, next: NextFunction) {
         try {
             const result = await this.useCase.create(req.body);
             res.status(201).json({ data: result });
         } catch (error) {
-            console.log(error);
-            res.status(400).json({ error: (error as Error).message });
+            next(error);
         }
     }
 
-    async get(req: Request, res: Response) {
+    async get(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
         try {
             let User = await this.useCase.get(id);
@@ -25,11 +24,11 @@ export class UserHttpService {
                 data: User,
             });
         } catch (error) {
-            res.status(400).json({ error: (error as Error).message });
+            next(error);
         }
     }
 
-    async update(req: Request, res: Response) {
+    async update(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
         try {
             await this.useCase.update(id, req.body);
@@ -37,11 +36,11 @@ export class UserHttpService {
                 data: id,
             });
         } catch (error) {
-            res.status(400).json({ error: (error as Error).message });
+            next(error);
         }
     }
 
-    async list(req: Request, res: Response) {
+    async list(req: Request, res: Response, next: NextFunction) {
         const {
             success,
             data: paging,
@@ -64,17 +63,21 @@ export class UserHttpService {
         });
     }
 
-    async delete(req: Request, res: Response) {
-        const { id } = req.params;
+    async delete(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
 
-        await this.useCase.delete(id);
+            await this.useCase.delete(id);
 
-        res.status(200).json({
-            data: id,
-        });
+            res.status(200).json({
+                data: id,
+            });
+        } catch (error) {
+            next(error);
+        }
     }
 
-    async login(req: Request, res: Response) {
+    async login(req: Request, res: Response, next: NextFunction) {
         try {
             let token = await this.useCase.login(req.body);
 
@@ -82,11 +85,11 @@ export class UserHttpService {
                 data: token,
             });
         } catch (error) {
-            res.status(400).json({ error: (error as Error).message });
+            next(error);
         }
     }
 
-    async profile(req: Request, res: Response) {
+    async profile(req: Request, res: Response, next: NextFunction) {
         try {
             const authorizationHeader = req.headers.authorization;
 
@@ -103,11 +106,11 @@ export class UserHttpService {
             const user = await this.useCase.get(payload?.id!);
             res.status(200).json({ data: user });
         } catch (error) {
-            res.status(400).json({ error: (error as Error).message });
+            next(error);
         }
     }
 
-    async refreshToken(req: Request, res: Response) {
+    async refreshToken(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
         try {
             await this.useCase.update(id, req.body);
@@ -115,7 +118,7 @@ export class UserHttpService {
                 data: id,
             });
         } catch (error) {
-            res.status(400).json({ error: (error as Error).message });
+            next(error);
         }
     }
 }

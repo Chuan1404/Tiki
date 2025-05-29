@@ -112,7 +112,7 @@ export class UserUseCase implements IUserUseCase {
         return await this.repository.delete(id, isHard);
     }
 
-    register(data: UserCreateDTO): Promise<string> {
+    async register(data: UserCreateDTO): Promise<string> {
         throw new Error("Method not implemented.");
     }
 
