@@ -1,10 +1,5 @@
 import { v7 } from "uuid";
 import { EModelStatus } from "../../../share/model/enums";
-import {
-    ErrDataExisted,
-    ErrDataInvalid,
-    ErrDataNotFound,
-} from "../../../share/model/errors";
 import { PagingDTO } from "../../../share/model/paging";
 import { IProductRepository, IProductUseCase } from "../interface";
 import { Product, ProductSchema } from "../model";
@@ -15,7 +10,11 @@ import {
     ProductUpdateDTO,
     ProductUpdateSchema,
 } from "../model/dto";
-import { Product_InvalidError, ProductId_NotFoundError, ProductName_ExistedError } from "../model/error";
+import {
+    Product_InvalidError,
+    ProductId_NotFoundError,
+    ProductName_ExistedError,
+} from "../model/error";
 
 export class ProductUseCase implements IProductUseCase {
     constructor(private readonly repository: IProductRepository) {}
@@ -86,7 +85,7 @@ export class ProductUseCase implements IProductUseCase {
 
         return ProductSchema.parse(data);
     }
-    
+
     async list(cond: ProductCondDTO, paging?: PagingDTO): Promise<Product[]> {
         let data = await this.repository.list(cond, paging);
 

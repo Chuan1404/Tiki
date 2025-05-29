@@ -1,13 +1,12 @@
 import { v7 } from "uuid";
 import { EModelStatus } from "../../../share/model/enums";
-import { ErrDataNotFound } from "../../../share/model/errors";
 import { PagingDTO } from "../../../share/model/paging";
 import { IRefreshTokenReposity, IRefreshTokenUseCase } from "../interface";
 import {
     RefreshToken_ExistedError,
     RefreshToken_InvalidError,
     RefreshToken_NotFoundError,
-} from "../interface/error";
+} from "../model/error";
 import { RefreshToken, RefreshTokenSchema } from "../model";
 import {
     RefreshTokenCondDTO,
@@ -78,7 +77,7 @@ export class RefreshTokenUseCase implements IRefreshTokenUseCase {
         let data = await this.repository.get(id);
 
         if (!data || data.status === EModelStatus.DELETED) {
-            throw ErrDataNotFound;
+            throw RefreshToken_NotFoundError;
         }
 
         return RefreshTokenSchema.parse(data);
@@ -88,7 +87,7 @@ export class RefreshTokenUseCase implements IRefreshTokenUseCase {
         let data = await this.repository.findByCond(cond);
 
         if (!data || data.status === EModelStatus.DELETED) {
-            throw ErrDataNotFound;
+            throw RefreshToken_NotFoundError;
         }
 
         return RefreshTokenSchema.parse(data);
@@ -104,8 +103,8 @@ export class RefreshTokenUseCase implements IRefreshTokenUseCase {
     }
 
     async delete(id: string, isHard: boolean = false): Promise<boolean> {
-        let RefreshToken = await this.repository.get(id);
-        if (!RefreshToken || RefreshToken.status === EModelStatus.DELETED) {
+        let refreshToken = await this.repository.get(id);
+        if (!refreshToken || refreshToken.status === EModelStatus.DELETED) {
             throw RefreshToken_NotFoundError;
         }
 
