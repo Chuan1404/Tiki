@@ -77,48 +77,49 @@ export class UserHttpService {
         }
     }
 
-    async login(req: Request, res: Response, next: NextFunction) {
-        try {
-            let token = await this.useCase.login(req.body);
+    // async login(req: Request, res: Response, next: NextFunction) {
+    //     try {
+    //         let token = await this.useCase.login(req.body);
 
-            res.status(200).json({
-                data: token,
-            });
-        } catch (error) {
-            next(error);
-        }
-    }
+    //         res.status(200).json({
+    //             data: token,
+    //         });
+    //     } catch (error) {
+    //         next(error);
+    //     }
+    // }
 
     async profile(req: Request, res: Response, next: NextFunction) {
         try {
-            const authorizationHeader = req.headers.authorization;
+            // const authorizationHeader = req.headers.authorization;
 
-            if (!authorizationHeader) {
-                res.status(401).json({
-                    error: "Unauthorization",
-                });
-                return;
-            }
+            // if (!authorizationHeader) {
+            //     res.status(401).json({
+            //         error: "Unauthorization",
+            //     });
+            //     return;
+            // }
 
-            const token = authorizationHeader.split(" ")[1];
+            // const token = authorizationHeader.split(" ")[1];
 
-            const payload = await this.useCase.verifyToken(token);
-            const user = await this.useCase.get(payload?.id!);
-            res.status(200).json({ data: user });
+            // const payload = await this.useCase.verifyToken(token);
+            // const user = await this.useCase.get(payload?.id!);
+            // res.status(200).json({ data: user });
+            res.status(200).json('ok');
         } catch (error) {
             next(error);
         }
     }
 
-    async refreshToken(req: Request, res: Response, next: NextFunction) {
-        const { id } = req.params;
-        try {
-            await this.useCase.update(id, req.body);
-            res.status(200).json({
-                data: id,
-            });
-        } catch (error) {
-            next(error);
-        }
-    }
+    // async refreshToken(req: Request, res: Response, next: NextFunction) {
+    //     const { id } = req.params;
+    //     try {
+    //         await this.useCase.update(id, req.body);
+    //         res.status(200).json({
+    //             data: id,
+    //         });
+    //     } catch (error) {
+    //         next(error);
+    //     }
+    // }
 }

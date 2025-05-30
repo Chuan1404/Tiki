@@ -21,8 +21,8 @@ export const setUpUserModule = () => {
   router.get("/users/profile", authToken, httpService.profile.bind(httpService));
   router.get("/users", authToken, httpService.list.bind(httpService));
 
-  router.post("/users/login", httpService.login.bind(httpService));
-  router.post("/users/register", httpService.create.bind(httpService));
+  // router.post("/users/login", httpService.login.bind(httpService));
+  // router.post("/users/register", httpService.create.bind(httpService));
   router.post("/users", authToken, httpService.create.bind(httpService));
 
   router.patch("/users/:id", authToken, httpService.update.bind(httpService));

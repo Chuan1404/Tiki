@@ -1,4 +1,4 @@
-import { IRepository } from "../../../share/interface";
+import { IRepository } from "../../../share/interface/repository.interface";
 import { PagingDTO } from "../../../share/model/paging";
 import { Brand } from "../model";
 import {

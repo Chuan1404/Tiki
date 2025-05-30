@@ -1,5 +1,5 @@
-import { IComparePassword, IHashPassword } from "../interface";
 import bcrypt from "bcrypt";
+import { IComparePassword, IHashPassword } from "../interface/password.interface";
 
 export class HashPassword implements IHashPassword {
   hash(rawPassword: string): string {

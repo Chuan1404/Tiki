@@ -1,7 +1,7 @@
 import mongoose, { Types } from "mongoose";
-import { IRepository } from "../interface";
 import { PagingDTO } from "../model/paging";
 import { EModelStatus } from "../model/enums";
+import { IRepository } from "../interface/repository.interface";
 
 export abstract class MongooseRepository<Entity, EntityCondDTO, EntityUpdateDTO>
   implements IRepository<Entity, EntityCondDTO, EntityUpdateDTO> {

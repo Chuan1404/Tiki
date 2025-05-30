@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import { v7 } from "uuid";
-import { IComparePassword, IHashPassword } from "../../../share/interface";
 import { EModelStatus, EUserRole } from "../../../share/model/enums";
 import { PagingDTO } from "../../../share/model/paging";
 import { IUserReposity, IUserUseCase } from "../interface";
@@ -21,6 +20,7 @@ import {
     User_InvalidError,
     User_NotFoundError,
 } from "../model/error";
+import { IComparePassword, IHashPassword } from "../../../share/interface/password.interface";
 
 export class UserUseCase implements IUserUseCase {
     constructor(

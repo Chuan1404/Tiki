@@ -1,6 +1,5 @@
 import { PagingDTO } from "../model/paging";
 
-// repository
 export interface IQueryRepository<Entity, Cond> {
   get(id: string): Promise<Entity | null>;
   findByCond(cond: Cond): Promise<Entity | null>;
@@ -16,13 +15,3 @@ export interface ICommandRepository<Entity, UpdateDTO> {
 export interface IRepository<Entity, Cond, UpdateDTO>
   extends IQueryRepository<Entity, Cond>,
     ICommandRepository<Entity, UpdateDTO> {}
-
-// password
-
-export interface IHashPassword {
-  hash(rawPassword: string): string;
-}
-
-export interface IComparePassword {
-  compare(rawPassword: string, hashedPassword: string): boolean;
-}
