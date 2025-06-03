@@ -1,5 +1,5 @@
+import { PagingDTOSchema } from "@shared/model/paging";
 import { NextFunction, Request, Response } from "express";
-import { PagingDTOSchema } from "../../../../share/model/paging";
 import { IUserUseCase } from "../../interface";
 import { UserCondScheme } from "../../model/dto";
 

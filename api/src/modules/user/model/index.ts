@@ -1,5 +1,5 @@
+import { EModelStatus, EUserRole } from "@shared/model/enums";
 import { string, z } from "zod";
-import { EModelStatus, EUserRole } from "../../../share/model/enums";
 
 
 export const UserSchema = z.object({

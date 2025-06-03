@@ -1,6 +1,6 @@
+import { EModelStatus, EUserRole } from "@shared/model/enums";
 import { string, z } from "zod";
 import { UserSchema } from ".";
-import { EModelStatus, EUserRole } from "../../../share/model/enums";
 
 export const UserCreateSchema = UserSchema.pick({
   name: true,

@@ -1,10 +1,10 @@
+import { ComparePassword, HashPassword } from "@shared/component/password";
+import { authToken } from "@shared/middleware/OAuth2";
 import { Router } from "express";
-import { ComparePassword, HashPassword } from "../../share/component/password";
+import { UserMongooseRepository } from "./infras/repository";
 import { init, modelName } from "./infras/repository/mongo/dto";
 import { UserHttpService } from "./infras/transport/express";
 import { UserUseCase } from "./useCase";
-import { authToken } from "../../share/middleware/OAuth2";
-import { UserMongooseRepository } from "./infras/repository";
 
 export const setUpUserModule = () => {
   init();

@@ -1,7 +1,8 @@
+import { IComparePassword, IHashPassword } from "@shared/interface/password.interface";
+import { EModelStatus, EUserRole } from "@shared/model/enums";
+import { PagingDTO } from "@shared/model/paging";
 import jwt from "jsonwebtoken";
 import { v7 } from "uuid";
-import { EModelStatus, EUserRole } from "../../../share/model/enums";
-import { PagingDTO } from "../../../share/model/paging";
 import { IUserReposity, IUserUseCase } from "../interface";
 import { User, UserSchema } from "../model";
 import {
@@ -20,7 +21,6 @@ import {
     User_InvalidError,
     User_NotFoundError,
 } from "../model/error";
-import { IComparePassword, IHashPassword } from "../../../share/interface/password.interface";
 
 export class UserUseCase implements IUserUseCase {
     constructor(
