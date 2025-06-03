@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { authToken } from "../../share/middleware/OAuth2";
 import { init, modelName } from "./infras/repository/mongo/dto";
 import { RefreshTokenHttpService } from "./infras/transport/express";
 import { RefreshTokenUseCase } from "./useCase";

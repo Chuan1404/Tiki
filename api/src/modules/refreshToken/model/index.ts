@@ -1,8 +1,8 @@
-import { date, nativeEnum, string, z } from "zod";
-import { EModelStatus } from "../../../share/model/enums";
+import { EModelStatus } from "@shared/model/enums";
+import { date, nativeEnum, object, string, z } from "zod";
 
 
-export const RefreshTokenSchema = z.object({
+export const RefreshTokenSchema = object({
   id: string(),
   token: string(),
   userId: string(),

@@ -1,6 +1,5 @@
-import { string, object, z, nativeEnum } from "zod";
+import { object, string, z } from "zod";
 import { RefreshTokenSchema } from ".";
-import { EUserRole } from "../../../share/model/enums";
 
 export const RefreshTokenCreateSchema = RefreshTokenSchema.pick({
   token: true,

@@ -1,5 +1,5 @@
+import { EModelStatus } from "@shared/model/enums";
 import mongoose, { Schema } from "mongoose";
-import { EModelStatus, EUserRole } from "../../../../../share/model/enums";
 
 export const modelName = "RefreshToken";
 

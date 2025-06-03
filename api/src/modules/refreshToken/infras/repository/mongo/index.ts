@@ -1,4 +1,4 @@
-import { MongooseRepository } from "../../../../../share/repository/MongooseRepository";
+import { MongooseRepository } from "@shared/repository/MongooseRepository";
 import { RefreshToken } from "../../../model";
 import { RefreshTokenCondDTO, RefreshTokenUpdateDTO } from "../../../model/dto";
 

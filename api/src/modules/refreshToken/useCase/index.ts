@@ -1,12 +1,7 @@
+import { EModelStatus } from "@shared/model/enums";
+import { PagingDTO } from "@shared/model/paging";
 import { v7 } from "uuid";
-import { EModelStatus } from "../../../share/model/enums";
-import { PagingDTO } from "../../../share/model/paging";
 import { IRefreshTokenReposity, IRefreshTokenUseCase } from "../interface";
-import {
-    RefreshToken_ExistedError,
-    RefreshToken_InvalidError,
-    RefreshToken_NotFoundError,
-} from "../model/error";
 import { RefreshToken, RefreshTokenSchema } from "../model";
 import {
     RefreshTokenCondDTO,
@@ -15,6 +10,11 @@ import {
     RefreshTokenUpdateDTO,
     RefreshTokenUpdateSchema,
 } from "../model/dto";
+import {
+    RefreshToken_ExistedError,
+    RefreshToken_InvalidError,
+    RefreshToken_NotFoundError,
+} from "../model/error";
 
 export class RefreshTokenUseCase implements IRefreshTokenUseCase {
     constructor(private readonly repository: IRefreshTokenReposity) {}
