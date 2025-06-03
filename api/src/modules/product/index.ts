@@ -1,11 +1,11 @@
+import upload from "@shared/configs/multer";
+import { rpc } from "@shared/configs/rpc";
 import { Router } from "express";
-import upload from "../../share/configs/multer";
-import { rpc } from "../../share/configs/rpc";
+import { ProductMongooseRepository } from "./infras/repository";
 import { init, modelName } from "./infras/repository/mongo/dto";
 import { RPCBrandRepository, RPCCategoryRepository } from "./infras/rpc";
 import { ProductHttpService } from "./infras/transport/express";
 import { ProductUseCase } from "./useCase";
-import { ProductMongooseRepository } from "./infras/repository";
 
 export const setUpProductModule = () => {
     init();

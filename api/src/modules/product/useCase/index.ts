@@ -1,6 +1,6 @@
+import { EModelStatus } from "@prisma/client";
+import { PagingDTO } from "@shared/model/paging";
 import { v7 } from "uuid";
-import { EModelStatus } from "../../../share/model/enums";
-import { PagingDTO } from "../../../share/model/paging";
 import { IProductRepository, IProductUseCase } from "../interface";
 import { Product, ProductSchema } from "../model";
 import {

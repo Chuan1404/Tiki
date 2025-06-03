@@ -1,5 +1,5 @@
+import { EModelStatus } from "@prisma/client";
 import { array, nativeEnum, number, object, string, z } from "zod";
-import { EModelStatus } from "../../../share/model/enums";
 
 export const ProductCreateSchema = object({
   name: string().min(3, "Name must be at least 3 characters"),

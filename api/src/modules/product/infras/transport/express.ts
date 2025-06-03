@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { PagingDTOSchema } from "../../../../share/model/paging";
-import { entitiesToHashMap } from "../../../../share/utils";
 import {
     IBrandQueryRepository,
     ICategoryQueryRepository,
     IProductUseCase,
 } from "../../interface";
 import { ProductCondScheme, ProductCreateDTO } from "../../model/dto";
+import { PagingDTOSchema } from "@shared/model/paging";
+import { entitiesToHashMap } from "@shared/utils";
 
 export class ProductHttpService {
     constructor(
