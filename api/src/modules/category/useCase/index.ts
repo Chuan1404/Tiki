@@ -1,6 +1,7 @@
+import { EModelStatus } from "@prisma/client";
+import { PagingDTO } from "@shared/model/paging";
 import { v7 } from "uuid";
-import { EModelStatus } from "../../../share/model/enums";
-import { PagingDTO } from "../../../share/model/paging";
+import { ICategoryRepository, ICategoryUseCase } from "../interface";
 import { Category, CategorySchema } from "../model";
 import {
     CategoryCondDTO,
@@ -14,7 +15,6 @@ import {
     CategoryName_ExistedError,
     CategoryName_InvalidError,
 } from "../model/error";
-import { ICategoryRepository, ICategoryUseCase } from "../interface";
 
 export class CategoryUseCase implements ICategoryUseCase {
     constructor(private readonly repository: ICategoryRepository) {}

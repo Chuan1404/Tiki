@@ -1,5 +1,5 @@
+import { EModelStatus } from "@shared/model/enums";
 import { array, nativeEnum, object, string, z } from "zod";
-import { EModelStatus } from "../../../share/model/enums";
 
 export const CategoryCreateSchema = object({
     name: string().min(3, "Name must be at least 3 characters"),

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ICategoryUseCase } from "../../interface";
-import { PagingDTOSchema } from "../../../../share/model/paging";
 import { CategoryCondScheme } from "../../model/dto";
+import { PagingDTOSchema } from "@shared/model/paging";
 
 export class CategoryHttpService {
     constructor(private readonly useCase: ICategoryUseCase) {}

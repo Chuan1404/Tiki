@@ -1,7 +1,7 @@
-import prisma from "../../../../../share/component/prisma";
-import { EModelStatus } from "../../../../../share/model/enums";
-import { PagingDTO } from "../../../../../share/model/paging";
-import { convertQuery } from "../../../../../share/utils";
+import { EModelStatus } from "@prisma/client";
+import prisma from "@shared/component/prisma";
+import { PagingDTO } from "@shared/model/paging";
+import { convertQuery } from "@shared/utils";
 import { ICategoryRepository } from "../../../interface";
 import { Category, CategorySchema } from "../../../model";
 import {

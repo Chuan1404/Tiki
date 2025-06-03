@@ -1,5 +1,5 @@
+import { EModelStatus } from "@prisma/client";
 import { z } from "zod";
-import { EModelStatus } from "../../../share/model/enums";
 
 export const CategorySchema = z.object({
     id: z.string(),

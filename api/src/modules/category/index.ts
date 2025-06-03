@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { CategoryHttpService } from "./infras/transport/express";
 import { CategoryUseCase } from "./useCase";
-import { CategoryMongooseRepository, modelName } from "./infras/repository";
 import { init } from "../category/infras/repository/mongo/dto";
+import { CategoryMongooseRepository, modelName } from "./infras/repository";
 
 export const setUpCategoryModule = () => {
     init();
