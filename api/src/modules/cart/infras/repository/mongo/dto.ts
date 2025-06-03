@@ -1,5 +1,5 @@
+import { EModelStatus } from "@prisma/client";
 import mongoose, { Schema } from "mongoose";
-import { EModelStatus } from "../../../../../share/model/enums";
 
 export const modelName = "Cart";
 

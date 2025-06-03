@@ -1,19 +1,19 @@
+import { EModelStatus } from "@prisma/client";
+import { PagingDTO } from "@shared/model/paging";
 import { v7 } from "uuid";
-import { EModelStatus } from "../../../share/model/enums";
-import { PagingDTO } from "../../../share/model/paging";
 import { ICartRepository, ICartUseCase } from "../interface";
 import { Cart, CartSchema } from "../model";
 import {
-  CartCondDTO,
-  CartCreateDTO,
-  CartCreateSchema,
-  CartUpdateDTO,
-  CartUpdateSchema,
+    CartCondDTO,
+    CartCreateDTO,
+    CartCreateSchema,
+    CartUpdateDTO,
+    CartUpdateSchema,
 } from "../model/dto";
 import {
-  Cart_ExistedError,
-  Cart_InvalidError,
-  Cart_NotFoundError,
+    Cart_ExistedError,
+    Cart_InvalidError,
+    Cart_NotFoundError,
 } from "../model/error";
 
 export class CartUseCase implements ICartUseCase {

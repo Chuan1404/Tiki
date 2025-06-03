@@ -1,5 +1,5 @@
+import { EModelStatus } from "@prisma/client";
 import { date, nativeEnum, number, object, string, z } from "zod";
-import { EModelStatus } from "../../../share/model/enums";
 
 export const CartSchema = object({
   id: string(),

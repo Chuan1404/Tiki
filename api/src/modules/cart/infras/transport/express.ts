@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { PagingDTOSchema } from "../../../../share/model/paging";
-import { entitiesToHashMap } from "../../../../share/utils";
 import { ICartUseCase, IProductQueryRepository } from "../../interface";
 import { CartCondScheme, CartCreateDTO } from "../../model/dto";
+import { PagingDTOSchema } from "@shared/model/paging";
+import { entitiesToHashMap } from "@shared/utils";
 
 export class CartHttpService {
     constructor(

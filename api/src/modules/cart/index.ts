@@ -1,6 +1,6 @@
+import { rpc } from "@shared/configs/rpc";
+import { authToken } from "@shared/middleware/OAuth2";
 import { Router } from "express";
-import { rpc } from "../../share/configs/rpc";
-import { authToken } from "../../share/middleware/OAuth2";
 import { CartMongooseRepository } from "./infras/repository";
 import { init, modelName } from "./infras/repository/mongo/dto";
 import { RPCProductRepository } from "./infras/rpc";

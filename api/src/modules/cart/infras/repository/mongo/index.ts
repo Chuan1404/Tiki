@@ -1,4 +1,4 @@
-import { MongooseRepository } from "../../../../../share/repository/MongooseRepository";
+import { MongooseRepository } from "@shared/repository/MongooseRepository";
 import { Cart } from "../../../model";
 import { CartCondDTO, CartUpdateDTO } from "../../../model/dto";
 
