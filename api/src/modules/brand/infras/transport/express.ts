@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IBrandUseCase } from "../../interface";
-import { PagingDTOSchema } from "../../../../share/model/paging";
 import { BrandCondScheme } from "../../model/dto";
-import AppError from "../../../../share/errors/AppError";
+import { PagingDTOSchema } from "@shared/model/paging";
 
 export class BrandHttpService {
     constructor(private readonly useCase: IBrandUseCase) {}

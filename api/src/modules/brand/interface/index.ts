@@ -1,5 +1,5 @@
-import { IRepository } from "../../../share/interface/repository.interface";
-import { PagingDTO } from "../../../share/model/paging";
+import { IRepository } from "@shared/interface/repository.interface";
+import { PagingDTO } from "@shared/model/paging";
 import { Brand } from "../model";
 import {
   BrandCondDTO,

@@ -1,6 +1,5 @@
+import { PagingDTO } from "@shared/model/paging";
 import { v7 } from "uuid";
-import { EModelStatus } from "../../../share/model/enums";
-import { PagingDTO } from "../../../share/model/paging";
 import { IBrandReposity, IBrandUseCase } from "../interface";
 import { Brand, BrandSchema } from "../model";
 import {
@@ -11,10 +10,12 @@ import {
     BrandUpdateSchema,
 } from "../model/dto";
 import {
+    Brand_InvalidError,
     BrandId_NotFoundError,
     BrandName_ExistedError,
     BrandName_InvalidError,
 } from "../model/error";
+import { EModelStatus } from "@shared/model/enums";
 
 export class BrandUseCase implements IBrandUseCase {
     constructor(private readonly repository: IBrandReposity) {}
@@ -56,8 +57,12 @@ export class BrandUseCase implements IBrandUseCase {
             error,
         } = BrandUpdateSchema.safeParse(data);
 
+        if (!data || !data.name) {
+            throw Brand_InvalidError;
+        }
+
         if (!success) {
-            throw BrandName_InvalidError(data.name!);
+            throw BrandName_InvalidError(data.name);
         }
 
         let brand = await this.repository.get(id);

@@ -1,4 +1,4 @@
-import { EModelStatus } from "../../../../../share/model/enums";
+import { EModelStatus } from "@prisma/client";
 
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
