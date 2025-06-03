@@ -4,6 +4,7 @@
   "main": "index.js",
   "dependencies": {
     "@prisma/client": "^6.0.1",
+    "amqplib": "^0.10.8",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
@@ -27,14 +28,16 @@
     "start": "nodemon src/server.ts",
     "debug": "node --inspect-brk -r ts-node/register src/server.ts",
     "build": "npx tsc",
-    "dev": "nodemon src/server.ts"
+    "dev": "nodemon -r tsconfig-paths/register src/server.ts"
   },
   "devDependencies": {
+    "@types/amqplib": "^0.10.7",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/multer": "^1.4.12",
-    "prisma": "^6.0.1"
+    "prisma": "^6.0.1",
+    "tsconfig-paths": "^4.2.0"
   }
 }

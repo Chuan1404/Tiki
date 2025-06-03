@@ -8,7 +8,8 @@ import { setUpCartModule } from "./modules/cart";
 import { setUpBrandModule } from "./modules/brand";
 import { setUpRefreshTokenModule } from "./modules/refreshToken";
 import mongoose from "mongoose";
-import errorHandler from "./share/middleware/errorHandler";
+import { setUpAuthModule } from "modules/auth";
+import errorHandler from "@shared/middleware/errorHandler";
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ dotenv.config();
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
+  app.use("/", setUpAuthModule());
   app.use("/", setUpCategoryModule());
   app.use("/", setUpProductModule());
   app.use("/", setUpUserModule());
