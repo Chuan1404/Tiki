@@ -9,7 +9,7 @@ export interface IMessageListener {
 }
 
 export interface IMessageBroker {
-    publish(event: IMessage): Promise<void>;
+    publish(message: IMessage): Promise<void>;
     subscribe(exchange: string, routingKey: string, listener: IMessageListener ): Promise<void>;
-    unsubscribe(eventName: string, listener: IMessageListener ): Promise<void>;
+    unsubscribe(messageName: string, listener: IMessageListener ): Promise<void>;
 }

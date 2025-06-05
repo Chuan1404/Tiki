@@ -1,7 +1,7 @@
+import { PagingDTOSchema } from "devchu-common";
 import { NextFunction, Request, Response } from "express";
 import { IUserUseCase } from "../../interface";
 import { UserCondScheme } from "../../model/dto";
-import { PagingDTOSchema } from "devchu-common";
 
 export class UserHttpService {
     constructor(private readonly useCase: IUserUseCase) {}
@@ -41,11 +41,7 @@ export class UserHttpService {
     }
 
     async list(req: Request, res: Response, next: NextFunction) {
-        const {
-            success,
-            data: paging,
-            error,
-        } = PagingDTOSchema.safeParse(req.query);
+        const { success, data: paging, error } = PagingDTOSchema.safeParse(req.query);
 
         if (!success) {
             res.status(400).json({
@@ -77,18 +73,6 @@ export class UserHttpService {
         }
     }
 
-    // async login(req: Request, res: Response, next: NextFunction) {
-    //     try {
-    //         let token = await this.useCase.login(req.body);
-
-    //         res.status(200).json({
-    //             data: token,
-    //         });
-    //     } catch (error) {
-    //         next(error);
-    //     }
-    // }
-
     async profile(req: Request, res: Response, next: NextFunction) {
         try {
             // const authorizationHeader = req.headers.authorization;
@@ -105,21 +89,9 @@ export class UserHttpService {
             // const payload = await this.useCase.verifyToken(token);
             // const user = await this.useCase.get(payload?.id!);
             // res.status(200).json({ data: user });
-            res.status(200).json('ok');
+            res.status(200).json("ok");
         } catch (error) {
             next(error);
         }
     }
-
-    // async refreshToken(req: Request, res: Response, next: NextFunction) {
-    //     const { id } = req.params;
-    //     try {
-    //         await this.useCase.update(id, req.body);
-    //         res.status(200).json({
-    //             data: id,
-    //         });
-    //     } catch (error) {
-    //         next(error);
-    //     }
-    // }
 }

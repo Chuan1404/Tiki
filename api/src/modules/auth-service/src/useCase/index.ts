@@ -1,4 +1,4 @@
-import { EUserRole, IComparePassword, IHashPassword } from "devchu-common";
+import { EUserRole, IComparePassword, IHashPassword, IMessage, IMessageBroker } from "devchu-common";
 import jwt from "jsonwebtoken";
 import { IAuthUseCase } from "../interface";
 import {
@@ -14,7 +14,8 @@ import { Auth_Error, AuthRegister_InvalidError } from "../model/error";
 export class AuthUseCase implements IAuthUseCase {
     constructor(
         private readonly passwordHasher: IHashPassword,
-        private readonly comparePassword: IComparePassword
+        private readonly comparePassword: IComparePassword,
+        private readonly messageBroker: IMessageBroker,
     ) {}
 
     async register(data: AuthRegisterDTO): Promise<string> {
@@ -33,6 +34,13 @@ export class AuthUseCase implements IAuthUseCase {
         };
 
         // send user data by message broker
+        const message: IMessage = {
+            exchange: "auth",
+            routingKey: "auth.registed",
+            data: userDTO,
+        }
+
+        this.messageBroker.publish(message)
 
         return "newUserId";
     }

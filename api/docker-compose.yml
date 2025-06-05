@@ -1,39 +1,43 @@
 version: '3.8'
 
 services:
-  # rabbitmq:
-  #   image: rabbitmq:3-management
-  #   container_name: rabbitmq
-  #   ports:
-  #     - "5672:5672"     # AMQP protocol
-  #     - "15672:15672"   # Web UI
-  #   environment:
-  #     RABBITMQ_DEFAULT_USER: devchu
-  #     RABBITMQ_DEFAULT_PASS: "123456"
-
-  nginx:
-    image: nginx:latest
-    container_name: nginx
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
     ports:
-      - "8080:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - auth-service
-      - user-service
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: devchu
+      RABBITMQ_DEFAULT_PASS: "123456"
 
-  auth-service:
-    build:
-      context: .
-      dockerfile: src/modules/auth-service/Dockerfile
-    container_name: auth-service
-    volumes:
-      - ./src/modules/auth-service/src:/app/modules/auth-service/src
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: nginx
+  #   ports:
+  #     - "8080:80"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    # depends_on:
+    #   - auth-service
+    #   - user-service
 
-  user-service:
-    build:
-      context: .
-      dockerfile: src/modules/user-service/Dockerfile
-    container_name: user-service
-    volumes:
-      - ./src/modules/user-service/src:/app/modules/user-service/src
+  # auth-service:
+  #   build:
+  #     context: .
+  #     dockerfile: src/modules/auth-service/Dockerfile
+  #   container_name: auth-service
+  #   volumes:
+  #     - ./src/modules/auth-service/src:/app/modules/auth-service/src
+  #   depends_on:
+  #     - rabbitmq
+
+  # user-service:
+  #   build:
+  #     context: .
+  #     dockerfile: src/modules/user-service/Dockerfile
+  #   container_name: user-service
+  #   volumes:
+  #     - ./src/modules/user-service/src:/app/modules/user-service/src
+  #   depends_on:
+  #     - rabbitmq

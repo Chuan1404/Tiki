@@ -13,15 +13,15 @@ export class RabbitMQ implements IMessageBroker {
         try {
             const connection = await amqp.connect(this.url);
             this.channel = await connection.createChannel();
-            console.log("RabbitMQ connected");
+            console.log(`RabbitMQ connected successfully - ${this.url}`);
         } catch (err) {
-            console.error("RabbitMQ connect failed. Retrying...", err);
+            console.log(`RabbitMQ connected fail - ${this.url}`);
             setTimeout(() => this.connect(), 5000);
         }
     }
 
-    async publish(event: IMessage): Promise<void> {
-        const { exchange, routingKey, data } = event;
+    async publish(message: IMessage): Promise<void> {
+        const { exchange, routingKey, data } = message;
         await this.channel.assertExchange(exchange, "topic", { durable: true });
         const buffer = Buffer.from(JSON.stringify(data));
         this.channel.publish(exchange, routingKey, buffer, {
@@ -56,7 +56,7 @@ export class RabbitMQ implements IMessageBroker {
         console.log(`Subscribed to ${exchange}:${routingKey} on queue ${queueName}`);
     }
 
-    unsubscribe(eventName: string, listener: IMessageListener): Promise<void> {
+    unsubscribe(messageName: string, listener: IMessageListener): Promise<void> {
         throw new Error("Method not implemented.");
     }
 }

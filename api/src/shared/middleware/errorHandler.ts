@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import AppError from "../errors/AppError";
 
-const errorHandler = (
+export const errorHandler = (
     err: Error,
     req: Request,
     res: Response,
@@ -19,5 +19,3 @@ const errorHandler = (
         message: "Internal Server Error",
     });
 };
-
-export default errorHandler;
