@@ -1,5 +1,4 @@
 export * from './interface'
-
 export * from './model';
 export * from './errors';
 export * from './component'

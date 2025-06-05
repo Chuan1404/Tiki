@@ -27,10 +27,13 @@ services:
       context: .
       dockerfile: src/modules/auth-service/Dockerfile
     container_name: auth-service
+    volumes:
+      - ./src/modules/auth-service/src:/app/modules/auth-service/src
 
   user-service:
     build:
       context: .
       dockerfile: src/modules/user-service/Dockerfile
     container_name: user-service
-
+    volumes:
+      - ./src/modules/user-service/src:/app/modules/user-service/src

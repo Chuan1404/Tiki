@@ -30,6 +30,6 @@ router.get("/auth/health", (req, res) => {
 
 app.use(router);
 
-app.listen(3001, () => {
-    console.log("Auth Service is listening on port 3001");
+app.listen(3000, () => {
+    console.log("Auth Service is listening on port 3000");
 });
