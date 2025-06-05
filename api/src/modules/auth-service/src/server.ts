@@ -24,6 +24,10 @@ const router = Router();
 router.post("/auth/login", httpService.login.bind(httpService));
 router.post("/auth/register", httpService.register.bind(httpService));
 
+router.get("/auth/health", (req, res) => {
+    res.send("Auth Service is healthy");
+});
+
 app.use(router);
 
 app.listen(3001, () => {
