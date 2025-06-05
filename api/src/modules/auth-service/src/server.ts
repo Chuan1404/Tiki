@@ -1,9 +1,17 @@
-import { ComparePassword, HashPassword } from "devchu-common/component/password";
+import cors from "cors";
+import dotenv from "dotenv";
 import express, { Router } from "express";
-import { AuthUseCase } from "./useCase";
+import { ComparePassword, HashPassword } from "./common";
 import { AuthHttpService } from "./infras/transport/express";
+import { AuthUseCase } from "./useCase";
+
+dotenv.config();
 
 const app = express();
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const hashPassword = new HashPassword();
 const comparePassword = new ComparePassword();
@@ -15,6 +23,8 @@ const router = Router();
 
 router.post("/auth/login", httpService.login.bind(httpService));
 router.post("/auth/register", httpService.register.bind(httpService));
+
+app.use(router);
 
 app.listen(3001, () => {
     console.log("Auth Service is listening on port 3001");

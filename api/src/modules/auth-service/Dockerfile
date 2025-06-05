@@ -1,11 +1,17 @@
 FROM node:18
 
-WORKDIR .
+WORKDIR /app
 
-COPY package*.json ./
+COPY src/modules/auth-service/package*.json ./modules/auth-service/
+
+COPY src/shared ./shared
+
+WORKDIR /app/modules/auth-service
+
 RUN npm install
 
-COPY . .
+COPY src/modules/auth-service/src ./src
 
 EXPOSE 3001
 CMD ["npm", "run", "dev"]
+

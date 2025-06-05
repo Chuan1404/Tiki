@@ -1,4 +1,4 @@
-import { IComparePassword, IHashPassword, EUserRole } from "devchu-common";
+import { EUserRole, IComparePassword, IHashPassword } from "devchu-common";
 import jwt from "jsonwebtoken";
 import { IAuthUseCase } from "../interface";
 import {
@@ -15,8 +15,7 @@ export class AuthUseCase implements IAuthUseCase {
     constructor(
         private readonly passwordHasher: IHashPassword,
         private readonly comparePassword: IComparePassword
-    ) // private readonly messageBroker: IMessageBroker
-    {}
+    ) {}
 
     async register(data: AuthRegisterDTO): Promise<string> {
         let { success, data: parsedData, error } = AuthRegisterSchema.safeParse(data);
@@ -55,15 +54,18 @@ export class AuthUseCase implements IAuthUseCase {
             role: user.role,
         };
 
-        const accessTokenLife = process.env.ACCESS_TOKEN_LIFE ?? "1h";
+        // const accessTokenLife = process.env.ACCESS_TOKEN_LIFE ?? "1h";
+        const accessTokenLife = "1h";
         const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET ?? "accessToken";
-        const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE ?? "24h";
+        // const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE ?? "24h";
+        const refreshTokenLife = "24h";
         const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET ?? "refreshToken";
 
-        let accessToken = jwt.sign(payload, accessTokenSecret, {
+        const accessToken = jwt.sign(payload, accessTokenSecret, {
             expiresIn: accessTokenLife,
         });
-        let refreshToken = jwt.sign(payload, refreshTokenSecret, {
+
+        const refreshToken = jwt.sign(payload, refreshTokenSecret, {
             expiresIn: refreshTokenLife,
         });
 
