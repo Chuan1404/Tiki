@@ -3,12 +3,16 @@ FROM node:18
 WORKDIR /app
 
 COPY src/modules/auth-service/package*.json ./modules/auth-service/
+COPY src/shared/package*.json ./shared/
 
-COPY src/shared ./shared
-
-WORKDIR /app/modules/auth-service
-
+WORKDIR /app/shared/
 RUN npm install
+
+WORKDIR /app/modules/auth-service/
+RUN npm install
+
+
+COPY src/shared ../../shared
 
 COPY src/modules/auth-service/src ./src
 
