@@ -14,14 +14,20 @@ const httpService = new UserHttpService(useCase);
 
 const router = Router();
 
-router.get("/users/profile", authToken, httpService.profile.bind(httpService));
-router.get("/users", authToken, httpService.list.bind(httpService));
+router.get("/user/profile", authToken, httpService.profile.bind(httpService));
+router.get("/user", authToken, httpService.list.bind(httpService));
 
-router.post("/users", authToken, httpService.create.bind(httpService));
+router.post("/user", authToken, httpService.create.bind(httpService));
 
-router.patch("/users/:id", authToken, httpService.update.bind(httpService));
+router.patch("/user/:id", authToken, httpService.update.bind(httpService));
 
-router.delete("/users/:id", authToken, httpService.delete.bind(httpService));
+router.delete("/user/:id", authToken, httpService.delete.bind(httpService));
+
+router.get("/user/health", (req, res) => {
+    res.send("User Service is healthy");
+});
+
+app.use(router);
 
 app.listen(3000, () => {
     console.log("User Service is listening on port 3000");

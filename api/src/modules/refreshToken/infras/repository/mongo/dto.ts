@@ -22,7 +22,7 @@ export function init() {
       status: {
         type: String,
         enum: EModelStatus,
-        default: EModelStatus.ACTIVE,
+        default: EModelStatus .ACTIVE,
       },
     },
     { timestamps: true }

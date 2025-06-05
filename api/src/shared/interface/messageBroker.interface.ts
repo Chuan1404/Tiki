@@ -1,0 +1,15 @@
+export interface IMessage {
+    exchange: string;
+    routingKey: string;
+    data: any;
+  }
+
+export interface IMessageListener {
+    handle(data: any): Promise<void>;
+}
+
+export interface IMessageBroker {
+    publish(event: IMessage): Promise<void>;
+    subscribe(exchange: string, routingKey: string, listener: IMessageListener ): Promise<void>;
+    unsubscribe(eventName: string, listener: IMessageListener ): Promise<void>;
+}

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { UserPayloadSchema } from "../../modules/user/model/dto";
 import { EUserRole } from "../model/enums";
+import { UserPayloadSchema } from "../model/oauth";
 
 declare global {
     namespace Express {
@@ -57,10 +57,7 @@ export function authorizeUser(acceptRoles: EUserRole[] = []) {
             return;
         }
 
-        if (
-            req.userRole === EUserRole.ADMIN ||
-            acceptRoles.includes(req.userRole)
-        ) {
+        if (req.userRole === EUserRole.ADMIN || acceptRoles.includes(req.userRole)) {
             next();
             return;
         }

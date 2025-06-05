@@ -1,0 +1,124 @@
+ Tổng thể kiến trúc:
+API Gateway
+
+Authentication Service
+
+User Service
+
+Product Service
+
+Order Service
+
+Payment Service
+
+Notification Service
+
+Review/Rating Service (optional)
+
+Inventory/Stock Service (optional)
+
+Search Service (Elasticsearch-based)
+
+RabbitMQ/Kafka để giao tiếp giữa các service
+
+MongoDB / PostgreSQL / Redis / Elasticsearch tùy chức năng
+
+----------------------------------------------------
+
+🔑 1. Authentication Service
+Ngôn ngữ: TypeScript + Node.js (NestJS hoặc ExpressJS)
+
+Lý do: JWT, OAuth, email verification xử lý tốt + ecosystem mạnh
+
+DB: PostgreSQL hoặc MongoDB
+
+Note: Có thể dùng Keycloak nếu muốn tách biệt Auth hoàn toàn
+
+👤 2. User Service
+Ngôn ngữ: Go hoặc TypeScript
+
+Lý do: Go mạnh về performance, Node dễ phát triển
+
+DB: PostgreSQL (dữ liệu quan hệ)
+
+Chức năng: CRUD user, profile, roles, etc.
+
+📦 3. Product Service
+Ngôn ngữ: Java (Spring Boot) hoặc Node.js
+
+Lý do: Xử lý logic phức tạp, quản lý danh mục, hình ảnh
+
+DB: MongoDB (linh hoạt với product variants)
+
+Tính năng: CRUD sản phẩm, danh mục, image upload (Amazon S3)
+
+🛒 4. Order Service
+Ngôn ngữ: Java (Spring Boot) hoặc Go
+
+Lý do: Logic nghiệp vụ nặng, xử lý giao dịch tốt
+
+DB: PostgreSQL
+
+Note: Dễ tích hợp với Kafka hoặc RabbitMQ để xử lý async
+
+💳 5. Payment Service
+Ngôn ngữ: Python hoặc Go
+
+Lý do: Python dễ tích hợp các SDK thanh toán (Stripe, Paypal), Go tốt về hiệu năng
+
+Security: Cực kỳ quan trọng, nên chạy độc lập & audit kỹ
+
+DB: PostgreSQL
+
+Note: Hỗ trợ webhook, kiểm tra transaction
+
+📬 6. Notification Service
+Ngôn ngữ: Python hoặc Node.js
+
+Lý do: Queue worker tốt, xử lý email/SMS/FCM
+
+Tech: RabbitMQ/Kafka + Mailgun/Sendgrid
+
+Note: Thường chạy background (async)
+
+🗣️ 7. Review / Rating Service
+Ngôn ngữ: Node.js hoặc Python
+
+Lý do: CRUD đơn giản, gắn với sản phẩm và người dùng
+
+DB: MongoDB (linh hoạt, unstructured)
+
+📦 8. Inventory / Stock Service
+Ngôn ngữ: Go hoặc Java
+
+Lý do: Realtime quantity update, cần concurrency cao
+
+DB: PostgreSQL hoặc Redis
+
+🔍 9. Search Service
+Ngôn ngữ: Node.js hoặc Python
+
+Tech: Elasticsearch
+
+Note: Index sản phẩm, tìm kiếm nhanh, support suggestion/autocomplete
+
+🚪 API Gateway
+Ngôn ngữ: Node.js (Express + BFF style) hoặc NGINX với routing config
+
+Lý do: Route request đến từng service, auth middleware
+
+🧠 Bonus: Recommendation Service (ML)
+Ngôn ngữ: Python
+
+Lý do: ML, phân tích hành vi, gợi ý sản phẩm
+
+🛠 Tooling & Infra Suggestion
+Communication: RabbitMQ / Kafka
+
+Service Discovery: Consul / Eureka (nếu dùng Java)
+
+Service Registry: Kubernetes + Docker
+
+Monitoring: Prometheus + Grafana
+
+Log: ELK stack (Elasticsearch, Logstash, Kibana)
