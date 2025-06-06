@@ -1,4 +1,4 @@
-import { EModelStatus, EUserRole, IComparePassword, IHashPassword, PagingDTO } from "devchu-common";
+import { EModelStatus, EUserRole, IComparePassword, IHashPassword, IMessage, IMessageBroker, PagingDTO } from "devchu-common";
 import { v7 } from "uuid";
 import { IUserReposity, IUserUseCase } from "../interface";
 import { User, UserSchema } from "../model";
@@ -13,7 +13,8 @@ import { User_ExistedError, User_InvalidError, User_NotFoundError } from "../mod
 
 export class UserUseCase implements IUserUseCase {
     constructor(
-        private readonly repository: IUserReposity
+        private readonly repository: IUserReposity,
+        private readonly messageBroker: IMessageBroker
     ) {}
 
     async create(data: UserCreateDTO): Promise<string> {
@@ -44,6 +45,17 @@ export class UserUseCase implements IUserUseCase {
         };
 
         await this.repository.insert(user);
+
+        const message: IMessage = {
+            exchange: "user",
+            routingKey: "user.created",
+            data: {
+                id: newId,
+                name: parsedData.name,
+                email: parsedData.email,
+            }
+        }
+        this.messageBroker.publish(message);
 
         return newId;
     }

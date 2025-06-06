@@ -2,11 +2,11 @@ import cors from "cors";
 import { authToken, RabbitMQ } from "devchu-common";
 import dotenv from "dotenv";
 import express, { Router } from "express";
+import { AuthRegisteredHandler } from "./infras/messageListener/auth";
 import { UserMongooseRepository } from "./infras/repository";
 import { modelName } from "./infras/repository/mongo/dto";
 import { UserHttpService } from "./infras/transport/express";
 import { UserUseCase } from "./useCase";
-import { AuthRegisteredHandler } from "./infras/messageListener/auth";
 
 dotenv.config();
 const app = express();
@@ -20,12 +20,15 @@ const app = express();
     const messageBroker = new RabbitMQ(process.env.RABBITMQ_URL || "amqp://localhost");
     await messageBroker.connect();
 
-    // listener
-    messageBroker.subscribe("auth", "auth.registed", new AuthRegisteredHandler())
-
-    const repository = new UserMongooseRepository(modelName);
-    const useCase = new UserUseCase(repository);
+    const repository = new UserMongooseRepository(
+        process.env.MONGO_URL || "mongodb://localhost:27017/ecommerce",
+        modelName
+    );
+    const useCase = new UserUseCase(repository, messageBroker);
     const httpService = new UserHttpService(useCase);
+
+    // listener
+    messageBroker.subscribe("auth", "auth.registed", new AuthRegisteredHandler(useCase));
 
     const router = Router();
 
