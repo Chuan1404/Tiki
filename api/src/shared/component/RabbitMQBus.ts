@@ -30,6 +30,37 @@ export class RabbitMQ implements IMessageBroker {
         console.log("Published to %s:%s →", exchange, routingKey, data);
     }
 
+    async publishAndWait(message: IMessage, timeout: number = 5000): Promise<void> {
+        const { exchange, routingKey, data } = message;
+        const correlationId = crypto.randomUUID();
+        const { queue } = await this.channel.assertQueue("", { exclusive: true });
+
+        return new Promise((resolve, reject) => {
+            const timer = setTimeout(() => {
+                reject(new Error("Timeout waiting for response"));
+            }, timeout);
+
+            this.channel.consume(
+                queue,
+                (msg) => {
+                    if (msg?.properties.correlationId === correlationId) {
+                        clearTimeout(timer);
+                        const response = JSON.parse(msg.content.toString());
+                        resolve(response);
+                    }
+                },
+                { noAck: true }
+            );
+
+            // Gửi message với replyTo và correlationId
+            this.channel.publish(exchange, routingKey, Buffer.from(JSON.stringify(data)), {
+                replyTo: queue,
+                correlationId,
+                persistent: true,
+            });
+        });
+    }
+
     async subscribe(
         exchange: string,
         routingKey: string,
