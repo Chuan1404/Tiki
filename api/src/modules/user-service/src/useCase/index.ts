@@ -1,4 +1,4 @@
-import { EModelStatus, EUserRole, IComparePassword, IHashPassword, IMessage, IMessageBroker, PagingDTO } from "devchu-common";
+import { EModelStatus, EUserRole, IMessageBroker, PagingDTO } from "devchu-common";
 import { v7 } from "uuid";
 import { IUserReposity, IUserUseCase } from "../interface";
 import { User, UserSchema } from "../model";
@@ -7,7 +7,7 @@ import {
     UserCreateDTO,
     UserCreateSchema,
     UserUpdateDTO,
-    UserUpdateSchema
+    UserUpdateSchema,
 } from "../model/dto";
 import { User_ExistedError, User_InvalidError, User_NotFoundError } from "../model/error";
 
@@ -21,7 +21,8 @@ export class UserUseCase implements IUserUseCase {
         const { success, data: parsedData, error } = UserCreateSchema.safeParse(data);
 
         if (!success) {
-            throw new Error(error.message);
+            const errorMessage = error?.errors[0].message || "Invalid user data";
+            throw User_InvalidError(errorMessage);
         }
 
         const isExisted = await this.repository.findByCond({
@@ -29,7 +30,7 @@ export class UserUseCase implements IUserUseCase {
         });
 
         if (isExisted) {
-            throw User_ExistedError;
+            throw User_ExistedError(parsedData.email);
         }
 
         const newId = v7();
@@ -45,17 +46,6 @@ export class UserUseCase implements IUserUseCase {
         };
 
         await this.repository.insert(user);
-
-        const message: IMessage = {
-            exchange: "user",
-            routingKey: "user.created",
-            data: {
-                id: newId,
-                name: parsedData.name,
-                email: parsedData.email,
-            }
-        }
-        this.messageBroker.publish(message);
 
         return newId;
     }
@@ -78,6 +68,16 @@ export class UserUseCase implements IUserUseCase {
 
     async get(id: string): Promise<User | null> {
         let data = await this.repository.get(id);
+
+        if (!data || data.status === EModelStatus.DELETED) {
+            throw User_NotFoundError;
+        }
+
+        return UserSchema.parse(data);
+    }
+
+    async getByEmail(email: string): Promise<User | null> {
+        let data = await this.repository.findByCond({ email });
 
         if (!data || data.status === EModelStatus.DELETED) {
             throw User_NotFoundError;

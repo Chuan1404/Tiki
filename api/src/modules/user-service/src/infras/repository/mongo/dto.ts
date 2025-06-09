@@ -9,7 +9,7 @@ export function init() {
       id: {
         type: String,
         unique: true,
-        require: true,
+        required: true,
       },
       name: {
         type: String,

@@ -34,7 +34,6 @@ const app = express();
 
     app.use(router);
 
-    // error handling middleware
     app.use(errorHandler as any);
 
     app.listen(3000, () => {

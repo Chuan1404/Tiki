@@ -1,4 +1,5 @@
-import { EUserRole, IComparePassword, IHashPassword, IMessage, IMessageBroker } from "devchu-common";
+import { IComparePassword, IHashPassword, IMessage, IMessageBroker } from "devchu-common";
+import AppError from "devchu-common/errors/AppError";
 import jwt from "jsonwebtoken";
 import { IAuthUseCase } from "../interface";
 import {
@@ -15,7 +16,7 @@ export class AuthUseCase implements IAuthUseCase {
     constructor(
         private readonly passwordHasher: IHashPassword,
         private readonly comparePassword: IComparePassword,
-        private readonly messageBroker: IMessageBroker,
+        private readonly messageBroker: IMessageBroker
     ) {}
 
     async register(data: AuthRegisterDTO): Promise<string> {
@@ -33,16 +34,19 @@ export class AuthUseCase implements IAuthUseCase {
             password: hashedPassword,
         };
 
-        // send user data by message broker
         const message: IMessage = {
-            exchange: "auth",
-            routingKey: "auth.registed",
+            exchange: "user",
+            routingKey: "user.created",
             data: userDTO,
+        };
+
+        const response = await this.messageBroker.publishAndWait(message);
+        if (!response.success) {
+            const appErr = new AppError(response.error.message, response.error.statusCode);
+            throw appErr;
         }
 
-        this.messageBroker.publish(message)
-
-        return "newUserId";
+        return response.data as any;
     }
 
     async login(data: AuthLoginDTO): Promise<AuthTokenDTO> {
@@ -53,9 +57,21 @@ export class AuthUseCase implements IAuthUseCase {
         }
 
         // Event Bus publish login event
+        const message: IMessage = {
+            exchange: "user",
+            routingKey: "user.getByEmail",
+            data: {
+                data: {
+                    email: parsedData!.email,
+                },
+            },
+        };
 
         // if correct, return token
-        const user = { id: "", email: "", role: EUserRole.USER };
+        const user = await this.messageBroker.publishAndWait(message);
+        if (!user) {
+            throw Auth_Error;
+        }
         const payload: AuthPayloadDTO = {
             id: user.id,
             email: user.email,

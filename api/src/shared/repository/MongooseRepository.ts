@@ -6,22 +6,10 @@ import { PagingDTO } from "../model/paging";
 export abstract class MongooseRepository<Entity, EntityCondDTO, EntityUpdateDTO>
     implements IRepository<Entity, EntityCondDTO, EntityUpdateDTO>
 {
-    constructor(private readonly url: string, private readonly modelName: string) {}
-
-    async connect(): Promise<void> {
-        if (mongoose.connection.readyState === 1) return;
-        mongoose
-            .connect(this.url)
-            .then(() => {
-                console.log("Mongoose connected successfully");
-            })
-            .catch((err) => {
-                console.error("Mongoose connection error:", err);
-            });
-    }
+    constructor(private model: mongoose.Model<any>) {}
 
     async findByCond(cond: EntityCondDTO): Promise<Entity | null> {
-        let data = await mongoose.models[this.modelName].findOne(cond as any);
+        const data = await this.model.findOne(cond as any);
         if (!data) {
             return null;
         }
@@ -30,7 +18,7 @@ export abstract class MongooseRepository<Entity, EntityCondDTO, EntityUpdateDTO>
     }
 
     async get(id: string): Promise<Entity | null> {
-        let data = await mongoose.models[this.modelName].findOne({ id });
+        let data = await this.model.findOne({ id });
         if (!data) {
             return null;
         }
@@ -44,34 +32,31 @@ export abstract class MongooseRepository<Entity, EntityCondDTO, EntityUpdateDTO>
 
         if (paging) {
             const { page, limit } = paging;
-            rows = await mongoose.models[this.modelName]
+            rows = await this.model
                 .find(condSQL)
                 .limit(limit)
                 .skip((page - 1) * limit);
         } else {
-            rows = await mongoose.models[this.modelName].find(condSQL);
+            rows = await this.model.find(condSQL);
         }
 
         return rows;
     }
 
     async insert(data: Entity): Promise<boolean> {
-        await mongoose.models[this.modelName].create(data as any);
+        await this.model.create(data as any);
 
         return true;
     }
     async update(id: string, data: EntityUpdateDTO): Promise<boolean> {
-        await mongoose.models[this.modelName].updateOne({ id }, { $set: data as any });
+        await this.model.updateOne({ id }, { $set: data as any });
         return true;
     }
     async delete(id: string, isHard: boolean = false): Promise<boolean> {
         if (isHard) {
-            await mongoose.models[this.modelName].deleteOne({ id });
+            await this.model.deleteOne({ id });
         } else {
-            await mongoose.models[this.modelName].updateOne(
-                { id },
-                { status: EModelStatus.DELETED }
-            );
+            await this.model.updateOne({ id }, { status: EModelStatus.DELETED });
         }
 
         return true;
