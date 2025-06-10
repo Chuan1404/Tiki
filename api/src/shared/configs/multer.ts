@@ -1,5 +1,3 @@
 import multer from "multer";
 
-let upload = multer()
-
-export default upload
+export const upload = multer()
