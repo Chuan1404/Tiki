@@ -1,4 +1,4 @@
-import { EModelStatus } from "@shared/model/enums";
+import { EModelStatus } from "devchu-common";
 import { date, nativeEnum, object, string, z } from "zod";
 
 export const BrandSchema = object({

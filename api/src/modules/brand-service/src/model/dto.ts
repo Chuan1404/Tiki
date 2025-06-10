@@ -1,6 +1,14 @@
-import { EModelStatus } from "@shared/model/enums";
-import { array, nativeEnum, object, string, z } from "zod";
-import { BrandSchema } from ".";
+import { EModelStatus } from "devchu-common";
+import { array, date, nativeEnum, object, string, z } from "zod";
+
+export const BrandSchema = object({
+    id: string(),
+    name: string().min(2, "Name must be at least 2 characters"),
+    description: string().optional(),
+    status: nativeEnum(EModelStatus),
+    createdAt: date(),
+    updatedAt: date(),
+});
 
 export const BrandCreateSchema = BrandSchema.pick({
     name: true,
@@ -9,9 +17,7 @@ export const BrandCreateSchema = BrandSchema.pick({
 
 export const BrandUpdateSchema = object({
     name: string().min(2, "Name must be at least 2 characters").optional(),
-    description: string()
-        .max(255, "descriptions must be at most 255 characters")
-        .optional(),
+    description: string().max(255, "descriptions must be at most 255 characters").optional(),
     status: nativeEnum(EModelStatus).optional(),
 });
 

@@ -1,4 +1,4 @@
-import { PagingDTO } from "@shared/model/paging";
+import { EModelStatus, PagingDTO } from "devchu-common";
 import { v7 } from "uuid";
 import { IBrandReposity, IBrandUseCase } from "../interface";
 import { Brand, BrandSchema } from "../model";
@@ -15,7 +15,6 @@ import {
     BrandName_ExistedError,
     BrandName_InvalidError,
 } from "../model/error";
-import { EModelStatus } from "@shared/model/enums";
 
 export class BrandUseCase implements IBrandUseCase {
     constructor(private readonly repository: IBrandReposity) {}
@@ -51,21 +50,13 @@ export class BrandUseCase implements IBrandUseCase {
     }
 
     async update(id: string, data: BrandUpdateDTO): Promise<boolean> {
-        const {
-            success,
-            data: parsedData,
-            error,
-        } = BrandUpdateSchema.safeParse(data);
+        const { success, data: parsedData, error } = BrandUpdateSchema.safeParse(data);
 
-        if (!data || !data.name) {
+        if (!success) {
             throw Brand_InvalidError;
         }
 
-        if (!success) {
-            throw BrandName_InvalidError(data.name);
-        }
-
-        let brand = await this.repository.get(id);
+        const brand = await this.repository.get(id);
 
         if (!brand || brand.status === EModelStatus.DELETED) {
             throw BrandId_NotFoundError(id);
@@ -83,7 +74,7 @@ export class BrandUseCase implements IBrandUseCase {
 
         return BrandSchema.parse(data);
     }
-    
+
     async list(cond: BrandCondDTO, paging: PagingDTO): Promise<Brand[]> {
         let data = await this.repository.list(cond, paging);
 

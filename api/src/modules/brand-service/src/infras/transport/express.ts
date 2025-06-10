@@ -1,7 +1,7 @@
+import { PagingDTOSchema } from "devchu-common";
 import { NextFunction, Request, Response } from "express";
 import { IBrandUseCase } from "../../interface";
 import { BrandCondScheme } from "../../model/dto";
-import { PagingDTOSchema } from "@shared/model/paging";
 
 export class BrandHttpService {
     constructor(private readonly useCase: IBrandUseCase) {}
@@ -41,11 +41,7 @@ export class BrandHttpService {
     }
 
     async list(req: Request, res: Response, next: NextFunction) {
-        const {
-            success,
-            data: paging,
-            error,
-        } = PagingDTOSchema.safeParse(req.query);
+        const { success, data: paging, error } = PagingDTOSchema.safeParse(req.query);
 
         if (!success) {
             res.status(400).json({

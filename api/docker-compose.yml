@@ -47,3 +47,13 @@ services:
   #     - ./src/modules/user-service/src:/app/modules/user-service/src
   #   depends_on:
   #     - rabbitmq
+
+  # category-service:
+  #   build:
+  #     context: .
+  #     dockerfile: src/modules/category-service/Dockerfile
+  #   container_name: category-service
+  #   volumes:
+  #     - ./src/modules/category-service/src:/app/modules/category-service/src
+  #   depends_on:
+  #     - rabbitmq
