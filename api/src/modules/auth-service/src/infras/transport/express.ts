@@ -18,7 +18,7 @@ export class AuthHttpService {
 
     async register(req: Request, res: Response, next: NextFunction) {
         try {
-            const respose = await this.useCase.register(req.body);
+            await this.useCase.register(req.body);
             res.status(200).json({
                 message: "User registered successfully",
             });

@@ -28,7 +28,6 @@ export class RabbitMQ implements IMessageBroker {
         this.channel.publish(exchange, routingKey, buffer, {
             persistent: true,
         });
-        console.log("Published to %s:%s →", exchange, routingKey, data);
     }
 
     async publishAndWait(message: IMessage, timeout: number = 5000): Promise<any> {
@@ -104,11 +103,9 @@ export class RabbitMQ implements IMessageBroker {
                 this.channel.nack(msg, false, false);
             }
         });
-
-        console.log(`✅ Subscribed to ${exchange}:${routingKey} on queue ${queueName}`);
     }
 
-    unsubscribe(messageName: string, listener: IMessageListener): Promise<any> {
+    async unsubscribe(messageName: string, listener: IMessageListener): Promise<any> {
         throw new Error("Method not implemented.");
     }
 }

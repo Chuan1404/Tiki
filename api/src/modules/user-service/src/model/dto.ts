@@ -8,12 +8,6 @@ export const UserCreateSchema = UserSchema.pick({
   email: true,
 });
 
-export const UserLoginSchema = UserSchema.pick({
-  email: true,
-  password: true,
-  role: true
-});
-
 export const UserPayloadSchema = UserSchema.pick({
   id: true,
   email: true,
@@ -41,5 +35,4 @@ export type UserTokenDTO = {
 export type UserCreateDTO = z.infer<typeof UserCreateSchema>;
 export type UserUpdateDTO = z.infer<typeof UserUpdateSchema>;
 export type UserCondDTO = z.infer<typeof UserCondScheme>;
-export type UserLoginDTO = z.infer<typeof UserLoginSchema>;
 export type UserPayloadDTO = z.infer<typeof UserPayloadSchema>;

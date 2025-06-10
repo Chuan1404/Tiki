@@ -3,7 +3,7 @@ import { authToken, errorHandler, RabbitMQ } from "devchu-common";
 import dotenv from "dotenv";
 import express, { Router } from "express";
 import mongoose from "mongoose";
-import { AuthGetByEmailHandler, AuthRegisteredHandler } from "./infras/messageListener/auth";
+import { UserCreatedHandler, UserGetByEmailHandler } from "./infras/listener";
 import { UserMongooseRepository } from "./infras/repository";
 import { init, modelName } from "./infras/repository/mongo/dto";
 import { UserHttpService } from "./infras/transport/express";
@@ -29,8 +29,8 @@ const app = express();
     const httpService = new UserHttpService(useCase);
 
     // listener
-    messageBroker.subscribe("user", "user.created", new AuthRegisteredHandler(useCase));
-    messageBroker.subscribe("user", "user.getByEmail", new AuthGetByEmailHandler(useCase));
+    messageBroker.subscribe("user", "user.created", new UserCreatedHandler(useCase));
+    messageBroker.subscribe("user", "user.getByEmail", new UserGetByEmailHandler(useCase));
 
     const router = Router();
 

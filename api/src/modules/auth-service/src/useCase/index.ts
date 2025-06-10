@@ -10,7 +10,7 @@ import {
     AuthRegisterSchema,
     AuthTokenDTO,
 } from "../model/dto";
-import { Auth_Error, AuthRegister_InvalidError } from "../model/error";
+import { Auth_Error, AuthRegister_InvalidError, AuthToken_InvalidError } from "../model/error";
 
 export class AuthUseCase implements IAuthUseCase {
     constructor(
@@ -56,41 +56,41 @@ export class AuthUseCase implements IAuthUseCase {
             throw Auth_Error;
         }
 
-        // Event Bus publish login event
         const message: IMessage = {
             exchange: "user",
             routingKey: "user.getByEmail",
             data: {
-                data: {
-                    email: parsedData!.email,
-                },
+                email: parsedData!.email,
+                role: parsedData!.role,
             },
         };
 
-        // if correct, return token
         const user = await this.messageBroker.publishAndWait(message);
         if (!user) {
             throw Auth_Error;
         }
+
+        if (!this.comparePassword.compare(parsedData!.password, user.data.password)) {
+            throw Auth_Error;
+        }
+
         const payload: AuthPayloadDTO = {
             id: user.id,
             email: user.email,
             role: user.role,
         };
 
-        // const accessTokenLife = process.env.ACCESS_TOKEN_LIFE ?? "1h";
-        const accessTokenLife = "1h";
+        const accessTokenLife = process.env.ACCESS_TOKEN_LIFE ?? "1h";
         const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET ?? "accessToken";
-        // const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE ?? "24h";
-        const refreshTokenLife = "24h";
+        const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE ?? "24h";
         const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET ?? "refreshToken";
 
         const accessToken = jwt.sign(payload, accessTokenSecret, {
-            expiresIn: accessTokenLife,
+            expiresIn: accessTokenLife as any,
         });
 
         const refreshToken = jwt.sign(payload, refreshTokenSecret, {
-            expiresIn: refreshTokenLife,
+            expiresIn: refreshTokenLife as any,
         });
 
         const responseData: AuthTokenDTO = {
@@ -103,14 +103,14 @@ export class AuthUseCase implements IAuthUseCase {
 
     async verifyToken(token: string): Promise<AuthPayloadDTO | null> {
         if (!token) {
-            throw new Error("Missing token");
+            throw AuthToken_InvalidError;
         }
 
         const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET ?? "accessToken";
         let decoded = jwt.verify(token, accessTokenSecret) as AuthPayloadDTO;
 
         if (!decoded) {
-            throw Auth_Error;
+            throw AuthToken_InvalidError;
         }
 
         return decoded;

@@ -1,7 +1,7 @@
-export interface IMessage {
+export interface IMessage<T = any> {
     exchange: string;
     routingKey: string;
-    data: any;
+    data: T;
   }
 
 export interface IMessageListener {

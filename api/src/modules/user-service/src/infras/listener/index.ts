@@ -2,8 +2,9 @@ import { IMessageListener } from "devchu-common";
 import { IUserUseCase } from "../../interface";
 import { UserCreateDTO } from "../../model/dto";
 
-export class AuthRegisteredHandler implements IMessageListener {
+export class UserCreatedHandler implements IMessageListener {
     constructor(private readonly usecase: IUserUseCase) {}
+
     async handle(data: any): Promise<any> {
         const userCreateDTO: UserCreateDTO = {
             name: data.name,
@@ -11,20 +12,16 @@ export class AuthRegisteredHandler implements IMessageListener {
             password: data.password,
         };
 
-        try {
-            const id = await this.usecase.create(userCreateDTO);
-            return id;
-        } catch (error) {
-            throw error;
-        }
+        const id = await this.usecase.create(userCreateDTO);
+        return id;
     }
 }
 
-export class AuthGetByEmailHandler implements IMessageListener {
+export class UserGetByEmailHandler implements IMessageListener {
     constructor(private readonly usecase: IUserUseCase) {}
 
     async handle(data: any): Promise<any> {
-        const user = await this.usecase.getByEmail(data.email);
+        const user = await this.usecase.getByCond(data);
         return user;
     }
 }
