@@ -7,7 +7,6 @@ import { setUpBrandModule } from "./modules/brand";
 import { setUpCartModule } from "./modules/cart";
 import { setUpCategoryModule } from "./modules/category";
 import { setUpProductModule } from "./modules/product";
-import { setUpRefreshTokenModule } from "./modules/refreshToken";
 
 dotenv.config();
 
@@ -35,7 +34,6 @@ mongoose
     app.use("/", setUpProductModule());
     app.use("/", setUpCartModule());
     app.use("/", setUpBrandModule());
-    app.use("/", setUpRefreshTokenModule());
 
     app.use(errorHandler as any);
 

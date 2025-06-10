@@ -1,6 +1,6 @@
-import { EModelStatus } from "@prisma/client";
+import { EModelStatus } from "devchu-common";
+import mongoose from "mongoose";
 
-const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 export function init() {

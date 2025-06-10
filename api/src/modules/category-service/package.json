@@ -1,0 +1,30 @@
+{
+  "name": "devchu-categoryrvice",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/server.ts",
+    "debug": "node --inspect-brk -r ts-node/register src/server.ts",
+    "build": "npx tsc",
+    "dev": "nodemon -r tsconfig-paths/register src/server.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/express": "^5.0.2",
+    "cors": "^2.8.5",
+    "devchu-common": "file:../../shared",
+    "express": "^5.1.0",
+    "mongoose": "^8.15.1",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "uuid": "^11.1.0",
+    "zod": "^3.25.51"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.18"
+  }
+}

@@ -1,11 +1,6 @@
-import { IRepository } from "@shared/interface/repository.interface";
-import { PagingDTO } from "@shared/model/paging";
+import { IRepository, PagingDTO } from "devchu-common";
 import { Category } from "../model";
-import {
-    CategoryCondDTO,
-    CategoryCreateDTO,
-    CategoryUpdateDTO,
-} from "../model/dto";
+import { CategoryCondDTO, CategoryCreateDTO, CategoryUpdateDTO } from "../model/dto";
 
 export interface ICategoryRepository
     extends IRepository<Category, CategoryCondDTO, CategoryUpdateDTO> {}

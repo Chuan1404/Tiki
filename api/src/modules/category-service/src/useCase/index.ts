@@ -1,5 +1,4 @@
-import { EModelStatus } from "@prisma/client";
-import { PagingDTO } from "@shared/model/paging";
+import { EModelStatus, PagingDTO } from "devchu-common";
 import { v7 } from "uuid";
 import { ICategoryRepository, ICategoryUseCase } from "../interface";
 import { Category, CategorySchema } from "../model";
@@ -20,8 +19,7 @@ export class CategoryUseCase implements ICategoryUseCase {
     constructor(private readonly repository: ICategoryRepository) {}
 
     async create(data: CategoryCreateDTO): Promise<string> {
-        const { success, data: parsedData } =
-            CategoryCreateSchema.safeParse(data);
+        const { success, data: parsedData } = CategoryCreateSchema.safeParse(data);
 
         if (!success) {
             throw CategoryName_InvalidError(data.name);
@@ -51,11 +49,7 @@ export class CategoryUseCase implements ICategoryUseCase {
     }
 
     async update(id: string, data: CategoryUpdateDTO): Promise<boolean> {
-        const {
-            success,
-            data: parsedData,
-            error,
-        } = CategoryUpdateSchema.safeParse(data);
+        const { success, data: parsedData, error } = CategoryUpdateSchema.safeParse(data);
 
         if (!success) {
             throw new Error(error.message);
@@ -79,7 +73,7 @@ export class CategoryUseCase implements ICategoryUseCase {
 
         return CategorySchema.parse(data);
     }
-    
+
     async list(cond: CategoryCondDTO, paging?: PagingDTO): Promise<Category[]> {
         let data = await this.repository.list(cond, paging);
 

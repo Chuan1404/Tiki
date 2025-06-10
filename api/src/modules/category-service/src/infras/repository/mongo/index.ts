@@ -1,4 +1,4 @@
-import { MongooseRepository } from "@shared/repository/MongooseRepository";
+import { MongooseRepository } from "devchu-common";
 import { Category } from "../../../model";
 import { CategoryCondDTO, CategoryUpdateDTO } from "../../../model/dto";
 

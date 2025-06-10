@@ -1,7 +1,7 @@
+import { PagingDTOSchema } from "devchu-common";
 import { Request, Response } from "express";
 import { ICategoryUseCase } from "../../interface";
 import { CategoryCondScheme } from "../../model/dto";
-import { PagingDTOSchema } from "@shared/model/paging";
 
 export class CategoryHttpService {
     constructor(private readonly useCase: ICategoryUseCase) {}
@@ -41,11 +41,7 @@ export class CategoryHttpService {
     }
 
     async list(req: Request, res: Response) {
-        const {
-            success,
-            data: paging,
-            error,
-        } = PagingDTOSchema.safeParse(req.query);
+        const { success, data: paging, error } = PagingDTOSchema.safeParse(req.query);
 
         if (!success) {
             res.status(400).json({
