@@ -2,7 +2,10 @@ import cors from "cors";
 import { errorHandler, RabbitMQ } from "devchu-common";
 import dotenv from "dotenv";
 import express, { Router } from "express";
+import mongoose from "mongoose";
 import { ComparePassword, HashPassword } from "./common";
+import TokenMongooseRepository from "./infras/repository/mongo";
+import { init, modelName } from "./infras/repository/mongo/dto";
 import { AuthHttpService } from "./infras/transport/express";
 import { AuthUseCase } from "./useCase";
 
@@ -16,18 +19,23 @@ const app = express();
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
+    await mongoose.connect(process.env.MONGO_URL || "mongodb://localhost:27017/ecommerce");
+    init();
+
+    const tokenRepository = new TokenMongooseRepository(mongoose.models[modelName]);
     const hashPassword = new HashPassword();
     const comparePassword = new ComparePassword();
     const messageBroker = new RabbitMQ(process.env.RABBITMQ_URL || "amqp://localhost");
     await messageBroker.connect();
 
-    const useCase = new AuthUseCase(hashPassword, comparePassword, messageBroker);
+    const useCase = new AuthUseCase(tokenRepository, hashPassword, comparePassword, messageBroker);
     const httpService = new AuthHttpService(useCase);
 
     // router
     const router = Router();
     router.post("/auth/login", httpService.login.bind(httpService));
     router.post("/auth/register", httpService.register.bind(httpService));
+    router.post("/auth/refreshtoken", httpService.refreshToken.bind(httpService));
     router.get("/auth/health", (req, res) => {
         res.json({ message: "Auth Service is healthy" });
     });

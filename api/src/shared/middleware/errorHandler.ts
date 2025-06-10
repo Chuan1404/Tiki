@@ -8,9 +8,9 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
             message: err.message,
         });
     }
-
+    console.error(err);
     return res.status(500).json({
         status: "error",
-        message: "Internal Server Error",
+        message: err.message,
     });
 };

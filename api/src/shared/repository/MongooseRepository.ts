@@ -6,7 +6,7 @@ import { PagingDTO } from "../model/paging";
 export abstract class MongooseRepository<Entity, EntityCondDTO, EntityUpdateDTO>
     implements IRepository<Entity, EntityCondDTO, EntityUpdateDTO>
 {
-    constructor(private model: mongoose.Model<any>) {}
+    constructor(protected model: mongoose.Model<any>) {}
 
     async findByCond(cond: EntityCondDTO): Promise<Entity | null> {
         const data = await this.model.findOne(cond as any);
@@ -48,10 +48,12 @@ export abstract class MongooseRepository<Entity, EntityCondDTO, EntityUpdateDTO>
 
         return true;
     }
+
     async update(id: string, data: EntityUpdateDTO): Promise<boolean> {
         await this.model.updateOne({ id }, { $set: data as any });
         return true;
     }
+    
     async delete(id: string, isHard: boolean = false): Promise<boolean> {
         if (isHard) {
             await this.model.deleteOne({ id });

@@ -1,8 +1,18 @@
-import { AuthLoginDTO, AuthPayloadDTO, AuthRegisterDTO, AuthTokenDTO } from "../model/dto";
+import { IRepository } from "devchu-common";
+import {
+    AuthLoginDTO,
+    AuthPayloadDTO,
+    AuthRegisterDTO,
+    AuthTokenDTO,
+    Token,
+    TokenCondDTO,
+    TokenUpdateDTO,
+} from "../model/dto";
+
+export interface ITokenRepository extends IRepository<Token, TokenCondDTO, TokenUpdateDTO> {}
 
 export interface IAuthUseCase {
-  register(data: AuthRegisterDTO): Promise<string>;
-  login(data: AuthLoginDTO): Promise<AuthTokenDTO>;
-  verifyToken(token: string): Promise<AuthPayloadDTO | null>;
-  refreshToken(token: string): Promise<AuthTokenDTO>;
+    register(data: AuthRegisterDTO): Promise<string>;
+    login(data: AuthLoginDTO): Promise<AuthTokenDTO>;
+    verifyToken(token: string): Promise<AuthPayloadDTO | null>;
 }

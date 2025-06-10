@@ -1,7 +1,13 @@
-import { IComparePassword, IHashPassword, IMessage, IMessageBroker } from "devchu-common";
+import {
+    EModelStatus,
+    IComparePassword,
+    IHashPassword,
+    IMessage,
+    IMessageBroker,
+} from "devchu-common";
 import AppError from "devchu-common/errors/AppError";
 import jwt from "jsonwebtoken";
-import { IAuthUseCase } from "../interface";
+import { IAuthUseCase, ITokenRepository } from "../interface";
 import {
     AuthLoginDTO,
     AuthLoginSchema,
@@ -9,11 +15,13 @@ import {
     AuthRegisterDTO,
     AuthRegisterSchema,
     AuthTokenDTO,
+    Token,
 } from "../model/dto";
 import { Auth_Error, AuthRegister_InvalidError, AuthToken_InvalidError } from "../model/error";
 
 export class AuthUseCase implements IAuthUseCase {
     constructor(
+        private readonly tokenRepository: ITokenRepository,
         private readonly passwordHasher: IHashPassword,
         private readonly comparePassword: IComparePassword,
         private readonly messageBroker: IMessageBroker
@@ -50,7 +58,7 @@ export class AuthUseCase implements IAuthUseCase {
     }
 
     async login(data: AuthLoginDTO): Promise<AuthTokenDTO> {
-        let { success, data: parsedData } = AuthLoginSchema.safeParse(data);
+        const { success, data: parsedData } = AuthLoginSchema.safeParse(data);
 
         if (!success) {
             throw Auth_Error;
@@ -65,12 +73,13 @@ export class AuthUseCase implements IAuthUseCase {
             },
         };
 
-        const user = await this.messageBroker.publishAndWait(message);
-        if (!user) {
+        const { data: user, success: isSuccess } = await this.messageBroker.publishAndWait(message);
+        console.log("user", user);
+        if (!isSuccess) {
             throw Auth_Error;
         }
 
-        if (!this.comparePassword.compare(parsedData!.password, user.data.password)) {
+        if (!this.comparePassword.compare(parsedData!.password, user.password)) {
             throw Auth_Error;
         }
 
@@ -93,6 +102,15 @@ export class AuthUseCase implements IAuthUseCase {
             expiresIn: refreshTokenLife as any,
         });
 
+        const tokenData: Token = {
+            token: refreshToken,
+            userId: user.id,
+            status: EModelStatus.ACTIVE,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        };
+        await this.tokenRepository.insert(tokenData);
+
         const responseData: AuthTokenDTO = {
             accessToken,
             refreshToken,
@@ -114,9 +132,5 @@ export class AuthUseCase implements IAuthUseCase {
         }
 
         return decoded;
-    }
-
-    async refreshToken(token: string): Promise<AuthTokenDTO> {
-        throw new Error("Method not implemented.");
     }
 }

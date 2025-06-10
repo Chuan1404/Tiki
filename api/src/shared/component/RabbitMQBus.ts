@@ -35,16 +35,16 @@ export class RabbitMQ implements IMessageBroker {
         const correlationId = crypto.randomUUID();
         const { queue } = await this.channel.assertQueue("", { exclusive: true });
 
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const timer = setTimeout(() => {
                 reject(new Error("Timeout waiting for response"));
             }, timeout);
-
-            this.channel.consume(
+            const { consumerTag } = await this.channel.consume(
                 queue,
                 (msg) => {
                     if (msg?.properties.correlationId === correlationId) {
                         clearTimeout(timer);
+                        this.channel.cancel(consumerTag);
                         const response = JSON.parse(msg.content.toString());
                         resolve(response);
                     }
