@@ -28,7 +28,7 @@
     "start": "nodemon src/server.ts",
     "debug": "node --inspect-brk -r ts-node/register src/server.ts",
     "build": "npx tsc",
-    "dev": "nodemon -r tsconfig-paths/register src/server.ts"
+    "dev": "concurrently \"npm run dev --prefix ./src/services/auth-service\" \"npm run dev --prefix ./src/services/brand-service\" \"npm run dev --prefix ./src/services/cart-service\" \"npm run dev --prefix ./src/services/category-service\" \"npm run dev --prefix ./src/services/product-service\" \"npm run dev --prefix ./src/services/user-service\""
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -36,6 +36,7 @@
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/multer": "^1.4.12",
+    "concurrently": "^9.1.2",
     "prisma": "^6.0.1",
     "tsconfig-paths": "^4.2.0"
   }

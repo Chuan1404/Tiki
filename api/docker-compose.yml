@@ -1,59 +1,89 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: devchu
-      RABBITMQ_DEFAULT_PASS: "123456"
-    
-  mongodb:
-    image: mongo:6
-    container_name: mongodb
-    ports:
-      - "27017:27017"
+    rabbitmq:
+        image: rabbitmq:3-management
+        container_name: rabbitmq
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        environment:
+            RABBITMQ_DEFAULT_USER: devchu
+            RABBITMQ_DEFAULT_PASS: "123456"
 
-  # nginx:
-  #   image: nginx:latest
-  #   container_name: nginx
-  #   ports:
-  #     - "8080:80"
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    mongodb:
+        image: mongo:6
+        container_name: mongodb
+        ports:
+            - "27017:27017"
+
+    # nginx:
+    #   image: nginx:latest
+    #   container_name: nginx
+    #   ports:
+    #     - "8080:80"
+    #   volumes:
+    #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
     # depends_on:
     #   - auth-service
     #   - user-service
 
-  # auth-service:
-  #   build:
-  #     context: .
-  #     dockerfile: src/modules/auth-service/Dockerfile
-  #   container_name: auth-service
-  #   volumes:
-  #     - ./src/modules/auth-service/src:/app/modules/auth-service/src
-  #   depends_on:
-  #     - rabbitmq
+    # auth-service:
+    #   build:
+    #     context: .
+    #     dockerfile: src/services/auth-service/Dockerfile
+    #   container_name: auth-service
+    #   volumes:
+    #     - ./src/services/auth-service/src:/app/services/auth-service/src
+    #   depends_on:
+    #     - rabbitmq
 
-  # user-service:
-  #   build:
-  #     context: .
-  #     dockerfile: src/modules/user-service/Dockerfile
-  #   container_name: user-service
-  #   volumes:
-  #     - ./src/modules/user-service/src:/app/modules/user-service/src
-  #   depends_on:
-  #     - rabbitmq
+    # user-service:
+    #   build:
+    #     context: .
+    #     dockerfile: src/services/user-service/Dockerfile
+    #   container_name: user-service
+    #   volumes:
+    #     - ./src/services/user-service/src:/app/services/user-service/src
+    #   depends_on:
+    #     - rabbitmq
 
-  # category-service:
-  #   build:
-  #     context: .
-  #     dockerfile: src/modules/category-service/Dockerfile
-  #   container_name: category-service
-  #   volumes:
-  #     - ./src/modules/category-service/src:/app/modules/category-service/src
-  #   depends_on:
-  #     - rabbitmq
+    # category-service:
+    #   build:
+    #     context: .
+    #     dockerfile: src/services/category-service/Dockerfile
+    #   container_name: category-service
+    #   volumes:
+    #     - ./src/services/category-service/src:/app/services/category-service/src
+    #   depends_on:
+    #     - rabbitmq
+
+    # brand-service:
+    #   build:
+    #     context: .
+    #     dockerfile: src/services/brand-service/Dockerfile
+    #   container_name: brand-service
+    #   volumes:
+    #     - ./src/services/brand-service/src:/app/services/brand-service/src
+    #   depends_on:
+    #     - rabbitmq
+
+    # product-service:
+    #   build:
+    #     context: .
+    #     dockerfile: src/services/product-service/Dockerfile
+    #   container_name: product-service
+    #   volumes:
+    #     - ./src/services/product-service/src:/app/services/product-service/src
+    #   depends_on:
+    #     - rabbitmq
+
+    # cart-service:
+    #   build:
+    #     context: .
+    #     dockerfile: src/services/cart-service/Dockerfile
+    #   container_name: cart-service
+    #   volumes:
+    #     - ./src/services/cart-service/src:/app/services/cart-service/src
+    #   depends_on:
+    #     - rabbitmq
