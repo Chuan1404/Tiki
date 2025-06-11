@@ -1,13 +1,6 @@
-import {
-    EModelStatus,
-    IComparePassword,
-    IHashPassword,
-    IMessage,
-    IMessageBroker,
-} from "devchu-common";
-import AppError from "devchu-common/errors/AppError";
+import { EModelStatus, IComparePassword, IHashPassword } from "devchu-common";
 import jwt from "jsonwebtoken";
-import { IAuthUseCase, ITokenRepository } from "../interface";
+import { IAuthUseCase, ITokenRepository, IUserRepository } from "../interface";
 import {
     AuthLoginDTO,
     AuthLoginSchema,
@@ -24,7 +17,7 @@ export class AuthUseCase implements IAuthUseCase {
         private readonly tokenRepository: ITokenRepository,
         private readonly passwordHasher: IHashPassword,
         private readonly comparePassword: IComparePassword,
-        private readonly messageBroker: IMessageBroker
+        private readonly rpcUserRepository: IUserRepository
     ) {}
 
     async register(data: AuthRegisterDTO): Promise<string> {
@@ -42,19 +35,12 @@ export class AuthUseCase implements IAuthUseCase {
             password: hashedPassword,
         };
 
-        const message: IMessage = {
-            exchange: "user",
-            routingKey: "user.created",
-            data: userDTO,
-        };
-
-        const response = await this.messageBroker.publishAndWait(message);
-        if (!response.success) {
-            const appErr = new AppError(response.error.message, response.error.statusCode);
-            throw appErr;
+        try {
+            const newId = await this.rpcUserRepository.create(userDTO);
+            return newId;
+        } catch (error: any) {
+            throw error;
         }
-
-        return response.data as any;
     }
 
     async login(data: AuthLoginDTO): Promise<AuthTokenDTO> {
@@ -64,18 +50,8 @@ export class AuthUseCase implements IAuthUseCase {
             throw Auth_Error;
         }
 
-        const message: IMessage = {
-            exchange: "user",
-            routingKey: "user.getByEmail",
-            data: {
-                email: parsedData!.email,
-                role: parsedData!.role,
-            },
-        };
-
-        const { data: user, success: isSuccess } = await this.messageBroker.publishAndWait(message);
-        console.log("user", user);
-        if (!isSuccess) {
+        const user = await this.rpcUserRepository.getByCond({ email: parsedData!.email });
+        if (!user) {
             throw Auth_Error;
         }
 

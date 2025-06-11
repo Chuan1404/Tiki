@@ -29,12 +29,13 @@ const app = express();
     const httpService = new UserHttpService(useCase);
 
     // listener
-    messageBroker.subscribe("user", "user.created", new UserCreatedHandler(useCase));
-    messageBroker.subscribe("user", "user.getByEmail", new UserGetByEmailHandler(useCase));
+    // messageBroker.subscribe("user", "user.created", new UserCreatedHandler(useCase));
+    // messageBroker.subscribe("user", "user.getByEmail", new UserGetByEmailHandler(useCase));
 
     const router = Router();
 
     router.get("/user/profile", authToken, httpService.profile.bind(httpService));
+    router.get("/user/:id", authToken, httpService.getById.bind(httpService));
     router.get("/user", authToken, httpService.list.bind(httpService));
 
     router.post("/user", authToken, httpService.create.bind(httpService));
@@ -42,6 +43,10 @@ const app = express();
     router.patch("/user/:id", authToken, httpService.update.bind(httpService));
 
     router.delete("/user/:id", authToken, httpService.delete.bind(httpService));
+
+    // rpc
+    router.get("/rpc/user/getByCond", httpService.getByCond.bind(httpService));
+    router.post("/rpc/user", httpService.create.bind(httpService));
 
     router.get("/user/health", (req, res) => {
         res.send("User Service is healthy");

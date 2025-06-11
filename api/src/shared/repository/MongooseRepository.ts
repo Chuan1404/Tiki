@@ -9,6 +9,9 @@ export abstract class MongooseRepository<Entity, EntityCondDTO, EntityUpdateDTO>
     constructor(protected model: mongoose.Model<any>) {}
 
     async findByCond(cond: EntityCondDTO): Promise<Entity | null> {
+        if (Object.keys(cond as any).length === 0) {
+            return null;
+        }
         const data = await this.model.findOne(cond as any);
         if (!data) {
             return null;
@@ -53,7 +56,7 @@ export abstract class MongooseRepository<Entity, EntityCondDTO, EntityUpdateDTO>
         await this.model.updateOne({ id }, { $set: data as any });
         return true;
     }
-    
+
     async delete(id: string, isHard: boolean = false): Promise<boolean> {
         if (isHard) {
             await this.model.deleteOne({ id });

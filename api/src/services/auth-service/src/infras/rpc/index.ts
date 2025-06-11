@@ -1,23 +1,25 @@
-// import axios from "axios";
-// import { IRefreshTokenQueryRepository } from "../../interface";
-// import { RefreshTokenCondDTO } from "../../model/dto";
-// import { RefreshToken, RefreshTokenSchema } from "../../model";
+import axios from "axios";
+import AppError from "devchu-common/errors/AppError";
+import { IUserRepository } from "../../interface";
+import { User, UserCondDTO, UserCreateDTO } from "../../model/dto";
 
+export class RPCUserRepository implements IUserRepository {
+    constructor(private readonly baseURL: string) {}
 
+    async create(data: UserCreateDTO): Promise<string> {
+        try {
+            const { data: response } = await axios.post(`${this.baseURL}/rpc/user`, { ...data });
+            return response.data.id;
+        } catch (error: any) {
+            const { message } = error.response.data;
+            throw new AppError(message, error.status);
+        }
+    }
 
-// export class RPCRefreshTokenRepository implements IRefreshTokenQueryRepository {
-//   constructor(private readonly baseURL: string) { }
-//   async create(cond: RefreshTokenCondDTO): Promise<RefreshToken> {
-//     const { data } = await axios.post(`${this.baseURL}/refresh-token`, { data: cond });
-//     const token = RefreshTokenSchema.parse(data.data);
-
-//     return token;
-//   }
-
-//   async refresh(token: string): Promise<RefreshToken> {
-//     const { data } = await axios.post(`${this.baseURL}/refresh-token/refresh`, { data: token });
-//     const response = RefreshTokenSchema.parse(data.data);
-
-//     return response;
-//   }
-// }
+    async getByCond(cond: UserCondDTO): Promise<User | null> {
+        const { data: response } = await axios.get(`${this.baseURL}/rpc/user/getByCond`, {
+            data: cond,
+        } as any);
+        return response.data || null;
+    }
+}

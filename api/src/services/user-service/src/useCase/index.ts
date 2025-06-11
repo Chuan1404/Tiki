@@ -7,7 +7,7 @@ import {
     UserCreateDTO,
     UserCreateSchema,
     UserUpdateDTO,
-    UserUpdateSchema
+    UserUpdateSchema,
 } from "../model/dto";
 import { User_ExistedError, User_InvalidError, User_NotFoundError } from "../model/error";
 
@@ -70,17 +70,18 @@ export class UserUseCase implements IUserUseCase {
         let data = await this.repository.get(id);
 
         if (!data || data.status === EModelStatus.DELETED) {
-            throw User_NotFoundError;
+            // throw User_NotFoundError;
+            return null
         }
 
         return UserSchema.parse(data);
     }
 
-    async getByCond(cond: any): Promise<User | null> {
-        let data = await this.repository.findByCond(cond);
-
+    async getByCond(cond: UserCondDTO): Promise<User | null> {
+        const data = await this.repository.findByCond(cond);
         if (!data || data.status === EModelStatus.DELETED) {
-            throw User_NotFoundError;
+            // throw User_NotFoundError;
+            return null
         }
 
         return UserSchema.parse(data);

@@ -15,13 +15,26 @@ export class UserHttpService {
         }
     }
 
-    async get(req: Request, res: Response, next: NextFunction) {
+    async getById(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
         try {
-            let User = await this.useCase.get(id);
+            const user = await this.useCase.get(id);
 
             res.status(200).json({
-                data: User,
+                data: user,
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async getByCond(req: Request, res: Response, next: NextFunction) {
+        try {
+            const cond = UserCondScheme.parse(req.body);
+            const user = await this.useCase.getByCond(cond);
+
+            res.status(200).json({
+                data: user,
             });
         } catch (error) {
             next(error);

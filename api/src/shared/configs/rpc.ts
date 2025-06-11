@@ -3,9 +3,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const rpc = {
-  productCategory:
-    process.env.RPC_PRODUCT_CATEGORY_URL ?? "http://localhost:3001",
-  productBrand: process.env.RPC_PRODUCT_BRAND_URL ?? "http://localhost:3001",
-  cartProduct: process.env.RPC_CART_PRODUCT_URL ?? "http://localhost:3001",
-  userToken: process.env.RPC_USER_TOKEN_URL ?? "http://localhost:3001",
+    authURL: process.env.AUTH_SERVICE_URL ?? "http://localhost:3000",
+    userURL: process.env.USER_SERVICE_URL ?? "http://localhost:3001",
+    categoryURL: process.env.CATEGORY_SERVICE_URL ?? "http://localhost:3002",
+    brandURL: process.env.BRAND_SERVICE_URL ?? "http://localhost:3003",
+    productURL: process.env.PRODUCT_SERVICE_URL ?? "http://localhost:3004",
+    cartURL: process.env.CART_SERVICE_URL ?? "http://localhost:3005",
 };
