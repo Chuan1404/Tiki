@@ -2,18 +2,18 @@ FROM node:18
 
 WORKDIR /app
 
-COPY src/modules/mail-service/package*.json ./modules/mail-service/
-COPY src/modules/mail-service/tsconfig*.json ./modules/mail-service/
+COPY src/services/mail-service/package*.json ./services/mail-service/
+COPY src/services/mail-service/tsconfig*.json ./services/mail-service/
 COPY src/shared /app/shared
 
 WORKDIR /app/shared
 RUN npm install
 
-WORKDIR /app/modules/mail-service
+WORKDIR /app/services/mail-service
 RUN npm install
 
-COPY src/modules/mail-service/src ./src
+COPY src/services/mail-service/src ./src
 
-EXPOSE 3001
+EXPOSE 3006
 CMD ["npm", "run", "dev"]
 

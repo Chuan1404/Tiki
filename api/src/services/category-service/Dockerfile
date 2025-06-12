@@ -2,18 +2,18 @@ FROM node:18
 
 WORKDIR /app
 
-COPY src/modules/category-service/package*.json ./modules/category-service/
-COPY src/modules/category-service/tsconfig*.json ./modules/category-service/
+COPY src/services/category-service/package*.json ./services/category-service/
+COPY src/services/category-service/tsconfig*.json ./services/category-service/
 COPY src/shared /app/shared
 
 WORKDIR /app/shared
 RUN npm install
 
-WORKDIR /app/modules/category-service
+WORKDIR /app/services/category-service
 RUN npm install
 
-COPY src/modules/category-service/src ./src
+COPY src/services/category-service/src ./src
 
-EXPOSE 3001
+EXPOSE 3002
 CMD ["npm", "run", "dev"]
 
