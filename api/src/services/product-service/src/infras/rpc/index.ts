@@ -7,7 +7,7 @@ export class RPCCategoryRepository implements ICategoryQueryRepository {
     constructor(private readonly baseURL: string) {}
     async get(id: string): Promise<Category | null> {
         try {
-            const { data } = await axios.get(`${this.baseURL}/categories/${id}`);
+            const { data } = await axios.get(`${this.baseURL}/category/${id}`);
             const category = CategorySchema.parse(data.data);
 
             return category;
@@ -18,7 +18,7 @@ export class RPCCategoryRepository implements ICategoryQueryRepository {
 
     async list(cond: CategoryCondDTO): Promise<Category[]> {
         try {
-            const { data } = await axios.get(`${this.baseURL}/rpc/categories`, { data: cond });
+            const { data } = await axios.get(`${this.baseURL}/rpc/category`, { data: cond });
             const categories = data.data.map((item: any) => CategorySchema.parse(item));
 
             return categories;
@@ -33,7 +33,7 @@ export class RPCBrandRepository implements IBrandQueryRepository {
 
     async get(id: string): Promise<Brand | null> {
         try {
-            const { data } = await axios.get(`${this.baseURL}/brands/${id}`);
+            const { data } = await axios.get(`${this.baseURL}/brand/${id}`);
             const brand = BrandSchema.parse(data.data);
 
             return brand;
@@ -44,7 +44,7 @@ export class RPCBrandRepository implements IBrandQueryRepository {
 
     async list(cond: BrandCondDTO): Promise<Brand[]> {
         try {
-            const { data } = await axios.get(`${this.baseURL}/rpc/brands`, { data: cond });
+            const { data } = await axios.get(`${this.baseURL}/rpc/brand`, { data: cond });
             const brands = data.data.map((item: any) => BrandSchema.parse(item));
 
             return brands;

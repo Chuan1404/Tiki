@@ -60,8 +60,8 @@ export class BrandHttpService {
     }
 
     async findMany(req: Request, res: Response, next: NextFunction) {
-        let cond = BrandCondScheme.parse(req.body);
-        let result = await this.useCase.list(cond);
+        const cond = BrandCondScheme.parse(req.body);
+        const result = await this.useCase.list(cond);
 
         res.status(200).json({
             data: result,

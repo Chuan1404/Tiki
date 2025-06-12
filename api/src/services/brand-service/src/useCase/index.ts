@@ -34,7 +34,7 @@ export class BrandUseCase implements IBrandUseCase {
             throw BrandName_ExistedError(data.name);
         }
 
-        let newId = v7();
+        const newId = v7();
         const brand: Brand = {
             id: newId,
             name: parsedData.name,

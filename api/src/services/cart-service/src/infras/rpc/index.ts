@@ -7,7 +7,7 @@ export class RPCProductRepository implements IProductQueryRepository {
   constructor(private readonly baseURL: string) {}
   async get(id: string): Promise<Product | null> {
     try {
-      const { data } = await axios.get(`${this.baseURL}/products/${id}`);
+      const { data } = await axios.get(`${this.baseURL}/product/${id}`);
       const product = ProductSchema.parse(data.data);
 
       return product;
@@ -18,7 +18,7 @@ export class RPCProductRepository implements IProductQueryRepository {
 
   async list(cond: ProductCondDTO): Promise<Product[]> {
     try {
-      const { data } = await axios.get(`${this.baseURL}/rpc/products`, {
+      const { data } = await axios.get(`${this.baseURL}/rpc/product`, {
         data: cond,
       });
       const products = data.data.map((item: any) =>

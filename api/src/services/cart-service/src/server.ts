@@ -26,7 +26,7 @@ const app = express();
 
     const repository = new CartMongooseRepository(mongoose.models[modelName]);
     const useCase = new CartUseCase(repository);
-    const rpcProduct = new RPCProductRepository(rpc.cartProduct);
+    const rpcProduct = new RPCProductRepository(rpc.productURL);
     const httpService = new CartHttpService(useCase, rpcProduct);
 
     const router = Router();

@@ -26,8 +26,8 @@ const app = express();
     await messageBroker.connect();
 
     const repository = new ProductMongooseRepository(mongoose.models[modelName]);
-    const rpcCategory = new RPCCategoryRepository(rpc.productCategory);
-    const rpcBrand = new RPCBrandRepository(rpc.productBrand);
+    const rpcCategory = new RPCCategoryRepository(rpc.categoryURL);
+    const rpcBrand = new RPCBrandRepository(rpc.brandURL);
     const useCase = new ProductUseCase(repository);
     const httpService = new ProductHttpService(useCase, rpcCategory, rpcBrand);
 
