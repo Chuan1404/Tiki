@@ -19,7 +19,7 @@ export class RPCUserRepository implements IUserRepository {
     async getByCond(cond: UserCondDTO): Promise<User | null> {
         const { data: response } = await axios.get(`${this.baseURL}/rpc/user/getByCond`, {
             data: cond,
-        } as any);
+        });
         return response.data || null;
     }
 }

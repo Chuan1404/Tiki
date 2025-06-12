@@ -3,7 +3,6 @@ import { authToken, errorHandler, RabbitMQ } from "devchu-common";
 import dotenv from "dotenv";
 import express, { Router } from "express";
 import mongoose from "mongoose";
-import { UserCreatedHandler, UserGetByEmailHandler } from "./infras/listener";
 import { UserMongooseRepository } from "./infras/repository";
 import { init, modelName } from "./infras/repository/mongo/dto";
 import { UserHttpService } from "./infras/transport/express";
