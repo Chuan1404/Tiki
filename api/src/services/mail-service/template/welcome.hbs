@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Chào mừng bạn đến với DevChu!</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f9fb;
+        margin: 0;
+        padding: 0;
+      }
+
+      .email-container {
+        max-width: 600px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+      }
+
+      .header {
+        padding: 30px;
+        background-color: #4a90e2;
+        text-align: center;
+        color: #fff;
+      }
+
+      .header img {
+        width: 100px;
+        margin-bottom: 15px;
+      }
+
+      .content {
+        padding: 30px;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 24px;
+        background-color: #4a90e2;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+      }
+
+      .footer {
+        padding: 20px;
+        text-align: center;
+        font-size: 13px;
+        color: #888;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="header">
+        <img src="https://i.imgur.com/YOUR_LOGO.png" alt="DevChu Logo" />
+        <h2>Chào mừng bạn đến với DevChu!</h2>
+      </div>
+
+      <div class="content">
+        <p>Kính gửi <strong>{{name}}</strong>,</p>
+
+        <p>
+          Cảm ơn bạn vì đã dành sự quan tâm và tin tưởng tới dịch vụ của chúng tôi.
+          Trải nghiệm của khách hàng chính là động lực to lớn nhất của chúng tôi và chúng tôi cam kết sẽ mang đến cho bạn những trải nghiệm tốt nhất.
+        </p>
+
+        <p>
+          Chúng tôi luôn nỗ lực không ngừng để phát triển bền vững, xây dựng các chính sách chăm sóc khách hàng chu đáo và mang lại giá trị thiết thực,
+          nhằm luôn làm hài lòng khách hàng ở mức cao nhất.
+        </p>
+
+        <p>
+          Một lần nữa xin cảm ơn bạn, và đừng quên xác nhận tài khoản của bạn bằng cách nhấn vào nút bên dưới:
+        </p>
+
+        <a href="{{verifyLink}}" class="button">Xác nhận tài khoản</a>
+
+        <p style="margin-top: 40px;">Thân ái,<br />DevChu Company</p>
+      </div>
+
+      <div class="footer">
+        &copy; 2025 DevChu. All rights reserved.
+      </div>
+    </div>
+  </body>
+</html>

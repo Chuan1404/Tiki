@@ -1,4 +1,4 @@
-import { EModelStatus, EUserRole, IMessageBroker, PagingDTO } from "devchu-common";
+import { EModelStatus, EUserRole, IMessage, IMessageBroker, PagingDTO } from "devchu-common";
 import { v7 } from "uuid";
 import { IUserReposity, IUserUseCase } from "../interface";
 import { User, UserSchema } from "../model";
@@ -46,6 +46,12 @@ export class UserUseCase implements IUserUseCase {
         };
 
         await this.repository.insert(user);
+        const message: IMessage = {
+            exchange: "user",
+            routingKey: "user.created",
+            data: user,
+        }
+        this.messageBroker.publishAndWait(message);
 
         return newId;
     }
