@@ -75,38 +75,56 @@ services:
     - src/services/category-service/.env.production
     - src/shared/.env.production
 
-  # brand-service:
-  #   build:
-  #     context: .
-  #     dockerfile: src/services/brand-service/Dockerfile
-  #   container_name: brand-service
-  #   depends_on:
-  #     - rabbitmq
-  #     - mongodb
+  brand-service:
+    build:
+      context: .
+      dockerfile: src/services/brand-service/Dockerfile
+    container_name: brand-service
+    depends_on:
+      - rabbitmq
+      - mongodb
+    ports:
+      - "3003:3003"
+    env_file:
+    - src/services/brand-service/.env.production
+    - src/shared/.env.production
 
-  # product-service:
-  #   build:
-  #     context: .
-  #     dockerfile: src/services/product-service/Dockerfile
-  #   container_name: product-service
-  #   depends_on:
-  #     - rabbitmq
-  #     - mongodb
+  product-service:
+    build:
+      context: .
+      dockerfile: src/services/product-service/Dockerfile
+    container_name: product-service
+    depends_on:
+      - rabbitmq
+      - mongodb
+    ports:
+      - "3004:3004"
+    env_file:
+    - src/services/product-service/.env.production
+    - src/shared/.env.production
 
-  # cart-service:
-  #   build:
-  #     context: .
-  #     dockerfile: src/services/cart-service/Dockerfile
-  #   container_name: cart-service
-  #   depends_on:
-  #     - rabbitmq
-  #     - mongodb
+  cart-service:
+    build:
+      context: .
+      dockerfile: src/services/cart-service/Dockerfile
+    container_name: cart-service
+    depends_on:
+      - rabbitmq
+      - mongodb
+    ports:
+      - "3005:3005"
+    env_file:
+    - src/services/cart-service/.env.production
+    - src/shared/.env.production
 
-  # mail-service:
-  #   build:
-  #     context: .
-  #     dockerfile: src/services/mail-service/Dockerfile
-  #   container_name: mail-service
-  #   depends_on:
-  #     - rabbitmq
-  #     - mongodb
+  mail-service:
+    build:
+      context: .
+      dockerfile: src/services/mail-service/Dockerfile
+    container_name: mail-service
+    depends_on:
+      - rabbitmq
+      - mongodb
+    env_file:
+    - src/services/mail-service/.env.production
+    - src/shared/.env.production
