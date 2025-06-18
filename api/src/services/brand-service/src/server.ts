@@ -8,10 +8,12 @@ import { init, modelName } from "./infras/repository/mongo/dto";
 import { BrandHttpService } from "./infras/transport/express";
 import { BrandUseCase } from "./useCase";
 
-dotenv.config();
 const app = express();
 
 (async () => {
+    if (process.env.NODE_ENV !== "production") {
+        dotenv.config();
+    }
     // middleware
     app.use(cors());
     app.use(express.json());
