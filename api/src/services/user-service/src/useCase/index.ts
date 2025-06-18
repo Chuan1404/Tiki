@@ -46,12 +46,14 @@ export class UserUseCase implements IUserUseCase {
         };
 
         await this.repository.insert(user);
+
+        //send mail
         const message: IMessage = {
             exchange: "user",
             routingKey: "user.created",
             data: user,
         }
-        this.messageBroker.publishAndWait(message);
+        this.messageBroker.publish(message);
 
         return newId;
     }

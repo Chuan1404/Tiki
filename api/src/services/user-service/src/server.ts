@@ -7,7 +7,6 @@ import { UserMongooseRepository } from "./infras/repository";
 import { init, modelName } from "./infras/repository/mongo/dto";
 import { UserHttpService } from "./infras/transport/express";
 import { UserUseCase } from "./useCase";
-import { UserCreatedHandler, UserGetByEmailHandler } from "./infras/listener";
 
 const app = express();
 
@@ -31,8 +30,8 @@ const app = express();
     const httpService = new UserHttpService(useCase);
 
     // listener
-    messageBroker.subscribe("user", "user.created", new UserCreatedHandler(useCase));
-    messageBroker.subscribe("user", "user.getByEmail", new UserGetByEmailHandler(useCase));
+    // messageBroker.subscribe("user", "user.created", new UserCreatedHandler(useCase));
+    // messageBroker.subscribe("user", "user.getByEmail", new UserGetByEmailHandler(useCase));
 
     const router = Router();
 
