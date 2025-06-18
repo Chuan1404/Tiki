@@ -1,14 +1,16 @@
+import cors from "cors";
 import { errorHandler } from "devchu-common";
 import dotenv from "dotenv";
 import express from "express";
-import { initApp, initRouter } from "./config";
-import cors from "cors";
+import { initRouter } from "./config";
 
-dotenv.config();
 const app = express();
 
 (async () => {
     // Init app
+    if (process.env.NODE_ENV !== "production") {
+        dotenv.config();
+    }
     app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
