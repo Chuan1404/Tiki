@@ -10,10 +10,12 @@ import { RPCBrandRepository, RPCCategoryRepository } from "./infras/rpc";
 import { ProductHttpService } from "./infras/transport/express";
 import { ProductUseCase } from "./useCase";
 
-dotenv.config();
 const app = express();
 
 (async () => {
+    if (!process.env.NODE_ENV) {
+        dotenv.config();
+    }
     // middleware
     app.use(cors());
     app.use(express.json());
@@ -28,7 +30,9 @@ const app = express();
     await messageBroker.connect();
 
     const repository = new ProductMongooseRepository(mongoose.models[modelName]);
-    const rpcCategory = new RPCCategoryRepository(rpc.categoryURL || "http://category-service:3002");
+    const rpcCategory = new RPCCategoryRepository(
+        rpc.categoryURL || "http://category-service:3002"
+    );
     const rpcBrand = new RPCBrandRepository(rpc.brandURL || "http://brand-service:3003");
     const useCase = new ProductUseCase(repository);
     const httpService = new ProductHttpService(useCase, rpcCategory, rpcBrand);
