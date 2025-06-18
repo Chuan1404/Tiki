@@ -7,10 +7,10 @@ COPY src/services/user-service/tsconfig*.json ./services/user-service/
 COPY src/shared /app/shared
 
 WORKDIR /app/shared
-RUN npm install
+RUN npm config set registry https://registry.npmmirror.com && npm install
 
 WORKDIR /app/services/user-service
-RUN npm install
+RUN npm config set registry https://registry.npmmirror.com && npm install
 
 COPY src/services/user-service/src ./src
 

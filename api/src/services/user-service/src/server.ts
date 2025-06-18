@@ -7,20 +7,23 @@ import { UserMongooseRepository } from "./infras/repository";
 import { init, modelName } from "./infras/repository/mongo/dto";
 import { UserHttpService } from "./infras/transport/express";
 import { UserUseCase } from "./useCase";
+import { UserCreatedHandler, UserGetByEmailHandler } from "./infras/listener";
 
-dotenv.config();
 const app = express();
 
 (async () => {
+    if (!process.env.NODE_ENV) {
+        dotenv.config();
+    }
     // middleware
     app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
-    await mongoose.connect(process.env.MONGO_URL || "mongodb://localhost:27017/ecommerce");
+    await mongoose.connect(process.env.MONGO_URL || "mongodb://mongodb:27017/ecommerce");
     init();
 
-    const messageBroker = new RabbitMQ(process.env.RABBITMQ_URL || "amqp://localhost");
+    const messageBroker = new RabbitMQ(process.env.RABBITMQ_URL || "amqp://devchu:123456@rabbitmq:5672");
     await messageBroker.connect();
 
     const repository = new UserMongooseRepository(mongoose.models[modelName]);
@@ -28,8 +31,8 @@ const app = express();
     const httpService = new UserHttpService(useCase);
 
     // listener
-    // messageBroker.subscribe("user", "user.created", new UserCreatedHandler(useCase));
-    // messageBroker.subscribe("user", "user.getByEmail", new UserGetByEmailHandler(useCase));
+    messageBroker.subscribe("user", "user.created", new UserCreatedHandler(useCase));
+    messageBroker.subscribe("user", "user.getByEmail", new UserGetByEmailHandler(useCase));
 
     const router = Router();
 
