@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY src/services/mail-service/package*.json ./services/mail-service/
 COPY src/services/mail-service/tsconfig*.json ./services/mail-service/
+COPY src/services/mail-service/template ./services/mail-service/template/
 COPY src/shared /app/shared
 
 WORKDIR /app/shared

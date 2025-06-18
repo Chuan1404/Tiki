@@ -6,10 +6,12 @@ import nodemailer from "nodemailer";
 import { UserCreatedHandler } from "./infras/listener";
 import { MailUseCase } from "./useCase";
 
-dotenv.config();
 const app = express();
 
 (async () => {
+    if (process.env.NODE_ENV !== "production") {
+        dotenv.config();
+    }
     // middleware
     app.use(cors());
     app.use(express.json());
@@ -25,7 +27,7 @@ const app = express();
         },
     });
 
-    const messageBroker = new RabbitMQ(process.env.RABBITMQ_URL || "amqp://devchu:123456@localhost:5672");
+    const messageBroker = new RabbitMQ(process.env.RABBITMQ_URL || "amqp://devchu:123456@rabbitmq:5672");
     await messageBroker.connect();
 
     const useCase = new MailUseCase(transporter, messageBroker);
