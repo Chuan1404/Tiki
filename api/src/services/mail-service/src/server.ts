@@ -25,7 +25,7 @@ const app = express();
         },
     });
 
-    const messageBroker = new RabbitMQ(process.env.RABBITMQ_URL || "amqp://localhost");
+    const messageBroker = new RabbitMQ(process.env.RABBITMQ_URL || "amqp://devchu:123456@localhost:5672");
     await messageBroker.connect();
 
     const useCase = new MailUseCase(transporter, messageBroker);

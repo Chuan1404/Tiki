@@ -1,12 +1,13 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv'
 
-dotenv.config();
-
+if(process.env.NODE_ENV !== 'production') {
+    dotenv.config();
+}
 export const rpc = {
-    authURL: process.env.AUTH_SERVICE_URL ?? "http://localhost:3000",
-    userURL: process.env.USER_SERVICE_URL ?? "http://localhost:3001",
-    categoryURL: process.env.CATEGORY_SERVICE_URL ?? "http://localhost:3002",
-    brandURL: process.env.BRAND_SERVICE_URL ?? "http://localhost:3003",
-    productURL: process.env.PRODUCT_SERVICE_URL ?? "http://localhost:3004",
-    cartURL: process.env.CART_SERVICE_URL ?? "http://localhost:3005",
+    authURL: process.env.AUTH_SERVICE_URL,
+    userURL: process.env.USER_SERVICE_URL,
+    categoryURL: process.env.CATEGORY_SERVICE_URL,
+    brandURL: process.env.BRAND_SERVICE_URL,
+    productURL: process.env.PRODUCT_SERVICE_URL,
+    cartURL: process.env.CART_SERVICE_URL,
 };

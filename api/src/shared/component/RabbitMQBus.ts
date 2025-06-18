@@ -16,8 +16,8 @@ export class RabbitMQ implements IMessageBroker {
             this.channel = await connection.createChannel();
             console.log(`RabbitMQ connected successfully - ${this.url}`);
         } catch (err) {
-            console.log(`RabbitMQ connected fail - ${this.url}`);
-            setTimeout(() => this.connect(), 5000);
+            await new Promise((resolve) => setTimeout(resolve, 5000));
+            await this.connect();
         }
     }
 

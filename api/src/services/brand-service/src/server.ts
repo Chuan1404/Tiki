@@ -17,10 +17,10 @@ const app = express();
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
-    await mongoose.connect(process.env.MONGO_URL || "mongodb://localhost:27017/ecommerce");
+    await mongoose.connect(process.env.MONGO_URL || "mongodb://mongodb:27017/ecommerce");
     init();
 
-    const messageBroker = new RabbitMQ(process.env.RABBITMQ_URL || "amqp://localhost");
+    const messageBroker = new RabbitMQ(process.env.RABBITMQ_URL || "amqp://devchu:123456@rabbitmq:5672");
     await messageBroker.connect();
 
     const repository = new BrandMongooseRepository(mongoose.models[modelName]);

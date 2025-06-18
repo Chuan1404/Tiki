@@ -8,19 +8,21 @@ import { init } from "./infras/repository/mongo/dto";
 import { CategoryHttpService } from "./infras/transport/express";
 import { CategoryUseCase } from "./useCase";
 
-dotenv.config();
 const app = express();
 
 (async () => {
+    if (!process.env.NODE_ENV) {
+        dotenv.config();
+    }
     // middleware
     app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
-    await mongoose.connect(process.env.MONGO_URL || "mongodb://localhost:27017/ecommerce");
+    await mongoose.connect(process.env.MONGO_URL || "mongodb://mongodb:27017/ecommerce");
     init();
 
-    const messageBroker = new RabbitMQ(process.env.RABBITMQ_URL || "amqp://localhost");
+    const messageBroker = new RabbitMQ(process.env.RABBITMQ_URL || "amqp://devchu:123456@rabbitmq:5672");
     await messageBroker.connect();
 
     const repository = new CategoryMongooseRepository(mongoose.models[modelName]);
