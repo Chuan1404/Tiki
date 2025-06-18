@@ -9,10 +9,12 @@ import { RPCProductRepository } from "./infras/rpc";
 import { CartHttpService } from "./infras/transport/express";
 import { CartUseCase } from "./useCase";
 
-dotenv.config();
 const app = express();
 
 (async () => {
+    if (process.env.NODE_ENV !== "production") {
+        dotenv.config();
+    }
     // middleware
     app.use(cors());
     app.use(express.json());
