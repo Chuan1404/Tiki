@@ -1,4 +1,4 @@
-import { EModelStatus, IMessage, IMessageBroker, PagingDTO } from "devchu-common";
+import { Elasticsearch, EModelStatus, IMessage, IMessageBroker, PagingDTO } from "devchu-common";
 import { v7 } from "uuid";
 import { IProductRepository, IProductUseCase } from "../interface";
 import { Product, ProductSchema } from "../model";
@@ -18,7 +18,8 @@ import {
 export class ProductUseCase implements IProductUseCase {
     constructor(
         private readonly repository: IProductRepository,
-        private readonly messageBroker: IMessageBroker
+        private readonly messageBroker: IMessageBroker,
+        private readonly searchService: Elasticsearch
     ) {}
 
     async create(data: ProductCreateDTO): Promise<string> {
@@ -88,9 +89,22 @@ export class ProductUseCase implements IProductUseCase {
     }
 
     async list(cond: ProductCondDTO, paging?: PagingDTO): Promise<Product[]> {
-        let data = await this.repository.list(cond, paging);
+        // const data = await this.repository.list(cond, paging);
+        const query: any = {};
 
-        return data ? data.map((item) => ProductSchema.parse(item)) : [];
+        if (Object.keys(cond).length == 0) {
+            query.match_all = {};
+        }
+        const data = await this.searchService.search("products", query, paging);
+        return data.hits
+            ? data.hits.hits.map((item: any) =>
+                  ProductSchema.parse({
+                      ...item._source,
+                      createdAt: new Date(item._source.createdAt),
+                      updatedAt: new Date(item._source.updatedAt),
+                  })
+              )
+            : [];
     }
 
     async delete(id: string, isHard: boolean = false): Promise<boolean> {

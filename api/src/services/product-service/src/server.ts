@@ -1,5 +1,5 @@
 import cors from "cors";
-import { errorHandler, RabbitMQ, upload } from "devchu-common";
+import { Elasticsearch, errorHandler, RabbitMQ, upload } from "devchu-common";
 import { rpc } from "devchu-common/configs/rpc";
 import express, { Router } from "express";
 import mongoose from "mongoose";
@@ -25,10 +25,15 @@ const app = express();
     );
     await messageBroker.connect();
 
+    const elasticSearch = new Elasticsearch(
+        process.env.ELASTICSEARCH_URL || "http://localhost:9200"
+    );
+    await elasticSearch.connect();
+
     const repository = new ProductMongooseRepository(mongoose.models[modelName]);
     const rpcCategory = new RPCCategoryRepository(rpc.categoryURL || "http://localhost:3002");
     const rpcBrand = new RPCBrandRepository(rpc.brandURL || "http://localhost:3003");
-    const useCase = new ProductUseCase(repository, messageBroker);
+    const useCase = new ProductUseCase(repository, messageBroker, elasticSearch);
     const httpService = new ProductHttpService(useCase, rpcCategory, rpcBrand);
 
     const router = Router();
