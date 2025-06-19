@@ -1,4 +1,4 @@
-import { EModelStatus, PagingDTO } from "devchu-common";
+import { EModelStatus, IMessage, IMessageBroker, PagingDTO } from "devchu-common";
 import { v7 } from "uuid";
 import { IProductRepository, IProductUseCase } from "../interface";
 import { Product, ProductSchema } from "../model";
@@ -16,7 +16,10 @@ import {
 } from "../model/error";
 
 export class ProductUseCase implements IProductUseCase {
-    constructor(private readonly repository: IProductRepository) {}
+    constructor(
+        private readonly repository: IProductRepository,
+        private readonly messageBroker: IMessageBroker
+    ) {}
 
     async create(data: ProductCreateDTO): Promise<string> {
         const { success, data: parsedData, error } = ProductCreateSchema.safeParse(data);
@@ -41,12 +44,19 @@ export class ProductUseCase implements IProductUseCase {
             categoryId: parsedData.categoryId,
             price: parsedData.price,
             thumbnailUrl: parsedData.thumbnailUrl ?? "",
+            slug: newId,
             status: EModelStatus.ACTIVE,
             createdAt: new Date(),
             updatedAt: new Date(),
         };
 
         await this.repository.insert(product);
+        const message: IMessage = {
+            exchange: "product",
+            routingKey: "product.created",
+            data: product,
+        };
+        this.messageBroker.publish(message);
 
         return newId;
     }

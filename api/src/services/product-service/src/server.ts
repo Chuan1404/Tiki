@@ -1,7 +1,6 @@
 import cors from "cors";
 import { errorHandler, RabbitMQ, upload } from "devchu-common";
 import { rpc } from "devchu-common/configs/rpc";
-import dotenv from "dotenv";
 import express, { Router } from "express";
 import mongoose from "mongoose";
 import { ProductMongooseRepository } from "./infras/repository";
@@ -13,28 +12,23 @@ import { ProductUseCase } from "./useCase";
 const app = express();
 
 (async () => {
-    if (!process.env.NODE_ENV) {
-        dotenv.config();
-    }
     // middleware
     app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
-    await mongoose.connect(process.env.MONGO_URL || "mongodb://mongodb:27017/ecommerce");
+    await mongoose.connect(process.env.MONGO_URL || "mongodb://localhost:27017/ecommerce");
     init();
 
     const messageBroker = new RabbitMQ(
-        process.env.RABBITMQ_URL || "amqp://devchu:123456@rabbitmq:5672"
+        process.env.RABBITMQ_URL || "amqp://devchu:123456@localhost:5672"
     );
     await messageBroker.connect();
 
     const repository = new ProductMongooseRepository(mongoose.models[modelName]);
-    const rpcCategory = new RPCCategoryRepository(
-        rpc.categoryURL || "http://category-service:3002"
-    );
-    const rpcBrand = new RPCBrandRepository(rpc.brandURL || "http://brand-service:3003");
-    const useCase = new ProductUseCase(repository);
+    const rpcCategory = new RPCCategoryRepository(rpc.categoryURL || "http://localhost:3002");
+    const rpcBrand = new RPCBrandRepository(rpc.brandURL || "http://localhost:3003");
+    const useCase = new ProductUseCase(repository, messageBroker);
     const httpService = new ProductHttpService(useCase, rpcCategory, rpcBrand);
 
     const router = Router();

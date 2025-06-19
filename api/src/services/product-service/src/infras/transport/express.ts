@@ -7,8 +7,8 @@ import { ProductCondScheme, ProductCreateDTO } from "../../model/dto";
 export class ProductHttpService {
     constructor(
         private readonly useCase: IProductUseCase,
-        private readonly CategoryPrismaRepository: ICategoryQueryRepository,
-        private readonly brandRepository: IBrandQueryRepository
+        private readonly rpcCategoryRepository: ICategoryQueryRepository,
+        private readonly rpcBrandRepository: IBrandQueryRepository
     ) {}
 
     async create(req: Request, res: Response, next: NextFunction) {
@@ -30,10 +30,10 @@ export class ProductHttpService {
             const product = await this.useCase.get(id);
 
             if (product) {
-                const category = await this.CategoryPrismaRepository.get(product.categoryId);
+                const category = await this.rpcCategoryRepository.get(product.categoryId);
                 product.category = category;
 
-                const brand = await this.brandRepository.get(product.brandId!);
+                const brand = await this.rpcBrandRepository.get(product.brandId!);
                 product.brand = brand;
             }
 
@@ -71,18 +71,17 @@ export class ProductHttpService {
         let products = await this.useCase.list(cond, paging);
 
         // get ids
+
         const brandIds: string[] = products
             .map((item) => item.brandId)
             .filter((brandId) => brandId !== undefined);
         const categoryIds: string[] = products.map((item) => item.categoryId);
 
         // fetch data and convert to hashMap
-        const brands = await this.brandRepository.list({ id: brandIds });
+        const brands = await this.rpcBrandRepository.list({ id: brandIds });
         const brandsMap = entitiesToHashMap(brands);
 
-        const categories = await this.CategoryPrismaRepository.list({
-            id: categoryIds,
-        });
+        const categories = await this.rpcCategoryRepository.list({ id: categoryIds });
         const categoriesMap = entitiesToHashMap(categories);
 
         // map data
