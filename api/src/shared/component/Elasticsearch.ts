@@ -1,4 +1,5 @@
 import { Client } from "@elastic/elasticsearch";
+import { PagingDTO } from "../model";
 
 export class Elasticsearch {
     private client!: Client;
@@ -16,25 +17,47 @@ export class Elasticsearch {
         }
     }
 
-    async search(index: string, query: any): Promise<any> {
+    async search(index: string, query: any, paging?: PagingDTO): Promise<any> {
         if (!this.client) {
             return Promise.reject(new Error("Elasticsearch client is not connected"));
         }
-        const res = await this.client.search({
-            index: index,
-            query: {
-                match: query,
-            },
-        });
 
-        return res;
+        const searchParams: any = {
+            index: index,
+            query: query,
+        };
+
+        if (!!paging) {
+            const { page, limit } = paging;
+            searchParams.from = (page - 1) * limit;
+            searchParams.size = limit;
+        }
+
+        try {
+            const res = await this.client.search(searchParams);
+            return res;
+        } catch (error) {
+            return {
+                hits: {
+                    total: 0,
+                    hits: [],
+                },
+            };
+        }
     }
 
     async index(index: string, id: string, document: any): Promise<void> {
+        if (!this.client) {
+            return Promise.reject(new Error("Elasticsearch client is not connected"));
+        }
+
         await this.client.index({
             index: index,
             id,
-            document,
+            document: {
+                id,
+                ...document,
+            },
         });
     }
 }
