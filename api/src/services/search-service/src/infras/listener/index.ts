@@ -8,6 +8,7 @@ export class ProductCreatedListener implements IMessageListener<Product> {
             const { id, ...productData } = data;
             await this.elasticClient.index("products", id, productData);
         } catch (error) {
+            console.log(error)
             throw error;
         }
     }
