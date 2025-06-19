@@ -11,7 +11,7 @@ import { CategoryUseCase } from "./useCase";
 const app = express();
 
 (async () => {
-    if (!process.env.NODE_ENV) {
+    if (process.env.NODE_ENV !== "production") {
         dotenv.config();
     }
     // middleware
