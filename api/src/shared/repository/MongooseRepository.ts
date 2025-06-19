@@ -57,7 +57,7 @@ export abstract class MongooseRepository<Entity, EntityCondDTO, EntityUpdateDTO>
         return true;
     }
 
-    async delete(id: string, isHard: boolean = false): Promise<boolean> {
+    async delete(id: string, isHard: boolean = true): Promise<boolean> {
         if (isHard) {
             await this.model.deleteOne({ id });
         } else {

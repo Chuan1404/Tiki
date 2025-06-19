@@ -4,8 +4,8 @@ export interface IMessage<T = any> {
     data: T;
   }
 
-export interface IMessageListener {
-    handle(data: any): Promise<any>;
+export interface IMessageListener<T = any> {
+    handle(data: T): Promise<any>;
 }
 
 export interface IMessageBroker {
