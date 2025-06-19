@@ -1,6 +1,5 @@
 import cors from "cors";
 import { errorHandler, RabbitMQ } from "devchu-common";
-import dotenv from "dotenv";
 import express from "express";
 import nodemailer from "nodemailer";
 import { UserCreatedHandler } from "./infras/listener";
@@ -9,9 +8,6 @@ import { MailUseCase } from "./useCase";
 const app = express();
 
 (async () => {
-    if (process.env.NODE_ENV !== "production") {
-        dotenv.config();
-    }
     // middleware
     app.use(cors());
     app.use(express.json());

@@ -14,8 +14,6 @@ export class MailUseCase implements IMailUseCase {
             subject,
             html,
         });
-        return true
+        return true;
     }
-
-   
 }
