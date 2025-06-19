@@ -16,6 +16,24 @@ services:
     container_name: mongodb
     ports:
       - "27017:27017"
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.1
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
 
   # nginx:
   #   image: nginx:latest
@@ -33,98 +51,98 @@ services:
   #     # - cart-service
   #     # - mail-service
 
-  auth-service:
-    build:
-      context: .
-      dockerfile: src/services/auth-service/Dockerfile
-    container_name: auth-service
-    depends_on:
-      - rabbitmq
-      - mongodb
-    ports:
-      - "3000:3000"
-    env_file:
-    - src/services/auth-service/.env.production
-    - src/shared/.env.production
+  # auth-service:
+  #   build:
+  #     context: .
+  #     dockerfile: src/services/auth-service/Dockerfile
+  #   container_name: auth-service
+  #   depends_on:
+  #     - rabbitmq
+  #     - mongodb
+  #   ports:
+  #     - "3000:3000"
+  #   env_file:
+  #   - src/services/auth-service/.env.production
+  #   - src/shared/.env.production
 
-  user-service:
-    build:
-      context: .
-      dockerfile: src/services/user-service/Dockerfile
-    container_name: user-service
-    depends_on:
-      - rabbitmq
-      - mongodb
-    ports:
-      - "3001:3001"
-    env_file:
-    - src/services/user-service/.env.production
-    - src/shared/.env.production
+  # user-service:
+  #   build:
+  #     context: .
+  #     dockerfile: src/services/user-service/Dockerfile
+  #   container_name: user-service
+  #   depends_on:
+  #     - rabbitmq
+  #     - mongodb
+  #   ports:
+  #     - "3001:3001"
+  #   env_file:
+  #   - src/services/user-service/.env.production
+  #   - src/shared/.env.production
 
-  category-service:
-    build:
-      context: .
-      dockerfile: src/services/category-service/Dockerfile
-    container_name: category-service
-    depends_on:
-      - rabbitmq
-      - mongodb
-    ports:
-      - "3002:3002"
-    env_file:
-    - src/services/category-service/.env.production
-    - src/shared/.env.production
+  # category-service:
+  #   build:
+  #     context: .
+  #     dockerfile: src/services/category-service/Dockerfile
+  #   container_name: category-service
+  #   depends_on:
+  #     - rabbitmq
+  #     - mongodb
+  #   ports:
+  #     - "3002:3002"
+  #   env_file:
+  #   - src/services/category-service/.env.production
+  #   - src/shared/.env.production
 
-  brand-service:
-    build:
-      context: .
-      dockerfile: src/services/brand-service/Dockerfile
-    container_name: brand-service
-    depends_on:
-      - rabbitmq
-      - mongodb
-    ports:
-      - "3003:3003"
-    env_file:
-    - src/services/brand-service/.env.production
-    - src/shared/.env.production
+  # brand-service:
+  #   build:
+  #     context: .
+  #     dockerfile: src/services/brand-service/Dockerfile
+  #   container_name: brand-service
+  #   depends_on:
+  #     - rabbitmq
+  #     - mongodb
+  #   ports:
+  #     - "3003:3003"
+  #   env_file:
+  #   - src/services/brand-service/.env.production
+  #   - src/shared/.env.production
 
-  product-service:
-    build:
-      context: .
-      dockerfile: src/services/product-service/Dockerfile
-    container_name: product-service
-    depends_on:
-      - rabbitmq
-      - mongodb
-    ports:
-      - "3004:3004"
-    env_file:
-    - src/services/product-service/.env.production
-    - src/shared/.env.production
+  # product-service:
+  #   build:
+  #     context: .
+  #     dockerfile: src/services/product-service/Dockerfile
+  #   container_name: product-service
+  #   depends_on:
+  #     - rabbitmq
+  #     - mongodb
+  #   ports:
+  #     - "3004:3004"
+  #   env_file:
+  #   - src/services/product-service/.env.production
+  #   - src/shared/.env.production
 
-  cart-service:
-    build:
-      context: .
-      dockerfile: src/services/cart-service/Dockerfile
-    container_name: cart-service
-    depends_on:
-      - rabbitmq
-      - mongodb
-    ports:
-      - "3005:3005"
-    env_file:
-    - src/services/cart-service/.env.production
-    - src/shared/.env.production
+  # cart-service:
+  #   build:
+  #     context: .
+  #     dockerfile: src/services/cart-service/Dockerfile
+  #   container_name: cart-service
+  #   depends_on:
+  #     - rabbitmq
+  #     - mongodb
+  #   ports:
+  #     - "3005:3005"
+  #   env_file:
+  #   - src/services/cart-service/.env.production
+  #   - src/shared/.env.production
 
-  mail-service:
-    build:
-      context: .
-      dockerfile: src/services/mail-service/Dockerfile
-    container_name: mail-service
-    depends_on:
-      - rabbitmq
-      - mongodb
-    env_file:
-    - src/services/mail-service/.env.production
-    - src/shared/.env.production
+  # mail-service:
+  #   build:
+  #     context: .
+  #     dockerfile: src/services/mail-service/Dockerfile
+  #   container_name: mail-service
+  #   depends_on:
+  #     - rabbitmq
+  #     - mongodb
+  #   env_file:
+  #   - src/services/mail-service/.env.production
+  #   - src/shared/.env.production
