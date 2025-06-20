@@ -1,7 +1,11 @@
 import cors from "cors";
 import { Elasticsearch, RabbitMQ } from "devchu-common";
 import express, { Router } from "express";
-import { ProductCreatedListener } from "./infras/listener";
+import {
+    ProductCreatedListener,
+    ProductDeletedListener,
+    ProductUpdatedListener,
+} from "./infras/listener";
 
 const app = express();
 
@@ -22,7 +26,11 @@ const app = express();
     await elasticSearch.connect();
 
     const productCreatedHandler = new ProductCreatedListener(elasticSearch);
+    const productUpdatedHandler = new ProductUpdatedListener(elasticSearch);
+    const productDeletedHandler = new ProductDeletedListener(elasticSearch);
     messageBroker.subscribe("product", "product.created", productCreatedHandler);
+    messageBroker.subscribe("product", "product.updated", productUpdatedHandler);
+    messageBroker.subscribe("product", "product.deleted", productDeletedHandler);
 
     const router = Router();
 

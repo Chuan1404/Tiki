@@ -33,15 +33,15 @@ const app = express();
     const repository = new ProductMongooseRepository(mongoose.models[modelName]);
     const rpcCategory = new RPCCategoryRepository(rpc.categoryURL || "http://localhost:3002");
     const rpcBrand = new RPCBrandRepository(rpc.brandURL || "http://localhost:3003");
-    const useCase = new ProductUseCase(repository, messageBroker, elasticSearch);
-    const httpService = new ProductHttpService(useCase, rpcCategory, rpcBrand);
+    const useCase = new ProductUseCase(repository, messageBroker);
+    const httpService = new ProductHttpService(useCase, rpcCategory, rpcBrand, elasticSearch);
 
     const router = Router();
 
     router.get("/product", httpService.list.bind(httpService));
     router.get("/product/:id", httpService.get.bind(httpService));
     router.post("/product", upload.single("thumbnailUrl"), httpService.create.bind(httpService));
-    router.patch("/product/:id", httpService.update.bind(httpService));
+    router.patch("/product/:id", upload.single("thumbnailUrl"),httpService.update.bind(httpService));
     router.delete("/product/:id", httpService.delete.bind(httpService));
 
     // internal call

@@ -20,5 +20,17 @@ const ProductSearchCondSchema = object({
     }).optional(),
 })
 
+export const ProductUpdateSchema = object({
+    id: string(),
+    name: string().min(3, "Name must be at least 3 characters").optional(),
+    price: number().min(0).default(0).optional(),
+    thumbnailUrl: string().optional(),
+    brandName: string().optional(),
+    status: nativeEnum(EModelStatus).optional(),
+    categoryId: string().optional(),
+    brandId: string().optional(),
+});
+
 export type Product = z.infer<typeof ProductSchema>;
 export type ProductSearchCondDTO = z.infer<typeof ProductSearchCondSchema>;
+export type ProductUpdateDTO = z.infer<typeof ProductUpdateSchema>;

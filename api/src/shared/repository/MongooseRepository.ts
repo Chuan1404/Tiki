@@ -47,23 +47,33 @@ export abstract class MongooseRepository<Entity, EntityCondDTO, EntityUpdateDTO>
     }
 
     async insert(data: Entity): Promise<boolean> {
-        await this.model.create(data as any);
-
-        return true;
+        try {
+            await this.model.create(data as any);
+            return true;
+        } catch (error) {
+            return false;
+        }
     }
 
     async update(id: string, data: EntityUpdateDTO): Promise<boolean> {
-        await this.model.updateOne({ id }, { $set: data as any });
-        return true;
+        try {
+            await this.model.updateOne({ id }, { $set: data as any });
+            return true;
+        } catch (error) {
+            return false;
+        }
     }
 
     async delete(id: string, isHard: boolean = true): Promise<boolean> {
-        if (isHard) {
-            await this.model.deleteOne({ id });
-        } else {
-            await this.model.updateOne({ id }, { status: EModelStatus.DELETED });
+        try {
+            if (isHard) {
+                await this.model.deleteOne({ id });
+            } else {
+                await this.model.updateOne({ id }, { status: EModelStatus.DELETED });
+            }
+            return true;
+        } catch (error) {
+            return false;
         }
-
-        return true;
     }
 }

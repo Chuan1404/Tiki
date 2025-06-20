@@ -14,7 +14,6 @@ export const ProductUpdateSchema = object({
     name: string().min(3, "Name must be at least 3 characters").optional(),
     price: number().min(0).default(0).optional(),
     thumbnailUrl: string().optional(),
-    brandName: string().optional(),
     status: nativeEnum(EModelStatus).optional(),
     categoryId: string().optional(),
     brandId: string().optional(),

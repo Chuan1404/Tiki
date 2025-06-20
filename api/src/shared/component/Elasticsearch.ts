@@ -22,6 +22,10 @@ export class Elasticsearch {
             return Promise.reject(new Error("Elasticsearch client is not connected"));
         }
 
+        if (Object.keys(query).length === 0) {
+            query.match_all = {};
+        }
+
         const searchParams: any = {
             index: index,
             query: query,
@@ -59,5 +63,21 @@ export class Elasticsearch {
                 ...document,
             },
         });
+    }
+
+    async update(index: string, id: string, document: any): Promise<void> {
+        if (!this.client) {
+            return Promise.reject(new Error("Elasticsearch client is not connected"));
+        }
+
+        await this.client.update({ index: "products", id, doc: document });
+    }
+
+    async delete(index: string, id: string): Promise<void> {
+        if (!this.client) {
+            return Promise.reject(new Error("Elasticsearch client is not connected"));
+        }
+
+        await this.client.delete({ index, id });
     }
 }

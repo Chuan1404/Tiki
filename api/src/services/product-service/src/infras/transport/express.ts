@@ -1,14 +1,16 @@
-import { PagingDTOSchema } from "devchu-common";
+import { Elasticsearch, PagingDTOSchema } from "devchu-common";
 import { entitiesToHashMap } from "devchu-common/utils";
 import { NextFunction, Request, Response } from "express";
 import { IBrandQueryRepository, ICategoryQueryRepository, IProductUseCase } from "../../interface";
+import { Product, ProductSchema } from "../../model";
 import { ProductCondScheme, ProductCreateDTO } from "../../model/dto";
 
 export class ProductHttpService {
     constructor(
         private readonly useCase: IProductUseCase,
         private readonly rpcCategoryRepository: ICategoryQueryRepository,
-        private readonly rpcBrandRepository: IBrandQueryRepository
+        private readonly rpcBrandRepository: IBrandQueryRepository,
+        private readonly elasticSearch: Elasticsearch
     ) {}
 
     async create(req: Request, res: Response, next: NextFunction) {
@@ -48,6 +50,7 @@ export class ProductHttpService {
     async update(req: Request, res: Response, next: NextFunction) {
         const { id } = req.params;
         try {
+            console.log(req);
             await this.useCase.update(id, req.body);
             res.status(200).json({
                 data: id,
@@ -68,24 +71,28 @@ export class ProductHttpService {
         }
 
         const cond = ProductCondScheme.parse(req.query);
-        let products = await this.useCase.list(cond, paging);
-
-        // get ids
+        const result = await this.elasticSearch.search("products", cond, paging);
+        let products = result.hits.hits.map((item: any) => {
+            const { createdAt, updatedAt, ...res } = item._source;
+            return ProductSchema.parse({
+                ...res,
+                createdAt: createdAt ? new Date(createdAt) : null,
+                updatedAt: updatedAt ? new Date(updatedAt) : null,
+            });
+        });
 
         const brandIds: string[] = products
-            .map((item) => item.brandId)
-            .filter((brandId) => brandId !== undefined);
-        const categoryIds: string[] = products.map((item) => item.categoryId);
-
-        // fetch data and convert to hashMap
+            .map((item: Product) => item.brandId)
+            .filter((brandId: Product) => brandId !== undefined);
         const brands = await this.rpcBrandRepository.list({ id: brandIds });
         const brandsMap = entitiesToHashMap(brands);
 
+        const categoryIds: string[] = products.map((item: Product) => item.categoryId);
         const categories = await this.rpcCategoryRepository.list({ id: categoryIds });
         const categoriesMap = entitiesToHashMap(categories);
 
         // map data
-        products = products.map((item) => ({
+        products = products.map((item: Product) => ({
             ...item,
             brand: item.brandId ? brandsMap[item.brandId] : null,
             category: categoriesMap[item.categoryId],
@@ -93,6 +100,7 @@ export class ProductHttpService {
 
         res.status(200).json({
             data: products,
+            total: result.hits.total.value,
             paging,
         });
     }
